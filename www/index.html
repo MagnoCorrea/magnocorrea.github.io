@@ -1,12 +1,4 @@
 <html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-<script>
-var encrypted = CryptoJS.AES.encrypt("Message", "Secret Passphrase");
-var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
-document.getElementById("demo1").innerHTML = encrypted;
-document.getElementById("demo2").innerHTML = decrypted;
-document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
-</script>
 <body>
 
 <br><br>
@@ -22,4 +14,13 @@ document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf
 <div id="demo3"></div>
 
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+<script>
+var encrypted = CryptoJS.AES.encrypt("Message", "Secret Passphrase");
+var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
+document.getElementById("demo1").innerHTML = encrypted;
+document.getElementById("demo2").innerHTML = decrypted;
+document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
+</script>
+
 </html>
