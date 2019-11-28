@@ -3,8 +3,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 <script>
   function criptografar(){
-    var encrypted = CryptoJS.AES.encrypt(document.getElementById("entrada").value, document.getElementById("passwowrd").value);
-    var decrypted = CryptoJS.AES.decrypt(encrypted, document.getElementById("password").value);
+    var entrada = document.getElementById("entrada").value;
+    var password = document.getElementById("password").value;
+    var encrypted = CryptoJS.AES.encrypt(entrada, password);
+    var decrypted = CryptoJS.AES.decrypt(encrypted, password);
     document.getElementById("demo1").innerHTML = encrypted;
     document.getElementById("demo2").innerHTML = decrypted;
     document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
