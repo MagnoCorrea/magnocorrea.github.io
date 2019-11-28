@@ -1,7 +1,26 @@
 <html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+<script>
+  function criptografar(){
+    var encrypted = CryptoJS.AES.encrypt(document.getElementById("entrada").value, document.getElementById("passwowrd").value,);
+    var decrypted = CryptoJS.AES.decrypt(encrypted, document.getElementById("password").value,);
+    document.getElementById("demo1").innerHTML = encrypted;
+    document.getElementById("demo2").innerHTML = decrypted;
+    document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
+  }
+</script>
+  </head>
 <body>
-<input type="text" name="entrada" value="Olá Mundo!!!">
-  
+  <form onsubmit="criptografar()>
+  Entrada:<br>
+  <input type="text" name="entrada" id="entrada" value="Olá Mundo">
+  <br>
+  Chave:<br>
+  <input type="text" name="password" id="password" value="Mouse">
+  <br><br>
+  <input type="submit" value="Submit">
+</form>  
 <label>Criptografado</label>
 <div id="demo1"></div>
 <br>
@@ -13,12 +32,4 @@
 <div id="demo3"></div>
 
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-<script>
-var encrypted = CryptoJS.AES.encrypt(document.getElementById("entrada").value, "Secret Passphrase");
-var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
-document.getElementById("demo1").innerHTML = encrypted;
-document.getElementById("demo2").innerHTML = decrypted;
-document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
-</script>
 </html>
