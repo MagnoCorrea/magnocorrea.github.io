@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(1) TAM Application Type API Management</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication453htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(1) TAM Application Type%0A%0AName:API Management%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: API Management</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (1) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 10.3
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>“APIBroker”, “APIGateway” or simply, “APIRuntime”High-performance, scalable, and low latency engine capable of mediatingHTTPrequests betweenAPI consumers and service enablers;Cache: Although completely optional to use, many times it is desirable or required to configure caching at the broker level for specific service enabler operation responses. By caching those responses, the broker can improve its responsiveness by reducing the number of requests to an underlying service enabler to whenever its responses are not already cached.Mediation of high throughput ofHTTPrequests betweenAPIconsumers and services;Awareness and support of Web protocols semantics (MIMEtypes,HTTPAuthorization and Caching headers, etc.);Header transform: modifications of header names and/or header information (e.g., service enabler-specific header to IANA-based header)Support of Data Format, Data Model transformations and Protocol Bridging between most or all common Web standards (WS-*,SOAP,XML, REST, JSON, etc.);Parameter transform: modifications of parameter names and/or parameter valuesMethod transform: modifications of the method specified in API request (e.g., POST to DELETE)Error information transform: modifications of error information in the body part of API responseStatus code transform: modifications of status code in the API response (e.g., 302 “Found” to 303 “See Other”)Information masking: filtering some information in the API response based on query parameters in API request or based on API provider’s policyAbstraction: conceptually transformations of the meanings of parameters or decrease of the number of request parametersProtocol transform: transformations of protocol to send API requests/responses (e.g., SOAP to REST)Mash-up (Composition): assembling a new API with existing APIs provided by service enabler.Content-based routing, fail-over, load balancing, and broadcasting of requests;Route: The broker Route task is the most commonly used task in a broker. A service enabler consumer issues a request to a given service; the broker Route task is responsible for forwarding that request to its underlying service enabler. Beyond the basic behavior of routing, the Route task should allow the parameterization of request timeout, HTTP keep alive connection, HTTP basic or digest authentication, URL decode, HTTP X-Forwarded-For/Host/Server, HTTP referrer, exception shielding configuration, HTTP status code, content based routing by regular expressions or xPath, etc. Support of standard authentication and authorization protocols (WS-Federation, SAML, OAuth, etc.), for both internal and external applications,APIdevelopers and users;Validate: The broker Validate task ensures that only valid messages (according to their contract’s schema) are routed to the remote host. This capability lowers dramatically the number of malformed messages that are presented to a given service enabler, and by doing so contributes to maximize the performance and scalability of that service enabler.Policy, Charging ; Rules Function: The Broker decision task makes it possible to have decision trees within a workflow or policy evaluation, at any nesting level. This is the basis for many possible micro-workflow related activities, making possible to configure a decision point structure where multiple option are present. The values tested in those options can be static or dynamically retrieved at runtime from the broker runtime context or from any part of the currently processed message.Diagnose: The Broker Diagnose task dynamically updates underlying management systems such as the Windows Management Instrumentation performance counters so that they can be monitored and reported upon by the monitoring service.Log: The broker Log task enables the logging of any request or response at any time during the processing of a strategy. The task should be able to execute synchronously or asynchronously, and target a designated file system path, database server, HTTP URL, or email address. If configurable to run only for a specific request or response message of a specific user (or user role) the task can be targeted to a specific operation of a specific service enabler. These granularities together with the possibility to deliver the log information in different channels offer great flexibility for both operation and debug scenarios. CDR: creation of Call Detail Record for calculating API usage fee. Traffic Control: The broker limits the access from the valid service consumers based on the contract with service consumers or service enablers or based on the conditions of API broker itself or service enablers.Flow control (Inbound): access limitations based on the contract between API provider and application developers (e.g., throughput/quota/concurrent connections limit)Flow control (Outbound): access limitation based on the contract between API provider and service enablers or the conditions of service enablers (e.g., throughput/quota/concurrent connections limit)Application Management: managing account information for recognizing applications (e.g., API key/OAuth2.0’s client_id, client_secret) and application developers. Data Encryption Key Management: managing data encryption keys to encrypt data in a case of sending sensitive data through API.Market or Store: In order to accomplish the task of commercial or business mediation, the Broker can implement for itself or communicate to some other external marketplace / store service. For example the broker should be able to count and track requests for any given request or response, and optionally cause the broker to refuse serving any more requests for a specific user if a configured request limit per service consumer or if a configured time frame is reached.Protect: The broker Protect task may impose access restrictions to some service consumers, in order to protect service enablers from abuse or undesired usage. Some common examples are the configuration of an IP address range restriction or a limit to the maximum message size accepted.APILifecycle Management applicationSupports the processes required for designing, developing, testing, deploying, operating, reporting and retiring APIs;APICatalog Management: a common database containing metadata related to:APIcreation driven by project definition templates and configuration wizards,APIdependencies registry,APIsearch,APIcontracts management,APIproxies and stubs code-generators, etc.;Access control policies based on a Role-Based Access Control (RBAC) system that restrict permissions for APIs creation and delivery, thus enabling different stakeholders experiences (for example: Catalog Manager, Service Developer, Service Operator, Service Owner, Product Manager, etc.);Configuration of allAPIRuntime behaviors (see previous component) using a model-driven language or other type of DSL (Domain-Specific Language);Real-time monitor and reportQoS(requests per second, exceptions, latency, etc.);Developers PortalTechnical/commercialAPICatalogue;Easy to search and discover APIs;APIdocumentation and code examples;Distribution of API keys and data encryption keys;Performance and usage reports;Technical support (online, email, forums, etc.).
+
+	<h3>Functionality</h3>
+
+                <p>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(1) TAM Application Type API Management</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagramf062545fab6011e2bcb7f04da23a38c8.htm">10. Integration Infrastructure</A></li>
+<LI><A HREF="diagram49efbfb7ba6111e780cf000d3a02ed0d.htm">API Management</A></li>
+<LI><A HREF="diagram212bd3bc1d9811db9063000802da1ce2.htm">Application Framework Level 1 Overview</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagram49efbfb7ba6111e780cf000d3a02ed0d.htm">API Management</A></li>
+</UL>
+<H3>Issues</H3><ul><li>Application Framework 13.0 Addition</li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain10.htm">Integration Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:09</SMALL></P>
+</BODY>
+</HTML>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>5.15 Bill Calculation</TITLE>
+<META NAME="author" CONTENT="DFREED">
+</HEAD>
+<P style="width:60%;margin-bottom:20px;">
+<A NAME="topofpagediagram6204b07813d111ddad71001e378839achtm"></A>
+<div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:Application Hierarchy Level 2%0A%0AName:5.15 Bill Calculation%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H1>5.15 Bill Calculation</H1>
+<MAP NAME="COORDdiagram6204b07813d111ddad71001e378839achtm">
+    <AREA SHAPE="RECT" COORDS="781, 197, 797, 213" HREF="diagram4beafa2e5b6011e780cb000d3a02ed0d.htm" ALT=""/>
+<AREA SHAPE="RECT" COORDS="729, 153, 850, 213" HREF="tamapplication344.htm" ALT="(2) TAM Application Type Invoice Generation"/>
+    <AREA SHAPE="RECT" COORDS="442, 95, 458, 111" HREF="diagram6204b07813d111ddad71001e378839ac.htm" ALT=""/>
+<AREA SHAPE="RECT" COORDS="390, 51, 511, 111" HREF="tamapplication3.htm" ALT="(1) TAM Application Type Bill Calculation"/>
+    <AREA SHAPE="RECT" COORDS="103, 197, 119, 213" HREF="diagram33c745575b6011e780cb000d3a02ed0d.htm" ALT=""/>
+<AREA SHAPE="RECT" COORDS="51, 153, 172, 213" HREF="tamapplication57.htm" ALT="(2) TAM Application Type Customer Bill Charge Calculation"/>
+    <AREA SHAPE="RECT" COORDS="239, 197, 255, 213" HREF="diagram3fe9d3795b6011e780cb000d3a02ed0d.htm" ALT=""/>
+<AREA SHAPE="RECT" COORDS="187, 153, 308, 213" HREF="tamapplication163.htm" ALT="(2) TAM Application Type Discounts Calculation"/>
+    <AREA SHAPE="RECT" COORDS="374, 197, 390, 213" HREF="diagram702a236c5b6011e780cb000d3a02ed0d.htm" ALT=""/>
+<AREA SHAPE="RECT" COORDS="322, 153, 443, 213" HREF="tamapplication164.htm" ALT="(2) TAM Application Type Tax Calculation"/>
+    <AREA SHAPE="RECT" COORDS="510, 197, 526, 213" HREF="diagram33c745275b6011e780cb000d3a02ed0d.htm" ALT=""/>
+<AREA SHAPE="RECT" COORDS="458, 153, 579, 213" HREF="tamapplication117.htm" ALT="(2) TAM Application Type Commitment Tracking"/>
+    <AREA SHAPE="RECT" COORDS="646, 197, 662, 213" HREF="diagram276a38df5b6011e780cb000d3a02ed0d.htm" ALT=""/>
+<AREA SHAPE="RECT" COORDS="594, 153, 715, 213" HREF="tamapplication165.htm" ALT="(2) TAM Application Type Bill Cycle Run Management"/>
+</MAP>
+<P><IMG SRC="diagram886.png" USEMAP="#COORDdiagram6204b07813d111ddad71001e378839achtm" ALT="5.15 Bill Calculation" LONGDESC="Business ContextThe Bill Calculation application automates the tasks required to calculate the bill. It takes billing preference, recurring product, non-recurring charge information and usage charge information, calculating the charges that must be billed.Bill Calculation may occur on demand or within bill cycles that are carefully planned and controlled for integrity and completeness as well as workload balancing (computer and staff)The output of Bill Calculation is a bill for products and services – The products and services may include both prepaid and postpaid services in a single bill.OverviewThe Bill Calculation application processes all charges against an account during bill cycles.&amp;nbsp; Bill Calculation can be executed both on a cyclic basis and on demand.&amp;nbsp; It performs bill invoicing, dealing with bill compilation of charges, credits, payments, adjustments, fees &amp;amp; taxes at various levels, such as product and/or account level that have been generated since the last run for that account. It could apply discounts.&amp;nbsp; Finally, Bill Calculation Management calculates bill totals and subtotals as appropriate.&amp;nbsp; The pricing plans and discounts are determined based on the &amp;nbsp;agreements for the invoiced customer or account.&amp;nbsp;"></P>
+<H3>Diagram Description</H3><p>Business Context<BR>The Bill Calculation application automates the tasks <BR>required to calculate the bill. It takes billing preference, recurring product, <BR>non-recurring charge information and usage charge information, calculating the <BR>charges that must be billed.<BR>Bill Calculation may occur on demand or within bill <BR>cycles that are carefully planned and controlled for integrity and completeness <BR>as well as workload balancing (computer and staff)<BR>The output <BR>of Bill Calculation is a bill for products and services – The products and <BR>services may include both prepaid and postpaid services in a single <BR>bill.<BR><BR>Overview<BR>The Bill <BR>Calculation application processes all charges against an account during bill <BR>cycles.&amp;nbsp; Bill Calculation can be <BR>executed both on a cyclic basis and on <BR>demand.&amp;nbsp; It performs bill <BR>invoicing, dealing with bill compilation of charges, credits, payments, <BR>adjustments, fees &amp;amp; taxes at various levels, such as product and/or account <BR>level that have been generated since the last run for that account. It could <BR>apply discounts.&amp;nbsp; Finally, Bill <BR>Calculation Management calculates bill totals and subtotals as appropriate.&amp;nbsp; <BR>The pricing <BR>plans and discounts are determined based on the &amp;nbsp;agreements for the invoiced customer or <BR>account.<BR>&amp;nbsp;</p>
+<HR><P>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 13:18</SMALL></P>
+</BODY>
+</HTML>

@@ -1,0 +1,60 @@
+div#tbl-container {
+width: 99%;
+height: 85%;
+overflow: auto;
+}
+
+table {
+table-layout: fixed;
+border-collapse: collapse;
+}
+
+div#tbl-container table th {
+width: 150px;
+}
+
+thead th, thead th.locked	{
+font-weight: bold;
+text-align: center;
+color: white;
+background-color: gray;
+border: 1px solid silver;
+position:relative;
+cursor: default; 
+}
+	
+thead a {
+	color: white;
+	font-size: 110%;
+}
+	
+tbody a {
+	color: white;
+	font-size: 110%;
+}
+
+thead th {
+top: expression(document.getElementById("tbl-container").scrollTop-2); /* IE5+ only */
+z-index: 20;
+}
+
+thead th.locked {z-index: 30;}
+
+td.locked,  th.locked{
+background-color: gray;
+font-weight: bold;
+border-left: 1px solid silver;
+border-right: 1px solid silver;
+border-bottom: 1px solid silver;
+left: expression(parentNode.parentNode.parentNode.parentNode.scrollLeft);
+position: relative;
+z-index: 10;
+}
+
+tbody td {
+font-size: 14px;
+text-align: center;
+border: 1px solid silver;
+background-color: transparent;
+cursor: default; 
+}

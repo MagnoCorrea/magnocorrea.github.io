@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>What are connector set objects?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+
+<link href="CwStylesheetA08.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h2>How new Connector Set objects differ from the old style connector sets </h2>
+<p>In response to a unanimous customer vote at Optimize 2002 (The Casewise international user conference) Corporate Modeler now represents Connector Sets as objects in all diagrams. </p>
+<p class="footer"><strong>Note:</strong> This functionality effectively means that you create a connector set on any diagrams as you would have done for generic diagrams in Corporate Modeler 9.</p>
+<h3>What does a new Connector Set look like?</h3>
+<table width="446"  border="0">
+  <tr>
+    <td bgcolor="#CCCCCC"><div align="center"><strong>Corporate Modeler 9 XOR Set </strong></div></td>
+    <td width="20">&nbsp;</td>
+    <td bgcolor="#CCCCCC"><div align="center"><strong>Corporate Modeler 10 XOR Set </strong></div></td>
+  </tr>
+  <tr>
+    <td><div align="center"><img src="images/old_connector_set.jpg" width="213" height="159"></div></td>
+    <td width="20">&nbsp;</td>
+    <td><div align="center"><img src="images/new_connector_set.jpg" width="213" height="159"></div></td>
+  </tr>
+</table>
+<p>As the Connector Set is now an object (just like a Process or an Organization), it can be set to be any shape, to have any appearance settings, or to use any style. </p>
+<p>This means that you can create Connector Sets or Decision Diamonds to conform to that of almost any notation. For example: if you are creating an IDEF3 diagram, you can use the special &quot;junction&quot; symbols (provided with Corporate Modeler 10) to make the connector set appear exactly as it should.</p>
+<h3>About connector set objects</h3>
+<ul>
+<li>A connector set object is created in the New Objects palette from the Object Type &quot;Connector Set&quot;.</li>
+<li>A connector set&rsquo;s type (what sort of decision it represents) is defined in the palette by its Category.</li>
+<li>The values (Delay, %split, etc) on the single connector in the set (in the case of an XOR set, the connector which connects to the Connector Set object) are ignored when the diagram is simulated.</li>
+<li>For the purposes of simulation, connectors that are involved with an XOR Connector Set object must have the category and flow type &quot;<strong>Optional</strong>&quot;. </li>
+<li>For the purposes of simulation, connectors that are involved with an AND Connector Set object must have the category and flow type &quot;<strong>Mandatory</strong>&quot;. </li>
+</ul>
+<h3>Examples of notation specific Connector Sets</h3>
+<table width="781"  border="0">
+  <tr>
+    <td width="247" bgcolor="#CCCCCC"><div align="center"><strong>IDEF3 (AND Junction, fan in, asynchronous) </strong></div></td>
+    <td width="20">&nbsp;</td>
+    <td width="247" bgcolor="#CCCCCC"><div align="center"><strong>UML Activity Diagram &quot;Fork&quot; </strong></div></td>
+    <td width="20">&nbsp;</td>
+    <td width="247" bgcolor="#CCCCCC"><div align="center"><strong>Standard decision diamond</strong></div></td>
+  </tr>
+  <tr>
+    <td width="247"><div align="center"><img src="images/idef3.jpg" width="247" height="163"></div></td>
+    <td width="20">&nbsp;</td>
+    <td width="247"><div align="center"><img src="images/uml_fork.jpg" width="247" height="163"></div></td>
+    <td width="20">&nbsp;</td>
+    <td width="247"><div align="center"><img src="images/flowchart_decision.jpg" width="247" height="163"></div></td>
+  </tr>
+</table>
+<h3>How will my &quot;old style&quot; connector set objects change in Corporate Modeler 10? </h3>
+<ul>
+	<li>A connector set object is drawn in place of the old style connector set.</li>
+	<li><span class="red">None of the other objects on your diagram change size or position on your diagram.</span></li>
+    <li>Any data on your connectors is migrated to the new diagram (you will not loose information about %Split, Delay etc). </li>
+    <li>Connector Set objects are created in the New Objects palette for future use (note that editing the Style or Symbol used by the object in the New objects palette will change the appearance of all Connector Sets with that category on the diagram). </li>
+</ul>
+<!--Footer--><!--(HR)============================================================-->
+<!--(Table)=========================================================-->
+<!--End Footer-->
+</body>
+</html>

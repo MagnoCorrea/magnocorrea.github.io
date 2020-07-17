@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(2) TAM Application Type Service Inventory Reconciliation / Synchronization</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication255htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(2) TAM Application Type%0A%0AName:Service Inventory Reconciliation / Synchronization%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: Service Inventory Reconciliation / Synchronization</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (2) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 6.2.2
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>This function entails reconciliation of the data in a Service Inventory Management system with inventory discovered from another source and/or synchronization of mismatched service inventory records. 
+
+When new service inventory information is discovered, the Service Inventory Reconciliation / Synchronization system will try to match the newly discovered information with an entity or entities already existing in the Service Inventory.
+
+If no match is found, the Service Inventory Reconciliation / Synchronization system will typically assume that a new entity has been discovered and add the entity to the inventory. Alternately, as decided by the service provider as part of their procedures, the Service Inventory Reconciliation system may record this event as an exception, implicitly or explicitly triggering a workflow to resolve the exception. For example, this may happen if the service provider always expects to have the planned service inventory in their Service Inventory Management systems before the actual services are activated.
+
+If a match is found and there are no unexpected discrepancies, the Service Inventory Reconciliation / Synchronization system will update the inventory as needed. For example, records may be updated to fill in missing attributes or update attribute values which have changed. If a match is found and there are unexpected discrepancies, the Service Inventory Reconciliation system will typically raise an exception so that service provider personnel can correct the problem. Exceptions may be managed within the application itself, via a report, or via a generalized worklist tool.
+
+	<h3>Functionality</h3>
+
+                <p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.6001.18876"></HEAD>
+<BODY>
+<UL type=disc>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service instance comparison<?xml:namespace prefix 
+  = o ns = "urn:schemas-microsoft-com:office:office" 
+  /><o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service reconciliation exception 
+  management</FONT></SPAN></LI></UL></BODY></HTML>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.6001.18876"></HEAD>
+<BODY>
+<P><B><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Consumed 
+Contracts</SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt"><?xml:namespace 
+prefix = o ns = "urn:schemas-microsoft-com:office:office" 
+/><o:p></o:p></SPAN></P>
+<UL type=disc>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service 
+Specification<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Resource Inventory Management 
+  Systems<o:p></o:p></FONT></SPAN></LI></UL>
+<P><B><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Exposed 
+Contracts</SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt"><o:p></o:p></SPAN></P>
+<UL type=disc>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Customer Order 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Order 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Problem 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Performance 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Level Agreement 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Quality Monitoring 
+  <o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Revenue 
+Assurance<o:p></o:p></FONT></SPAN></LI></UL></BODY></HTML>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(2) TAM Application Type Service Inventory Reconciliation / Synchronization</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagram7fbcedb01df011dd89a70015c54ddcd2.htm">6.2 Service Inventory Management</A></li>
+<LI><A HREF="diagram29cc68258ab711e980e2000d3a02ed0d.htm">Service Inventory Reconciliation / Synchronization</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagram29cc68258ab711e980e2000d3a02ed0d.htm">Service Inventory Reconciliation / Synchronization</A></li>
+</UL>
+<H3>Frameworx Processes (Automated TAM to eTOM)</H3><ul><li><A HREF="etomprocess168.htm">Manage Product Offering Inventory</A></li><li><A HREF="etomprocess333.htm">Manage Service Inventory</A></li><li><A HREF="etomprocess286.htm">Track &amp; Manage Service Provisioning</A></li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain6.htm">Service Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:10</SMALL></P>
+</BODY>
+</HTML>

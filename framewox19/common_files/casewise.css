@@ -1,0 +1,107 @@
+body {font-size:90%; font-family:verdana;}
+
+h1, h2 {font-size:125%;}
+h3 {font-size:100%;}
+
+
+.logo {
+z-index:5;
+position:absolute;
+top:1em;
+left:0em;}
+
+
+.topbar {
+	background-color: white;
+	position: absolute;
+	top: 1em;
+	left: 10em;
+	width: 90%;
+	height: 5em;
+	z-index: 0;
+	border-bottom: solid 0pt #323232;
+	padding: 1%;
+	padding-right: 5%;
+	text-align: right;
+	font-size: 90%;
+	font-family: tahoma;
+}
+
+
+.banner {font-size:165%;
+text-align:right;
+color:silver;
+font-style:italic;}
+
+.mainnav_left, .mainnav_right {position:absolute;top:4em;}
+
+.mainnav_left {left:10em;}
+.mainnav_right {right:7em;}
+
+.mainnav_left a, .mainnav_right a {text-decoration:none;color:white;}
+
+
+
+.leftbar {position:absolute;
+top:2em;
+left:0;
+width:9%;height:110%;
+background-color:#323232;
+padding-top:5em;
+z-index:0;
+}
+
+
+#deliverables, #about {position:absolute;
+	top:5.9em;
+	font-size:90%;
+	z-index:100;
+	background-color:beige;
+	border: solid 1pt #365453;
+	padding:1em;}
+
+#deliverables {right:22em;}
+#about {right:8em;}
+
+.leftbaritem {padding-left:1em;font-size:90%;}
+
+.cpoutput {position:absolute; top:12%;left:11%; width:90%;height:100%;}
+
+
+.footer {text-align:center;font-size:65%;position:relative;top:30%;left:20%;width:60%;}
+
+
+img {border: 0;}
+
+.leftbar a, .logo a {text-decoration:none; color:white; }
+
+
+table {
+	width:85%;
+	border-collapse:collapse;
+	font-size:90%;
+	position:relative;left:5%;
+
+}
+
+
+
+
+td {
+	font-size: 87%;	border: 1pt silver solid; 
+}
+
+
+td li {margin-top:0.5em;margin-left:-40;}
+
+
+img {
+	border: 0;
+}
+
+hr {
+	display:none;
+}
+
+
+

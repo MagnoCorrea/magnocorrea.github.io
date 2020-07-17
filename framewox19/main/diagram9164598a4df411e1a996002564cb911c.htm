@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>1.4.6.4 Track &amp; Manage Service Problem Flow</TITLE>
+<META NAME="author" CONTENT="DFREED">
+</HEAD>
+<P style="width:60%;margin-bottom:20px;">
+<A NAME="topofpagediagram9164598a4df411e1a996002564cb911chtm"></A>
+<div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:BPF Flow Level 4%0A%0AName:1.4.6.4 Track & Manage Service Problem Flow%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H1>1.4.6.4 Track &amp; Manage Service Problem Flow</H1>
+<MAP NAME="COORDdiagram9164598a4df411e1a996002564cb911chtm">
+<AREA SHAPE="RECT" COORDS="875, 167, 905, 197" ALT="Internal Result End Track &amp; Manage Service Problem"/>
+<AREA SHAPE="RECT" COORDS="47, 118, 77, 148" ALT="Internal Event Start Track &amp; Manage Service Problem"/>
+<AREA SHAPE="RECT" COORDS="723, 228, 844, 288" ALT="ITIL Candidate Monitor Resolution Update"/>
+<AREA SHAPE="RECT" COORDS="489, 81, 610, 141" ALT="ITIL Candidate Check Known Error"/>
+<AREA SHAPE="RECT" COORDS="226, 182, 347, 242" ALT="ITIL Candidate Perform Initial Diagnosis"/>
+<AREA SHAPE="RECT" COORDS="225, 28, 346, 88" HREF="etomprocess760.htm" ALT="(4) eTOM Process Type Coordinate Service Problem"/>
+<AREA SHAPE="RECT" COORDS="489, 183, 610, 243" HREF="etomprocess762.htm" ALT="(4) eTOM Process Type Cancel Service Problem"/>
+<AREA SHAPE="RECT" COORDS="489, 285, 610, 345" HREF="etomprocess763.htm" ALT="(4) eTOM Process Type Escalate/End Service Problem"/>
+<AREA SHAPE="RECT" COORDS="723, 77, 844, 137" HREF="etomprocess764.htm" ALT="(4) eTOM Process Type Perform Final Service Test"/>
+</MAP>
+<P><IMG SRC="diagram707.png" USEMAP="#COORDdiagram9164598a4df411e1a996002564cb911chtm" ALT="1.4.6.4 Track & Manage Service Problem Flow" LONGDESC="The purpose of the Track &amp; Manage Service Problem processes is to ensure that testing, repair and restoration activities are assigned, coordinated and tracked efficiently, and that escalation is invoked as required for any open service trouble reports in jeopardy.Responsibilities of these processes include, but are not limited to:· Initiating first-in testing using automated remote testing capabilities;· Adding additional information to an open service trouble report based on the first-in testing;· Scheduling, assigning and coordinating repair and restoration activities;· Generating the respective resource trouble report creation request(s) to Create Resource Trouble Report based on specific service trouble reports;· Initiate any final testing to confirm clearance of the service problem;· Undertake necessary tracking of the execution progress;· Modifying information in an existing service trouble report based on assignments;· Modifying the service trouble report status;· Canceling a service trouble report when the specific problem was related to a false service alarm event; and· Monitoring the jeopardy status of open service trouble reports, and escalating service trouble reports as necessary.Note that some specific resource components may be owned and managed by suppliers/partners.  In these cases the Track &amp; Manage Service Problem process is responsible for initiating requests, through S/P Problem Reporting &amp; Management processes for restoration and recovery by the supplier/partner of the specific resource components.These processes will co-ordinate all the actions necessary in order to guarantee that all tasks are finished at the appropriate time and in the appropriate sequence.The Track &amp; Manage Service Problem processes are responsible for engaging external suppliers/partners in correction and recovery activities when:· higher level expertise and/or higher level support is required to resolve the service problem, (which may be automatic in the case of highest priority service problems);· the specific service has been purchased from an external supplier (as in an interconnect service); or· the specific service is delivered by an external partner.Where the engagement with an external supplier/partner is for purchased or delivered services, as the case may be, the tracking and management of the supplier/partner problem resolution activity is actually performed by the S/P Problem Reporting &amp; Management processes, with the Track &amp; Manage Service Problem processes relegated to an overall coordination role. The Track &amp; Manage Service Problem processes will also inform the Close Service Problem processes by modifying the service trouble report status to cleared when the service problem has been resolved."></P>
+<H3>Diagram Description</H3><p>The purpose of the Track &amp; Manage Service Problem processes is to ensure that testing, repair and restoration activities are assigned, coordinated and tracked efficiently, and that escalation is invoked as required for any open service trouble reports in jeopardy.<BR>Responsibilities of these processes include, but are not limited to:<BR><BR>· Initiating first-in testing using automated remote testing capabilities;<BR>· Adding additional information to an open service trouble report based on the first-in testing;<BR>· Scheduling, assigning and coordinating repair and restoration activities;<BR>· Generating the respective resource trouble report creation request(s) to Create Resource Trouble Report based on specific service trouble reports;<BR>· Initiate any final testing to confirm clearance of the service problem;<BR>· Undertake necessary tracking of the execution progress;<BR>· Modifying information in an existing service trouble report based on assignments;<BR>· Modifying the service trouble report status;<BR>· Canceling a service trouble report when the specific problem was related to a false service alarm event; and<BR>· Monitoring the jeopardy status of open service trouble reports, and escalating service trouble reports as necessary.<BR><BR>Note that some specific resource components may be owned and managed by suppliers/partners.  In these cases the Track &amp; Manage Service Problem process is responsible for initiating requests, through S/P Problem Reporting &amp; Management processes for restoration and recovery by the supplier/partner of the specific resource components.<BR>These processes will co-ordinate all the actions necessary in order to guarantee that all tasks are finished at the appropriate time and in the appropriate sequence.<BR><BR>The Track &amp; Manage Service Problem processes are responsible for engaging external suppliers/partners in correction and recovery activities when:<BR>· higher level expertise and/or higher level support is required to resolve the service problem, (which may be automatic in the case of highest priority service problems);<BR>· the specific service has been purchased from an external supplier (as in an interconnect service); or<BR>· the specific service is delivered by an external partner.<BR><BR>Where the engagement with an external supplier/partner is for purchased or delivered services, as the case may be, the tracking and management of the supplier/partner problem resolution activity is actually performed by the S/P Problem Reporting &amp; Management processes, with the Track &amp; Manage Service Problem processes relegated to an overall coordination role. The Track &amp; Manage Service Problem processes will also inform the Close Service Problem processes by modifying the service trouble report status to cleared when the service problem has been resolved.</p>
+<HR><P>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 12:46</SMALL></P>
+</BODY>
+</HTML>

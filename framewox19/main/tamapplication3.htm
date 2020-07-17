@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(1) TAM Application Type Bill Calculation</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication3htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(1) TAM Application Type%0A%0AName:Bill Calculation%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: Bill Calculation</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (1) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 5.15
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>The Bill Calculation application processes all charges against an account during bill cycles. Bill Calculation can be executed both on a cyclic basis and on demand. It performs bill invoicing, dealing with bill compilation of charges, credits, payments, adjustments, fees & taxes at various levels, such as product and/or account level that have been generated since the last run for that account. It could apply discounts. Finally, Bill Calculation Management calculates bill totals and subtotals as appropriate. The pricing plans and discounts are determined based on the agreements for the invoiced customer or account.
+
+	<h3>Functionality</h3>
+
+                <p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.7601.17744"></HEAD>
+<BODY>
+<P></P>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Bill 
+Calculation functionality includes:</SPAN><?xml:namespace prefix = o ns = 
+"urn:schemas-microsoft-com:office:office" /><o:p></o:p></P>
+<P 
+style="TEXT-INDENT: -17.85pt; MARGIN: 6pt 0in 6pt 35.7pt; mso-margin-top-alt: auto; tab-stops: list .5in; mso-list: l0 level1 lfo2" 
+class=MsoNormal><SPAN 
+style="FONT-FAMILY: Symbol; FONT-SIZE: 10pt; mso-bidi-font-size: 12.0pt; mso-fareast-font-family: Symbol; mso-bidi-font-family: Symbol" 
+lang=EN-GB><SPAN style="mso-list: Ignore">·<SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><FONT face=Arial><SPAN 
+style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" lang=EN-GB>Performing 
+charge and event distribution to support a split bill</SPAN><SPAN 
+lang=EN-GB><o:p></o:p></SPAN></FONT></P>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN: 0in 0in 6pt 0.5in; tab-stops: list .5in left 1.2in; mso-list: l1 level1 lfo1" 
+class=Text><SPAN 
+style="FONT-FAMILY: Symbol; mso-fareast-font-family: Symbol; mso-bidi-font-family: Symbol; mso-fareast-language: EN-AU" 
+lang=EN-AU><SPAN style="mso-list: Ignore"><FONT size=2>·</FONT><SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><FONT size=2><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'" lang=EN-AU>Support various bill cycle 
+intervals </SPAN><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU><o:p></o:p></SPAN></B></FONT></P>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN: 0in 0in 6pt 0.5in; tab-stops: list .5in left 1.2in; mso-list: l1 level1 lfo1" 
+class=Text><SPAN 
+style="FONT-FAMILY: Symbol; mso-fareast-font-family: Symbol; mso-bidi-font-family: Symbol; mso-fareast-language: EN-AU" 
+lang=EN-AU><SPAN style="mso-list: Ignore"><FONT size=2>·</FONT><SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><FONT size=2><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Assemble billing information:<SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN></SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU><SPAN style="mso-spacerun: yes">&nbsp;</SPAN>Pull together all the 
+information to be included on the invoice, incorporating taxes, surcharges, and 
+other fees and may include payments, adjustments, and other financial 
+activities.<B 
+style="mso-bidi-font-weight: normal"><o:p></o:p></B></SPAN></FONT></P>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN: 0in 0in 6pt 0.5in; tab-stops: list .5in left 1.2in; mso-list: l1 level1 lfo1" 
+class=Text><SPAN 
+style="FONT-FAMILY: Symbol; mso-fareast-font-family: Symbol; mso-bidi-font-family: Symbol; mso-fareast-language: EN-AU" 
+lang=EN-AU><SPAN style="mso-list: Ignore"><FONT size=2>·</FONT><SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><FONT size=2><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Apply pricing and discounting:<SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN></SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Apply pricing and discounting rules and algorithms in the context of 
+the assembled information.<B 
+style="mso-bidi-font-weight: normal"><o:p></o:p></B></SPAN></FONT></P>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN: 0in 0in 6pt 0.5in; tab-stops: list .5in left 1.2in; mso-list: l1 level1 lfo1" 
+class=Text><SPAN 
+style="FONT-FAMILY: Symbol; mso-fareast-font-family: Symbol; mso-bidi-font-family: Symbol; mso-fareast-language: EN-AU" 
+lang=EN-AU><SPAN style="mso-list: Ignore"><FONT size=2>·</FONT><SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><FONT size=2><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Fee Calculation:<SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN></SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Calculates and applies bill-time fees where necessary.<B 
+style="mso-bidi-font-weight: normal"><o:p></o:p></B></SPAN></FONT></P>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN: 0in 0in 6pt 0.5in; tab-stops: list .5in left 1.2in; mso-list: l1 level1 lfo1" 
+class=Text><SPAN 
+style="FONT-FAMILY: Symbol; mso-fareast-font-family: Symbol; mso-bidi-font-family: Symbol; mso-fareast-language: EN-AU" 
+lang=EN-AU><SPAN style="mso-list: Ignore"><FONT size=2>·</FONT><SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><FONT size=2><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Generate an invoice:<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; 
+</SPAN></SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Execute invoice generation according to operational schedules.<B 
+style="mso-bidi-font-weight: normal"> <o:p></o:p></B></SPAN></FONT></P>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN: 0in 0in 6pt 0.5in; tab-stops: list .5in left 1.2in; mso-list: l1 level1 lfo1" 
+class=Text><SPAN 
+style="FONT-FAMILY: Symbol; mso-fareast-font-family: Symbol; mso-bidi-font-family: Symbol; mso-fareast-language: EN-AU" 
+lang=EN-AU><SPAN style="mso-list: Ignore"><FONT size=2>·</FONT><SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><FONT size=2><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Billing Financials:<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; 
+</SPAN></SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-language: EN-AU" 
+lang=EN-AU>Create appropriate transactions regarding the current invoice for 
+Receivables Management.<B style="mso-bidi-font-weight: normal"><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN></B></SPAN></FONT></P></BODY></HTML>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.6001.18783"></HEAD>
+<BODY>
+<P><B><FONT size=2 face=Arial>Exposed Contracts</FONT></B></P>
+<P><FONT size=2 face=Arial></FONT>
+<UL>
+  <LI><FONT size=2 face=Arial>Billing Inquiry </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>Quotations </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P></LI></UL>
+<P><FONT size=2 face=Arial></FONT></P>
+<P><FONT size=2 face=Arial></FONT>
+<UL>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <P><FONT size=2 face=Arial></FONT><B></P></UL>
+<P><FONT size=2 face=Arial>Consumed Contracts</FONT></P>
+<UL>
+  <LI></B><FONT size=2 face=Arial>TAX calculation</FONT></LI></UL>
+<P></P>
+<P></P></BODY></HTML>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(1) TAM Application Type Bill Calculation</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagram8a6237a3817711db9401000e3573f0d3.htm">5. Customer Management Domain</A></li>
+<LI><A HREF="diagram6204b07813d111ddad71001e378839ac.htm">5.15 Bill Calculation</A></li>
+<LI><A HREF="diagram212bd3bc1d9811db9063000802da1ce2.htm">Application Framework Level 1 Overview</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagram6204b07813d111ddad71001e378839ac.htm">5.15 Bill Calculation</A></li>
+</UL>
+<H3>Frameworx Processes (Automated TAM to eTOM)</H3><ul><li><A HREF="etomprocess30.htm">Bill Invoice Management</A></li><li><A HREF="etomprocess30.htm">Bill Invoice Management</A></li></ul><H3>Frameworx Processes (Partial TAM to eTOM)</H3><ul><li><A HREF="etomprocess30.htm">Bill Invoice Management</A></li></ul><H3>Issues</H3><ul><li>Application Framework 12.0 Modification</li><li>Application Framework 13.0 Modification</li><li>Application Framework 4.5 Deletion</li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain2.htm">Customer Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:09</SMALL></P>
+</BODY>
+</HTML>

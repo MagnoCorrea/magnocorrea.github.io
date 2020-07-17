@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(5) eTOM Process Type Perform Fraud Actions</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpageetomprocess1870htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(5) eTOM Process Type%0A%0AName:Perform Fraud Actions%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Process: Perform Fraud Actions</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Explanatory</a></li>
+<li><a href="#" rel="tcontent3">Associations</a></li>
+</ul>
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+ <p id="cat"><b>Category</b>: (5) eTOM Process Type 
+ <p id="ID"><b>Process Identifier</b>: 1.7.2.3.2.3
+ <p id="orig"><b>Original Process Identifier</b>: 1.3.2.3.2.3
+ <p id="mat"><b>Maturity Level</b>: 4
+
+	<h3>Description</h3>
+              
+	<p>This process contains all possible actions necessary to manage an issue following determination as fraud or not fraud.
+
+	<h3>Extended Description</h3>
+
+                <p>Fraud Actions is comprised of a series of sub processes that act as guidelines for activities to be performed based on the issue being determined as fraud or not fraud.  Each sub process is capable of being a stand-alone process (not dependent on other Actions sub processes), however more than one of these Actions may be used to help bring any given issue to appropriate closure.1. No Action:  If an issue is determined to not be fraud, the issue is closed and archived as part of this process.  Concurrent flows to Support and Reporting have also occurred to adjust rules, etc., as a result.  No further action is required.  Note:  A feedback to the System Configuration Management process should be considered in this case, for possible alarm threshold adjustment, whitelist updates, etc.  This process path is denoted in Figure 5:  “Overall Process”.2. Adjust Customer Billing:  Certain fraud instances result in customers being the victim in addition to the operator.  In these cases, extent of customer damage needs to be quickly ascertained and corrected in the customer’s billing and/or services.  While the determination of the damage is typically performed by the fraud team, the actual Customer Billing corrective action is usually performed by a Customer Care Team, based on information forwarded by the Fraud Team.3. Legal or LEA (Law Enforcement Agency) Action:  If an issue is determined to be fraud and significant financial loss, contract breach, or other illegal activities have occurred, the operator may seek recourse via the legal system.  This may be via civil reparations and/or criminal charges.  This sub process will utilize the operator’s policies (1.1.5) to determine whether attorney, law enforcement, or other assistance is needed.  This sub process will also use the same policies to determine and collect supporting information that will be necessary for those external agencies to properly pursue their activities.4. Terminate Customer:  If an issue is determined to be fraud and the operator deems the issue to be of enough magnitude to warrant termination, this process will conduct the termination of the customer (e.g., initiate the disconnect order).5. Dismiss Staff:  If an issue is determined to be fraud and/or a substantial violation of internal operator policies and internal staff have been found responsible, termination of the staff may be initiated at this step.  Fraud team findings for ethics policy violations, fraud investigative results, etc., should be forwarded to Human Resources, where appropriate actions will be initiated.  Of important note:  Staff negligence resulting in fraud is sometimes inappropriately diagnosed as intentional when, in fact, accidental actions may have exposed the operator to the fraud.  Care should be taken to fully understand the circumstances around which the internal employee’s actions caused or help cause the fraud.  6. Process Change:  If an issue is determined to be fraud, future preventative steps may include business process change in addition to fraud detection rule enhancements.  Business process may have, in fact, allowed the fraud to occur, therefore the first step in prevention should happen well before a rule should capture the condition.  This process will need to interface with the business to identify candidates for process change and present those to the appropriate business stakeholders.
+
+                </div>
+
+                <div id="tcontent2" class="tabcontent">
+
+	<h3>Explanatory</h3>
+              
+	<p>Reserved for future use.
+
+	<h3>Mandatory</h3>
+
+                <p>Reserved for future use.
+
+                <h3>Optional</h3>
+              
+	<p>Reserved for future use.
+
+	<h3>Interactions</h3>
+
+                <p>
+
+
+
+               <h3>Candidate Explanatory</h3>
+              
+	<p>
+
+	<h3>Candidate Mandatory</h3>
+
+                <p>Reserved for future use.
+
+                <h3>Candidate Optional</h3>
+              
+	<p>Reserved for future use.
+
+	<h3>Candidate Interactions</h3>
+
+                <p>Reserved for future use.
+
+
+                </div>
+
+
+<div id="tcontent3" class="tabcontent">
+	<!-- process associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(5) eTOM Process Type Perform Fraud Actions</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagram13a4e203650511e4925a6817294aebff.htm">1.7.2.3.3 Fraud Operations Management</A></li>
+</UL></P>
+<H3>Issues</H3><ul><li>Business Process Framework 14.5 Addition</li><li>Business Process Framework 15.0 Modification</li><li>Business Process Framework 15.5 Modification</li><li>Business Process Framework 16.5 Modification</li></ul><HR>
+<P>
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:06</SMALL></P>
+</BODY>
+</HTML>

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="en">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>1.4.6.7 Survey &amp; Analyze Service Problem Flow</TITLE>
+<META NAME="author" CONTENT="DFREED">
+</HEAD>
+<P style="width:60%;margin-bottom:20px;">
+<A NAME="topofpagediagram82225bef4df311e1a996002564cb911chtm"></A>
+<div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:BPF Flow Level 4%0A%0AName:1.4.6.7 Survey & Analyze Service Problem Flow%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H1>1.4.6.7 Survey &amp; Analyze Service Problem Flow</H1>
+<MAP NAME="COORDdiagram82225bef4df311e1a996002564cb911chtm">
+<AREA SHAPE="RECT" COORDS="999, 176, 1029, 206" ALT="Internal Result End Survey &amp; Analyze Service Problem"/>
+<AREA SHAPE="RECT" COORDS="705, 47, 826, 107" ALT="ITIL Candidate Manage Event Throttling"/>
+<AREA SHAPE="RECT" COORDS="104, 157, 225, 217" ALT="ITIL Candidate Detect &amp; Log Service Problem"/>
+<AREA SHAPE="RECT" COORDS="47, 173, 77, 203" ALT="Internal Event Start Survey &amp; Analyze Service Problem"/>
+<AREA SHAPE="RECT" COORDS="705, 278, 826, 338" HREF="etomprocess744.htm" ALT="(4) eTOM Process Type Manage Service Alarm Event Notifications"/>
+<AREA SHAPE="RECT" COORDS="251, 157, 372, 217" HREF="etomprocess745.htm" ALT="(4) eTOM Process Type Filter Service Alarm Event Notifications"/>
+<AREA SHAPE="RECT" COORDS="399, 157, 520, 217" HREF="etomprocess746.htm" ALT="(4) eTOM Process Type Correlate Service Alarm Event Notifications"/>
+<AREA SHAPE="RECT" COORDS="705, 165, 826, 225" HREF="etomprocess747.htm" ALT="(4) eTOM Process Type Abate Service Alarm Event Records"/>
+<AREA SHAPE="RECT" COORDS="708, 380, 829, 440" HREF="etomprocess748.htm" ALT="(4) eTOM Process Type Trigger Defined Service Alarm Action"/>
+</MAP>
+<P><IMG SRC="diagram706.png" USEMAP="#COORDdiagram82225bef4df311e1a996002564cb911chtm" ALT="1.4.6.7 Survey & Analyze Service Problem Flow" LONGDESC="The objective of the Survey &amp; Analyze Service Problem processes is to monitor service alarm event notifications and manage service alarm event records in real-time.Responsibilities of the Survey &amp; Analyze Service Problem processes include, but are not limited to:· Detecting and collecting service alarm event notifications; · Initiating and managing service alarm event records;· Performing service alarm event notification localization analysis; · Correlating and filtering service alarm event records;· Reporting service alarm event record status changes to other processes;· Managing service alarm event record jeopardy conditions.Service alarm event notification analysis encompasses the identification of the service alarm event in terms of reporting entity and nature of the service alarm event. It will then analyze the service alarm events based on a number of criteria and then suppress redundant, transient or implied service alarm events by means of filtering and correlation. It includes the notification of new service alarm event records, or status changes of previously reported service alarm event records, as well as abatement messages when service alarm event records have been cleared.The analysis will correlate service alarm event notifications to planned outage notifications to remove false service alarm event notifications arising as a result of the planned outage activity.These processes may determine that a service alarm event notification may represent a customer impacting condition. In these circumstances this process is responsible for indicating a potential customer problem to the Problem Handling processes.  As a part of this indication this process is responsible for identifying the impacted deployed product instances associated with the service instances presenting alarm event notifications and passing this information to the Problem Handling processes.Service alarm event record correlation and filtering encompasses the correlation of redundant, transient or implied service alarm event notifications with a specific “root cause” service alarm event notification and associated service alarm event record.The Survey &amp; Analyze Service Problem processes might trigger a well-defined action based on specific service alarm event notification information as well as the non-arrival of service alarm event notification information after a specific time interval has elapsed.These processes are also responsible for monitoring and triggering the appropriate action when a service alarm event record is not cleared within a pre-defined period of time."></P>
+<H3>Diagram Description</H3><p>The objective of the Survey &amp; Analyze Service Problem processes is to monitor service alarm event notifications and manage service alarm event records in real-time.<BR><BR>Responsibilities of the Survey &amp; Analyze Service Problem processes include, but are not limited to:<BR><BR>· Detecting and collecting service alarm event notifications; <BR>· Initiating and managing service alarm event records;<BR>· Performing service alarm event notification localization analysis; <BR>· Correlating and filtering service alarm event records;<BR>· Reporting service alarm event record status changes to other processes;<BR>· Managing service alarm event record jeopardy conditions.<BR><BR>Service alarm event notification analysis encompasses the identification of the service alarm event in terms of reporting entity and nature of the service alarm event. It will then analyze the service alarm events based on a number of criteria and then suppress redundant, transient or implied service alarm events by means of filtering and correlation. It includes the notification of new service alarm event records, or status changes of previously reported service alarm event records, as well as abatement messages when service alarm event records have been cleared.<BR><BR>The analysis will correlate service alarm event notifications to planned outage notifications to remove false service alarm event notifications arising as a result of the planned outage activity.<BR><BR>These processes may determine that a service alarm event notification may represent a customer impacting condition. In these circumstances this process is responsible for indicating a potential customer problem to the Problem Handling processes.  As a part of this indication this process is responsible for identifying the impacted deployed product instances associated with the service instances presenting alarm event notifications and passing this information to the Problem Handling processes.<BR><BR>Service alarm event record correlation and filtering encompasses the correlation of redundant, transient or implied service alarm event notifications with a specific “root cause” service alarm event notification and associated service alarm event record.<BR><BR>The Survey &amp; Analyze Service Problem processes might trigger a well-defined action based on specific service alarm event notification information as well as the non-arrival of service alarm event notification information after a specific time interval has elapsed.<BR><BR>These processes are also responsible for monitoring and triggering the appropriate action when a service alarm event record is not cleared within a pre-defined period of time.</p>
+<HR><P>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 12:47</SMALL></P>
+</BODY>
+</HTML>

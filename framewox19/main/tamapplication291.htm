@@ -1,0 +1,437 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(2) TAM Application Type Fault Correlation &amp; Root Cause Analysis</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication291htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(2) TAM Application Type%0A%0AName:Fault Correlation & Root Cause Analysis%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: Fault Correlation & Root Cause Analysis</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (2) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 7.10.2
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>Fault Correlation & Root Cause Analysis collects the various fault events in the network as well asother relevant information such as network topology,and relates these events, reducing the number of raw events to some smaller number. Root Cause Analysis (RCA) enables the end user to quickly determine the root cause of a problem in the network. These applications have a unique role in mediating network alarms with topology and configuration data.
+
+	<h3>Functionality</h3>
+
+                <p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.7600.16535"></HEAD>
+<BODY>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'"><FONT size=2>Fault 
+Correlation &amp; Root Cause Analysis functionality includes the 
+following:</FONT></SPAN></P>
+<UL type=disc>
+  <LI 
+  style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><FONT size=2><SPAN 
+  style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Alarm 
+  Correlation (the ability to collect all relevant fault events along with other 
+  relevant information&nbsp;and reduce them to some smaller manageable 
+  number).&nbsp; This can include: </SPAN><SPAN 
+  style="mso-fareast-font-family: 'Times New Roman'"><?xml:namespace prefix = o 
+  ns = "urn:schemas-microsoft-com:office:office" 
+/><o:p></o:p></SPAN></FONT></LI>
+  <UL type=circle>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level2 lfo1; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Alarm 
+    de-duplication – first level of alarm reduction based on pre-defined user 
+    criteria. Alarm de-duplication is designed to eliminate repeated events to 
+    reduce the amount of “noise” from the network. The application should 
+    provide end user with capability to define rules for de-duplication. 
+    </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level2 lfo1; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Alarm 
+    auto-clearing – ability of the application to correlate a previous alarm 
+    with a clear-alarm received from the source (NE, NMS, and EMS). The 
+    application should deliver “out-of-the-box” auto-clearing capabilities for 
+    each device type/EMS/NMS supported, as well as capabilities for end users to 
+    define their own auto-clearing rules. </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level2 lfo1; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Alarm 
+    thresholding – ability of the application to handle various thresholding 
+    scenarios such as alarm flapping and integration with performance management 
+    systems to receive threshold crossing alarms, as well as generate synthetic 
+    threshold alarms based on pre-defined user conditions. The application 
+    should provide end user the ability to maintain “out-of-the box” rules, as 
+    well as develop their own rules for threshold management. </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level2 lfo1; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Correlating 
+    alarms with supporting data (topology, configuration), including 
+    </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <UL type=square>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">intra 
+      and inter-element. </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">inter-element 
+      (including up/down the various network layers) </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">service-based; 
+      In order for the application to do topology based correlation, the 
+      application must be “topology aware”. Topology awareness can be achieved 
+      through autodiscovery or integration with an inventory management 
+      application. Inter-element and service based correlation can only be 
+      achieved if the inventory data is valid and is available for integration 
+      with the correlation application. </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Alarm 
+      enrichment (external database connectivity) </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Ability 
+      to associate services to the physical aspects of the network. </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Filter, 
+      summarize, and reduce displayed alarms </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Consolidation 
+      of alarms </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Consolidating 
+      alarms across technology </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Consolidating 
+      alarms across elements </SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Present 
+      to alarm console</SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><FONT face=Calibri> 
+      <o:p></o:p></FONT></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Graphical 
+      display of fault / topology overlay</SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><FONT face=Calibri> 
+      <o:p></o:p></FONT></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Provide 
+      alarm to other systems</SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><FONT face=Calibri> 
+      <o:p></o:p></FONT></SPAN></FONT></LI>
+      <LI 
+      style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level3 lfo1; tab-stops: list 1.5in" 
+      class=MsoNormal><FONT size=2><SPAN 
+      style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Store 
+      the alarms and root cause for extended periods</SPAN><SPAN 
+      style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI></UL></UL>
+  <LI 
+  style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><FONT size=2><SPAN 
+  style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Root 
+  Cause Analysis – (RCA) ability to pinpoint the root cause of the problem or in 
+  some instances probable cause of the problem. The application should have the 
+  ability to: </SPAN><SPAN 
+  style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI></UL>
+<UL type=disc>
+  <UL type=circle>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Root 
+    Cause isolation based on correlation analysis&nbsp; </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Fault 
+    isolation </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Network 
+    Element / network layer attribution </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Alarm 
+    consolidation / substitution as well as alarm suppression of the sympathetic 
+    alarms. </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Problem 
+    identification / initiation (ticket creation). Once Root Cause/Probable 
+    cause is determined, the application should have the ability to integrate 
+    with trouble management application for manual/automated ticket creation. 
+    </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Resolution 
+    initiation (testing, solution identification/ownership, knowledge base 
+    index). The application should have capability to integrate with various 
+    testing applications. Integration with testing should be rules bases. 
+    </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><FONT size=2><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'">Knowledge 
+    of topology </SPAN><SPAN 
+    style="mso-fareast-font-family: 'Times New Roman'"><o:p></o:p></SPAN></FONT></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'"><FONT 
+    size=2>Present to alarm console </FONT></SPAN></LI>
+    <LI 
+    style="LINE-HEIGHT: normal; MARGIN: 0in 0in 10pt; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l1 level2 lfo2; tab-stops: list 1.0in" 
+    class=MsoNormal><SPAN 
+    style="FONT-FAMILY: 'Arial','sans-serif'; mso-fareast-font-family: 'Times New Roman'"></SPAN><SPAN 
+    style="LINE-HEIGHT: 115%; FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 11pt; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA"><FONT 
+    size=2>Drill down from root cause into 
+details</FONT></SPAN></LI></UL></UL></BODY></HTML>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(2) TAM Application Type Fault Correlation &amp; Root Cause Analysis</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagram0eee4f3d471c11df8c200026b9bf6441.htm">7.10 Fault Management</A></li>
+<LI><A HREF="diagram45efd6e75b6011e780cb000d3a02ed0d.htm">Fault Correlation &amp; Root Cause Analysis</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagram45efd6e75b6011e780cb000d3a02ed0d.htm">Fault Correlation &amp; Root Cause Analysis</A></li>
+</UL>
+<H3>Frameworx Processes (Automated TAM to eTOM)</H3><ul><li><A HREF="etomprocess80.htm">Localize Resource Trouble</A></li><li><A HREF="etomprocess106.htm">Survey &amp; Analyze Resource Trouble</A></li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain1.htm">Resource Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:10</SMALL></P>
+</BODY>
+</HTML>

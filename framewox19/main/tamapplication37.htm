@@ -1,0 +1,405 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(1) TAM Application Type Service Inventory Management</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication37htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(1) TAM Application Type%0A%0AName:Service Inventory Management%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: Service Inventory Management</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (1) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 6.2
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>Service Inventory Management represents the applications which contain and maintain information about the instances of services in a telecom organization.A Service Inventory application may store and manage any or all of the following entities:• Customer facing service (CFS) instances, and their attributes• Resource facing service (RFS) instances, and their attributesThe Service Inventory may also store and manage service relationships:• The mapping of services (RFSes or CFSes) to other services and/or service components, the components being either:• Other child services• Resources and the resource domain managers used to implement the service, or • Services and resources in Supplier/Partner systems used to implement the service This mapping is stored either intrinsically in the core Service Inventory, or discretely via Service-Supporting Resource Inventory applications.Service Inventory may include the following relationship types between entity instances:•         Realization by Composition – A mapping from a service to the child services and/or resources which specifically compose that service (e.g. the RFS instance or instances whose whole purpose is to implement a CFS, the assignable resources which realize an RFS). If a parent service is torn down, child objects with a Composition relationship are typically removed or reallocated (e.g. transitioned to spares inventory).•         Realization by Aggregation – A mapping from a service to the services and/or resources which support this service in addition to other services. (e.g. a network access RFS which supports a number of different network CFSes). If a parent service is torn down, child objects with an Aggregation relationship are typically maintained as long as at least one other parent service still exists.•         Dependency – A link between services and/or resources which is not strong enough to qualify as Composition or Aggregation, but where various Fulfillment, Assurance, and Change Management processes need to be aware of the relationship. Dependency relationships support the ability for change management processes to evaluate if a dependent service or resource may be impacted by changes to a specific service or resource.
+
+	<h3>Functionality</h3>
+
+                <p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.6001.18876"></HEAD>
+<BODY>
+<UL type=disc>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Inventory Information Model<?xml:namespace 
+  prefix = o ns = "urn:schemas-microsoft-com:office:office" 
+  /><o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Inventory 
+  Retrieval<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Inventory Update 
+  Notifications<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Inventory 
+  Update<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service-Supporting Resource 
+  Inventory<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Inventory Reconciliation / 
+  Synchronization</FONT></SPAN></LI></UL><SPAN 
+style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" lang=EN-GB>
+<P><FONT face=Arial><B>Service Inventory Information 
+Model</B><o:p></o:p></FONT></P>
+<P style="MARGIN: 6pt 0in" class=MsoNormal><SPAN 
+style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" lang=EN-GB><FONT 
+face=Arial><FONT color=black>This function is the underlying information model 
+for the service instances to be managed. The model serves as the foundation for 
+the data itself and a guiding force for the definition and modelling of new 
+services. <o:p></o:p></FONT></FONT></SPAN></P>
+<P style="MARGIN: 6pt 0in" class=MsoNormal><SPAN 
+style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" lang=EN-GB><FONT 
+face=Arial><FONT color=black>The Service Inventory Information Model should 
+evolve in close coordination with the Service Specification data model, since 
+the Service Inventory model must be able to store instances designed in 
+accordance with all the service specifications defined via the Service 
+Specification Management system.<o:p></o:p></FONT></FONT></SPAN></P>
+<P style="MARGIN: 6pt 0in" class=MsoNormal><SPAN 
+style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" lang=EN-GB><FONT 
+face=Arial><FONT color=black>Typically, the service provider would need to add a 
+lot of detail concerning the services to be managed. The suggested approach for 
+the service provider is to start with the TM Forum SID service model and then 
+specialize the model for the specific services to be managed. The service model 
+should indicate or point to the supporting component services and resources for 
+each service (the SID model, in fact, does do 
+this).</FONT></FONT></SPAN></SPAN></P>
+<P><B><FONT size=2 face=Arial>Service Inventory Retrieval</FONT></B></P><FONT 
+size=2 face=Arial>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">This 
+function allows for client system to retrieve a part or all of the service 
+inventory known to the Service Inventory Management 
+system.<o:p></o:p></SPAN></P>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">This feature 
+may support the following selection criteria:<o:p></o:p></SPAN></P>
+<UL type=disc>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB>retrieval based on attribute matching <o:p></o:p></SPAN></LI></UL>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN-LEFT: 0.5in; mso-list: l0 level1 lfo1; tab-stops: list .5in"><SPAN 
+style="FONT-FAMILY: Symbol; FONT-SIZE: 10pt; mso-bidi-font-family: Symbol; mso-fareast-font-family: Symbol"><SPAN 
+style="mso-list: Ignore">·<SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">retrieval of only the 
+object instances that have been modified after a provided date and 
+time<o:p></o:p></SPAN></P>
+<P 
+style="TEXT-INDENT: -0.25in; MARGIN-LEFT: 0.5in; mso-list: l0 level1 lfo1; tab-stops: list .5in"><SPAN 
+style="FONT-FAMILY: Symbol; FONT-SIZE: 10pt; mso-bidi-font-family: Symbol; mso-fareast-font-family: Symbol"><SPAN 
+style="mso-list: Ignore">·<SPAN 
+style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></SPAN></SPAN><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">retrieval based on 
+relationship to a specific entity (e.g. all CFS instances supported by a 
+specific RFS instance)<o:p></o:p></SPAN></P>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">For the 
+selected objects, this feature may allow the client OSS to specify what specific 
+attributes and relationships shall be returned.<o:p></o:p></SPAN></P>
+<P></FONT></P>
+<P><B><FONT size=2 face=Arial>Service Inventory Update 
+Notifications</FONT></B></P><FONT size=2 face=Arial>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">This 
+function entails the generation of inventory update notifications based on 
+changes to the inventory known to the Service Inventory Management system. The 
+notification types typically include object creation, object deletion, attribute 
+value changes, and object relationship changes.<o:p></o:p></SPAN></P>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Single 
+Entity Notifications – in this variation of the feature, each notification 
+pertains to only one entity, e.g., an IP VPN service 
+instance<o:p></o:p></SPAN></P>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Multi-entity 
+Notifications – in this variation of the feature, a single notification may 
+report on inventory changes for multiple entities (e.g. changes in any component 
+services of a specific CFS). <o:p></o:p></SPAN></P>
+<P></FONT><B><FONT size=2 face=Arial>Service Inventory 
+Update</FONT></B></P><FONT size=2 face=Arial>
+<P><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">This 
+function entails an external system requesting that the Service Inventory 
+Management system update its inventory based on a provided collection of 
+updates. The expectation is that the Service Inventory Management system update 
+its inventory as requested, but no other side-effects are expected (e.g., 
+creating a service in the network). This is a key point concerning this 
+capability. The inventory update request can involve creation of an object, 
+deletion of an object, or modification of an object’s attributes, or creation or 
+deletion of an object’s relationships to other 
+objects.</SPAN></FONT></P></BODY></HTML>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.6001.18876"></HEAD>
+<BODY>
+<P><B><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Consumed 
+Contracts</SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt"><?xml:namespace 
+prefix = o ns = "urn:schemas-microsoft-com:office:office" 
+/><o:p></o:p></SPAN></P>
+<UL type=disc>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service 
+Specification<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Resource Inventory Management 
+  Systems<o:p></o:p></FONT></SPAN></LI></UL>
+<P><B><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Exposed 
+Contracts</SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt"><o:p></o:p></SPAN></P>
+<UL type=disc>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Customer Order 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Order 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Problem 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Performance 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Level Agreement 
+  Management<o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Service Quality Monitoring 
+  <o:p></o:p></FONT></SPAN></LI>
+  <LI 
+  style="MARGIN: 6pt 0in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto; mso-list: l0 level1 lfo1; tab-stops: list .5in" 
+  class=MsoNormal><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+  lang=EN-GB><FONT face=Arial>Revenue 
+Assurance</FONT></SPAN></LI></UL></BODY></HTML>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(1) TAM Application Type Service Inventory Management</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagrame7561db3818811db9401000e3573f0d3.htm">6. Service Management Domain</A></li>
+<LI><A HREF="diagram7fbcedb01df011dd89a70015c54ddcd2.htm">6.2 Service Inventory Management</A></li>
+<LI><A HREF="diagram212bd3bc1d9811db9063000802da1ce2.htm">Application Framework Level 1 Overview</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagram7fbcedb01df011dd89a70015c54ddcd2.htm">6.2 Service Inventory Management</A></li>
+</UL>
+<H3>Issues</H3><ul><li>Application Framework 17.5 Modification</li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain6.htm">Service Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:09</SMALL></P>
+</BODY>
+</HTML>

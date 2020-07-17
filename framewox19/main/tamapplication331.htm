@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(2) TAM Application Type Balance Management</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication331htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(2) TAM Application Type%0A%0AName:Balance Management%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: Balance Management</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (2) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 5.19.2
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>The Balance Management applications are responsible for activities related to the creation and maintenance of the balances of a customer and/or a subscriber. Balances may be shared (e.g. between subscribers in a hierarchy). Balance can be managed at most granule level for example at the level of subscription. These processes will be required to support both batch and real-time processing.Types of balances include:
+• Monetary balances 
+   o Prepaid balances 
+   o Postpaid balances 
+•Non-monetary balances (e.g. free minutes, WAP-only quota, tokens, etc.)
+
+	<h3>Functionality</h3>
+
+                <p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><HTML><HEAD><META content="text/html; charset=utf-8" http-equiv=Content-Type><META name=GENERATOR content="MSHTML 8.00.6001.19088"></HEAD><BODY><P style="MARGIN: 6pt 0in 6pt 0.25in; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto" class=MsoNormal><FONT face=Arial><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial; mso-bidi-font-weight: bold" lang=EN-GB>The balance management applications will support the definition of policies per balance or balance type. Policies include:<BR>• Minimum Allowable Balance limit (e.g. balance must remain above zero). There could be more possibilities for business customer and it will be driven through policy and rule.<BR>• Balance expiration dates. <BR>• Balance thresholds actions and notifications. It should support granule level of balance threshold management where balance can be managed at customer subscribed service level. <BR>• Roll-over and cyclic policies. <BR>Balance management operations include: <BR>• Unit reservation from a balance for a specified interval (session). Unused units are credited back into the balance when the session is released.<BR>• Release of reserved unit <BR>• Balance prioritization based on policy/rules<BR>• Balance inquiry. <BR>• Support for multiple simultaneous sessions that affect a common balance. <BR>• Replenishment (top-up, recharge) of prepaid balances from postpaid accounts (e.g. credit card or credit balance). <BR>• Enforcement of spending-limits and credit-control for postpaid balances. Notification and action on credit-limit based on policies/rule which could vary from customer to customer.<BR>• Splitting charges between multiple balances. <BR>• Notifications upon balances reaching a configured threshold (e.g. spending limit support). <BR>• Credit and debit operations resulting from application of a value calculated by Charge Calculation processes.<BR>• Application of a payment to a balance.<BR>Communication of balance information to the financial systems (e.g. General Ledger, Accounts Receivable) within the enterprise.</SPAN></FONT></P></BODY></HTML>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML xmlns:o = "urn:schemas-microsoft-com:office:office"><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.7601.17940"></HEAD>
+<BODY>
+<P style="MARGIN: 6pt 0in" class=MsoNormal><FONT size=2><STRONG><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'; mso-ansi-language: EN-US">Exposed 
+Contracts</SPAN></STRONG><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial; mso-bidi-font-style: italic"><o:p></o:p></SPAN></FONT></P>
+<P style="TEXT-INDENT: 1.1pt; MARGIN: 6pt 0in 6pt 0.5in" class=MsoNormal><FONT 
+size=2><FONT face=Arial><B style="mso-bidi-font-weight: normal"><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial; mso-bidi-font-style: italic">Balance 
+replenishment </SPAN></B><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial">- Allow the use of 
+various payments to affect a balance means including vouchers, e-Transaction, 
+Direct debit, Credit card or any other form of payment.<SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>The contract may be used by many 
+channels:<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>self-service via an IVR 
+system, SMS/USSD, ATM, a web application, or with CSR assistance. 
+<o:p></o:p></SPAN></FONT></FONT></P>
+<P style="TEXT-INDENT: 1.1pt; MARGIN: 6pt 0in 6pt 0.5in" class=MsoNormal><FONT 
+size=2><FONT face=Arial><B style="mso-bidi-font-weight: normal"><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial; mso-bidi-font-style: italic">Balance 
+consumption </SPAN></B><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial">– Allow various 
+processes to reduce a balance.<o:p></o:p></SPAN></FONT></FONT></P>
+<P style="TEXT-INDENT: 1.1pt; MARGIN: 6pt 0in 6pt 0.5in" class=MsoNormal><FONT 
+size=2><FONT face=Arial><B style="mso-bidi-font-weight: normal"><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial; mso-bidi-font-style: italic">Balance 
+creation </SPAN></B><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial">– Establish a new 
+balance for a customer.<o:p></o:p></SPAN></FONT></FONT></P>
+<P style="TEXT-INDENT: 1.1pt; MARGIN: 6pt 0in 6pt 0.5in" class=MsoNormal><FONT 
+size=2><FONT face=Arial><B style="mso-bidi-font-weight: normal"><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial; mso-bidi-font-style: italic">Balance 
+inquiry</SPAN></B><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial">.<o:p></o:p></SPAN></FONT></FONT></P>
+<P style="TEXT-INDENT: 1.1pt; MARGIN: 6pt 0in 6pt 0.5in" class=MsoNormal><FONT 
+size=2><FONT face=Arial><B style="mso-bidi-font-weight: normal"><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial; mso-bidi-font-style: italic">Balance 
+adjustments</SPAN></B><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial">.</SPAN></FONT></FONT></P>
+<P style="TEXT-INDENT: 1.1pt; MARGIN: 6pt 0in 6pt 0.5in" class=MsoNormal><FONT 
+size=2><FONT face=Arial><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial"></SPAN></FONT></FONT><FONT 
+face=Arial><B><SPAN style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" 
+lang=EN-GB>Service-consumption reservation and authorization</SPAN></B><SPAN 
+style="FONT-SIZE: 10pt; mso-bidi-font-family: Arial" lang=EN-GB>-authorizes the 
+request coming from the service-controller based on the customer and subscriber 
+eligibility for the service (e.g. based on customer-hierarchy, purchased offers, 
+credit limit parameters, bill<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>shock 
+prevention regulation, etc. ) and on the current balance available. <SPAN 
+style="mso-spacerun: yes">&nbsp;</SPAN></SPAN><SPAN 
+style="FONT-SIZE: 10pt; mso-ansi-language: EN-US; mso-bidi-font-family: Arial; mso-bidi-language: HE">Note: 
+this is possibly a component of a larger scope authorization contract which can 
+involve data such as identity authorization, location, etc </SPAN><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-language: HE"><o:p></o:p></SPAN></FONT></P>
+<P style="TEXT-INDENT: 1.1pt; MARGIN: 6pt 0in 6pt 0.5in" class=MsoNormal><SPAN 
+style="mso-ansi-language: EN-US; mso-bidi-font-family: Arial"><o:p><FONT size=2 
+face=Arial>&nbsp;</FONT></o:p></SPAN></P>
+<P><B><SPAN style="FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt">Consumed 
+Contracts</SPAN></B><SPAN 
+style="FONT-FAMILY: 'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P></P></BODY></HTML>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(2) TAM Application Type Balance Management</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagram5f8ef84d0ea711e0bc42002564cb911c.htm">5.19 Charge Calculation and Balance Management</A></li>
+<LI><A HREF="diagram21397e175b6011e780cb000d3a02ed0d.htm">Balance Management</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagram21397e175b6011e780cb000d3a02ed0d.htm">Balance Management</A></li>
+</UL>
+<H3>Frameworx Processes (Automated TAM to eTOM)</H3><ul><li><A HREF="etomprocess676.htm">Manage Balances</A></li><li><A HREF="etomprocess675.htm">Manage Customer Charging Hierarchy</A></li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain2.htm">Customer Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:09</SMALL></P>
+</BODY>
+</HTML>

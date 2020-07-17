@@ -1,0 +1,28 @@
+	.CollapsibleList{
+		margin:0px;
+		padding:0px;
+	}
+	.CollapsibleList a{	
+		text-decoration:underline;	
+	}
+	.CollapsibleList a.FolderName{	
+		color: #000000;
+		text-decoration:none;	
+	}
+	.CollapsibleList ul{	/* Sub menu groups */
+		margin-left:20px;	/* Left spacing */
+		padding-left:0px;
+		display:none;	/* Initially hide sub nodes */
+	}
+	.CollapsibleList li{	/* Nodes */
+		list-style-type:none;
+		vertical-align:middle;
+		color: #000000;
+		font-size: 100%;
+	}
+	.CollapsibleList li.Expandable{	/* Nodes */
+		font-weight: bold;
+	}
+	.CollapsibleList li.NotExpandable{	/* Nodes */
+		font-weight: normal;
+	}

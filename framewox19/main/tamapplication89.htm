@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(2) TAM Application Type Collection Policy Execution and Monitoring</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication89htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(2) TAM Application Type%0A%0AName:Collection Policy Execution and Monitoring%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: Collection Policy Execution and Monitoring</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (2) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 5.14.2
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>Collection Policy Execution and Monitoring starts with the decision for whether to initiate a collection process for an account. Once a collection decision has been taken, the appropriate collection policy is selected. There are many events that may change the collection activities For example – customer paid, customer back out from a payment arrangement, customer status has been changed or a manual intervention in the collection process. All these require constant monitoring and process execution modifications.
+
+	<h3>Functionality</h3>
+
+                <p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><HTML><HEAD><META content="text/html; charset=utf-8" http-equiv=Content-Type><META name=GENERATOR content="MSHTML 8.00.6001.19088"></HEAD><BODY><P><FONT size=2 face=Arial>Functionality includes the following:</FONT></P>
+<P><FONT size=2 face=Arial></FONT>
+<UL>
+<LI><FONT size=2 face=Arial>Collection Decision Engine - Evaluates each arriving account, decides whether the account needs collection treatment, and assigns the relevant collection treatment policy to each account. </FONT>
+<P></P>
+<P><FONT size=2 face=Arial></FONT></P>
+<LI><FONT size=2 face=Arial>Collection Treatment Management - Defines and initiates the collection treatment activities according to the appropriate collection policy (using a business process automation engine). A collection treatment can belong to one of the following categories: Financial, Service restriction, Customer communication, CSR interaction and Outside Collection Agency treatment including: </FONT>
+<P></P>
+<P><FONT size=2 face=Arial></FONT></P>
+<UL>
+<LI>
+<P><FONT size=2 face=Arial>Issue notice (e.g. Collection Letter, e-mail or SMS) </FONT></P>
+<P></P>
+<P><FONT size=2 face=Arial></FONT></P>
+<LI><FONT size=2 face=Arial>CSR assignment – Assign a CSR or a CSR group to manually handle the collection. </FONT>
+<P></P>
+<P><FONT size=2 face=Arial></FONT></P>
+<LI><FONT size=2 face=Arial>Issue Restrict/Restore/Disconnects request - Includes anything from restricting to suspensions, as well as the restoration when payment is received. </FONT>
+<P></P>
+<P><FONT size=2 face=Arial></FONT></P>
+<LI><FONT size=2 face=Arial>OCA Referrals - Passing the collection process on to an Outside Collection Agency. </FONT>
+<P></P>
+<P><FONT size=2 face=Arial></FONT></P></LI></UL>
+<UL>
+<LI><FONT size=2 face=Arial>Initiate Write-off requests </FONT></LI></UL>
+<LI>
+<P></P>
+<P><FONT size=2 face=Arial>Collection Execution Monitoring – Monitors events that may change the collection execution. Such events includes: customer paid, customer status has been changed, payment back-outs. As a result stop, resume or reselect the collection policy. </FONT></P></LI>
+<P></P>
+<P><FONT size=2 face=Arial></FONT></P>
+<LI><FONT size=2 face=Arial>Manual Intervention - Provides the CSR with many options to override the automated flow such as pause and continue the collection treatment, force an account into collection, change the selected collection policy and stop manually the collection treatment.</FONT></LI></UL>
+<P></P>
+<P></P></BODY></HTML>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(2) TAM Application Type Collection Policy Execution and Monitoring</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagramd7418260266911dc87cd00059a3c7800.htm">5.14 Collection Management</A></li>
+<LI><A HREF="diagram2d734b5a5b6011e780cb000d3a02ed0d.htm">Collection Policy Execution and Monitoring</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagram2d734b5a5b6011e780cb000d3a02ed0d.htm">Collection Policy Execution and Monitoring</A></li>
+</UL>
+<H3>Issues</H3><ul><li>Application Framework 13.0 Modification</li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain2.htm">Customer Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:09</SMALL></P>
+</BODY>
+</HTML>

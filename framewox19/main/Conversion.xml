@@ -1,0 +1,62 @@
+﻿<?xml version="1.0"?>
+<!-- 
+	This file contains the characters that have no direct conversion for
+	specific character sets. It will parse all text blocks for the specific
+	characters including those that are already formatted in HTML 
+	so do not include characters that HTML recognizes eg < these are parsed
+	and translated seperately. No checking is done for these characters it
+	assumes that the user has entered the values correctly.
+	The correction will add in the & and ;
+-->
+<Mapper>
+  <charsets>
+    <charset name="utf-8">
+      <characters>
+        <Map>
+          <char>ü</char>
+          <value>#252</value>
+        </Map>
+        <Map>
+          <char>ä</char>
+          <value>#228</value>
+        </Map>
+	<Map>
+          <char>ë</char>
+          <value>#235</value>
+        </Map>
+	<Map>
+          <char>ï</char>
+          <value>#239</value>
+        </Map>
+	<Map>
+          <char>ö</char>
+          <value>#246</value>
+        </Map>
+	<Map>
+          <char>Ü</char>
+          <value>#220</value>
+        </Map>
+        <Map>
+          <char>Ä</char>
+          <value>#196</value>
+        </Map>
+	<Map>
+          <char>Ë</char>
+          <value>#203</value>
+        </Map>
+	<Map>
+          <char>Ï</char>
+          <value>#207</value>
+        </Map>
+	<Map>
+          <char>Ö</char>
+          <value>#214</value>
+        </Map>
+	<Map>
+          <char>ß</char>
+          <value>#223</value>
+        </Map>
+      </characters>
+    </charset>
+  </charsets>
+</Mapper>

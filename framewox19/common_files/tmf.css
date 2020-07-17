@@ -1,0 +1,105 @@
+BODY {background-color : white;
+
+font-family : Verdana;
+
+font-size : 90%;
+
+color : black;
+
+background-repeat : no-repeat;
+
+background-attachment : fixed;
+
+background-image : url("CwWatermark08.jpg");
+
+background-position:"bottom right";} 
+
+H1 {
+	font-family: Tahoma;
+	font-size: 200%;
+	color: #015BAB;
+	background-color: ;
+}
+
+H2 {font-family : Arial;
+
+font-size : 150%;
+
+color : black;
+
+background-color : ;
+
+}
+
+H3 {font-family : Arial;
+
+font-size : 120%;
+
+color : black;
+
+background-color : ;
+
+}
+
+a:link {color : navy;
+
+text-decoration : underline;
+
+}
+
+a:visited {color : navy;
+
+text-decoration : underline;
+
+}
+
+a:hover {background-color : silver;
+
+}
+
+.navbar {
+	font-family: arial;
+	text-align: left;
+	font-size: 9pt;
+	font-color: white;
+	color: white;
+	line-height: 30px;
+	background-color: #015BAB;
+	margin-top: -14pt;
+	margin-left: -10pt;
+	margin-right: -10pt;
+	padding-left: 15pt;
+}
+
+a.navlink {color : white; text-decoration:none; font-weight:bold;}
+
+}
+
+a:visited.navlink {color : white; text-decoration:none;
+
+}
+
+a:hover.navlink {text-decoration:underline; color:silver; background-color:navy;}
+
+
+UL {font-family : Verdana;
+
+color : black;
+
+list-style-image : url(link.gif);}
+
+img{
+margin-top:-11pt;
+border-top:0pt;
+border-bottom:0pt;
+border-left:0pt;
+border-right:0pt;
+}
+
+.graphicEx {
+	background-color:grey;
+	line-height:50px;
+	margin-top:-11pt;
+	margin-right:-10pt;
+	margin-left:10pt;
+	}

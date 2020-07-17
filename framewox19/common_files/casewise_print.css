@@ -1,0 +1,9 @@
+.topbar, .leftbar, .logo {display:none;}
+
+.cpoutput {margin-left:0%;width:100%;background-color:white;z-index:100;position;absolute;left:0;top:0;font-family:verdana;font-size:6pt;}
+
+a {color:black;text-decoration:none;}
+
+#maintab .shadetabs {display:none;}
+
+h3.printonly {margin-top:10pt;}

@@ -1,0 +1,350 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML lang="en"><HEAD><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><link rel="stylesheet" type="text/css" href="../common_files/tabcontent.css" />
+<link rel="stylesheet" type="text/css" href="../common_files/casewise.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../common_files/casewise_print.css" />
+
+
+
+
+
+
+
+
+ 
+<link rel="stylesheet" type="text/css" href="../common_files/casewise_objects.css" />
+
+<script type="text/javascript" src="../common_files/tabcontent.js">
+
+/***********************************************
+* Ajax Tabs Content script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TITLE>(1) TAM Application Type Resource Domain Management</TITLE><META NAME="author" CONTENT="DFREED"></HEAD><P style="width:60%;margin-bottom:20px;"><A NAME="topofpagetamapplication44htm"></A><div class="logo"><a href="http://www.tmforum.org"><img src="../common_files/TMF_FrameworxBanner_indexonly.gif" height=60></a></div>
+
+
+
+<p class=navbar>
+<span style="float:right;font-color:white;margin-right=1%;">
+
+<span class="emaillink">
+<a href="mailto:frameworx@tmforum.org?subject=Feedback on Frameworx 19.0&body=Category:(1) TAM Application Type%0A%0AName:Resource Domain Management%0A%0AUUID:">Feedback</a>
+</span>
+ |  <a href="../common_files/license.htm" class=navlink>License Details</a></span>
+
+</div>
+
+
+<div class="leftbar">
+
+<p class="leftbaritem"><a href="diagram8f0b6de0e4d611de953f001de065480b.htm" class=leftlink>Frameworx Home</a>
+<p class="leftbaritem"><a href="diagram212bd3bc1d9811db9063000802da1ce2.htm" class=leftlink>Application Framework (TAM)</a>
+<p class="leftbaritem"><a href="diagramac379ad6e0054204b29009c3d82ff997.htm" class=leftlink>Business Process Framework (eTOM)</a>
+<p class="leftbaritem"><a href="indexdiagramflows.htm" class=leftlink>Business Process Framework Flows</a>
+<p class="leftbaritem"><a href="indexdiagram.htm" class=leftlink>All Diagrams</a>
+<p class="leftbaritem"><a href="indexetomprocess.htm" class=leftlink>Frameworx Processes</a>
+<p class="leftbaritem"><a href="indextamapplication.htm" class=leftlink>Frameworx Applications</a>
+<p class="leftbaritem"><a href="indexFRAMEWORXKEYINDICATORS.htm" class=leftlink>Frameworx Metrics</a>
+<p class="leftbaritem"><a href="indexissue.htm" class=leftlink>Views</a>
+
+</div>
+
+
+<div class="cpoutput">
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="processheader">Frameworx Application: Resource Domain Management</h1>
+
+<ul id="maintab" class="shadetabs">
+
+<li class="selected"><a href="#" rel="tcontent1">Description</a></li>
+<li><a href="#" rel="tcontent2">Associations</a></li>
+</ul>
+
+
+<div class="tabcontentstyle">
+
+                <div id="tcontent1" class="tabcontent">
+
+
+<p id="cat"><b>Category</b>: (1) TAM Application Type 
+<p id="ID"><b>Application Identifier</b>: 7.4
+<p id="mat"><b>Maturity Level</b>: 4
+
+
+	<h3>Overview</h3>
+              
+	<p>Resource Domain Management is the application area that provides exposed resource services that are available to all other application areas, including those others in the Resource Management layer.Resource Domain Management’s roles are to hide the idiosyncrasies/complexities of the Network and its building blocks (Infrastructure, IT computing, and IT applications equipment etc.) from the rest of the OSS/BSS estate, freeing it to be agile and make it technology and vendor neutral.Resource Domains are defined as a set of entities building the networks and its building blocks of, Infrastructure, IT computing, IT applications, equipment etc., which have a common set of policies applied to them based on for example technology, topology etc. The general concept of a Domain allows for overlapping, provided there are no policy conflicts. But in principle they should does not operate in any cross-domain capacity.It is the responsibility of the other Resource Management layer applications to perform any cross-domain functions such as forecasting, capacity planning and design, and or for co-coordinating activation, root cause analysis and performance monitoring.
+
+	<h3>Functionality</h3>
+
+                <p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.6001.18783"></HEAD>
+<BODY>
+<P><FONT size=2 face=Arial>The basic concept is to define resource domains that expose 
+consistent services (NGOSS Implementation Contracts) to other Application Map applications. 
+Because Domains are based on the operator’s policies the scope of the resource 
+information model that they expose is based on the SP’s individual policy 
+decisions. However the basic services exposed are those necessary to support, at 
+least, but not limited to, the other Resource Management Application 
+Areas.</FONT></P>
+<P><FONT size=2 face=Arial>The Resource Domain Management applications are responsible 
+for providing a completely encapsulated interface to network technology domains 
+by:</FONT></P>
+<P><FONT size=2 face=Arial></FONT>
+<UL>
+  <LI><FONT size=2 face=Arial>hiding vendor specific idiosyncrasies e.g. for network s 
+  through the use of mTOP/MTNM/MTOSI template mechanisms. </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>presenting a standards based interfaces e.g. for networks 
+  mTOP/MTOSI/MTNM specifications using a standard data model. </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>providing in-domain activation. </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>providing in-domain alarm collection, filtering (and non 
+  data based correlation) to supplement that done by <B>Correlation &amp; Root 
+  Cause Analysis</B>. </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>providing in-domain QoS activation . </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>providing in-domain inventory discovery to supplement 
+  that done by <B>Resource Inventory Management.</B> </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>containing limited distributed copies of logical network 
+  inventory sufficient to support atomic operation rollback, element manager 
+  selection and network auto-discovery. Domain Managers are <B>not</B> the 
+  masters of this data. Where keys need to be assigned (e.g. IP addresses, VLAN 
+  IDs, PortIDs, telephone numbers) this will be undertaken by other applications 
+  in the Resource Management Layer. </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P></LI></UL>
+<P><FONT size=2 face=Arial></FONT></P>
+<P><FONT size=2 face=Arial></FONT></P>
+<P><FONT size=2 face=Arial>The Resource Domain Management applications are 
+<B><U>NOT</B></FONT></U><FONT size=2 face=Arial> responsible for:</FONT></P>
+<P><FONT size=2 face=Arial></FONT>
+<UL>
+  <LI><FONT size=2 face=Arial>cross-domain anything (activation, fault correlation and 
+  RCA, QoS, testing, orchestration – all done in <B>Resource Configuration / 
+  Provisioning</B>, <B>Correlation &amp; Root Cause analysis</B>, <B>Resource 
+  Performance Monitoring</B>, <B>Resource Testing Management</B>). </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>planning (done in <B>Resource Planning/Optimization</B>) 
+  </FONT>
+  <LI>
+  <P><FONT size=2 face=Arial>design (done in <B>Resource Design/Assign</B>)</FONT></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>assignment/ allocation of anything (e.g. ports, IP 
+  addresses) (done in <B>Resource Design/Assign</B>) </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>managing the engineering work for physical network 
+  equipment (outside plant), fiber or copper (done in <B>Resource Logistics</B> 
+  and <B>Workforce Management</B>). </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>providing in-domain performance monitoring – this is 
+  generally conducted by specialist tools and probes in <B>Resource Testing 
+  Management</B>. </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>being the database of record (Network inventory database 
+  of record is in <B>Resource Inventory Management</B>) </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>naming network resources (done in <B>Resource 
+  Planning/Optimization and Resource Design/Assign)</B> </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P>
+  <LI><FONT size=2 face=Arial>workflow (done in <B>Resource Configuration / 
+  Provisioning</B>,) </FONT>
+  <P></P>
+  <P><FONT size=2 face=Arial></FONT></P></LI></UL>
+<UL>
+  <LI><FONT size=2 face=Arial>B2B ordering (done in the <B>Partner/Supplier Management 
+  Applications</B>) <B>Replication of Resource Domains</B></FONT></LI></UL>
+<P><FONT size=2 face=Arial>Resource Domain Management may be replicated by Service 
+Providers to cover any specific policies that they have for organizing resource 
+domains e.g. e2E technologies such as SDH and ATM, Legacy PDH networks, narrow 
+band voice networks, Application Servers containing IT Application and Content - 
+IPTV, and Next Generation Networks where domains need to be formed based on 
+network roles.</FONT></P>
+<UL><FONT size=2 face=Arial></FONT></UL>
+<P><FONT size=2 face=Arial>Domains may also be replicated to cover different vendors 
+and different equipment types at the choice of the Service Provider.</FONT></P>
+<P><B><FONT size=2 face=Arial>Impact on Element Management</FONT></B></P>
+<P><FONT size=2 face=Arial>With Next Generation Networks there will be an evolution 
+away from complex and expensive Element Management Systems towards Resource 
+Domain Managers that have common features that directly connect to the network 
+or Application Server elements themselves. This evolution is also needed to 
+compress the number of systems in any stack to reduce complexity, increase 
+agility and improve end to end process performance.</FONT></P>
+<P><FONT size=2 face=Arial>The use of a Resource Domain Manager means that this can 
+happen whilst shielding all the other Application Map applications areas from these detailed 
+implementation changes.</FONT></P>
+<P><B><FONT size=2 face=Arial>Relationship to mTOP/ MTNM/MTOSI</FONT></B></P>
+<P><FONT size=2 face=Arial>In this analysis it is assumed that that the services 
+exposed by the Domain Managers for Networks will be based on the MTOSI 
+Specifications. This is shown as a red vertical bar in the figure. This sets a 
+critical SP expectation on the position of the procurement boundary for basic 
+Resources Management Functionality (Service interfaces).</FONT></P>
+<P><FONT size=2 face=Arial>It also shows a clear relationship between the Application Map as an 
+Application Architecture and actual conformance testable interfaces that have 
+been developed by the TMF.</FONT></P>
+<P><FONT size=2 face=Arial>Note that MTOSI is not limited to just this boundary and may 
+be used by other application areas in the Resource Management and Service 
+Management layers.</FONT></P>
+<P><FONT size=2 face=Arial>Resource Domain Management for IT computing and applications 
+will be defined in a future version.</FONT></P></BODY></HTML>
+
+      	<h3>Supported Business Services</h3>
+              
+	<p>
+                 </div>
+
+
+<div id="tcontent2" class="tabcontent">
+
+	
+	<!-- associations in this tab, produced by CP itself-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>(1) TAM Application Type Resource Domain Management</H2>
+<P><H3>Appears on these diagrams:</H3>
+<UL>
+<LI><A HREF="diagramfb35b4348c7b11db9402000e3573f0d3.htm">7. Resource Management Domain</A></li>
+<LI><A HREF="diagramb3b0079f153911ddad71001e378839ac.htm">7.4 Resource Domain Management</A></li>
+<LI><A HREF="diagram212bd3bc1d9811db9063000802da1ce2.htm">Application Framework Level 1 Overview</A></li>
+</UL></P>
+<H3>is a more detailed diagram for the</H3>
+<UL>
+<LI>
+<A HREF="diagramb3b0079f153911ddad71001e378839ac.htm">7.4 Resource Domain Management</A></li>
+</UL>
+<H3>Issues</H3><ul><li>Application Framework 17.5 Modification</li></ul><H3>Frameworx Domains (Horizontal)</H3><ul><li><A HREF="tamdomain1.htm">Resource Domain</A></li></ul><HR>
+<P>
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!--CLOSE TAB 1-->
+
+</div><!--end of tabs container-->
+
+<script type="text/javascript">
+//Start Tab Content script for UL with id="maintab" Separate multiple ids each with a comma.
+initializetabcontent("maintab")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--closure for all pages here-->
+</div><!--end CPoutput tag-->
+<div style="display:none;">
+
+
+
+<BR><SMALL>
+Created from the TM Forum Model Frameworx 19.0 on 8/29/2019 at 14:09</SMALL></P>
+</BODY>
+</HTML>
