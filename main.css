@@ -75,7 +75,7 @@ footer {
 }
 .paragraph {
 	text-align: justify;
-    font-size: 1.6em;
+    font-size: 1.25em;
     padding: 10px;
 }
 .paragraph::first-letter {
