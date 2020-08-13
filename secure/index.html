@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Magno Correa">
+    <meta name="generator" content="Magno Correa Vanilla">
+    <title>Signin · Magno Correa</title>
+
+    <link rel="canonical" href="https://magnocorrea.com/secure/">
+	<script src="../assets/dist/js/jquery-3.5.1.js"></script>
+  </head>
+  <body></body>
+<script>
+	(function (){
+	  'use strict';
+
+	  function getLocalStorage(){
+		var username = localStorage.getItem('username');
+		var token    = localStorage.getItem('token');
+		if(username !== null && token != null) {
+			loggedIn(username, token); 		    
+		}else {
+			notLogged();
+		}
+	  }
+	  getLocalStorage();
+
+	}());
+	function loggedIn(username, token) {
+		$.ajax
+		({
+		  type: "GET",
+		  url: "https://api.github.com/repos/"+username+"/data/contents/index.html",
+		  headers: {
+			"Authorization": "token " + token,
+			"Accept": "application/vnd.github.v3.raw"
+		  },
+		  success: function (result){
+		   $('html').html(result);
+		  },
+		  dataFilter : function(data, type) {
+		   $('html').html(data);
+		  },
+		  error: function (request, status, error) {
+			  if(status === 'error'){
+			    localStorage.clear();
+				notLogged();
+			  }
+		  }
+		});
+	}
+	function notLogged() { 
+		window.location.href = "login.html";
+	}
+</script>
+</html>
