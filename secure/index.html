@@ -38,10 +38,14 @@
 			"Accept": "application/vnd.github.v3.raw"
 		  },
 		  success: function (result){
-		   $('html').html(result);
+		   //$('html').html(result);
 		  },
 		  dataFilter : function(data, type) {
-		   $('html').html(data);
+		var newHTML = document.open("text/html", "replace"); 
+		newHTML.write(data);
+//		newHTML.close(); 
+
+//			  $('html').html(data);
 		  },
 		  error: function (request, status, error) {
 			  if(status === 'error'){
