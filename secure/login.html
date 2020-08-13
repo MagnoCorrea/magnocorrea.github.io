@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Magno Correa">
+    <meta name="generator" content="Magno Correa Vanilla">
+    <title>Signin · Magno Correa</title>
+
+    <link rel="canonical" href="https://magnocorrea.com/secure/">
+
+    <!-- Bootstrap core CSS -->
+<link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    <form class="form-signin" id="formSignIn">
+  <img class="mb-4" src="assets/brand/magno-secure.jpg" alt="" width="72" height="72">
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <label for="inputUsername" class="sr-only">Username</label>
+  <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+  <label for="inputToken" class="sr-only">Token</label>
+  <input type="password" id="inputToken" class="form-control" placeholder="Token" required>
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me" id="checkboxRememberMe"> Remember me
+    </label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" id="buttonSignIn">Sign in</button>
+  <p class="mt-5 mb-3 text-muted">MagnoCorrea.com&copy; 2020</p>
+</body>
+<script>
+	(function (){
+	  'use strict';
+
+	  var buttonSignIn = document.getElementById('buttonSignIn')
+	  function getLocalStorage(){
+		var username = localStorage.getItem('username');
+		var token    = localStorage.getItem('token');
+		if(username !== null && token != null) {
+		   window.location.href = "index.html";
+		}
+	  }
+
+	  function setLocalStorage(){
+		buttonSignIn.addEventListener('click', () => {
+		 var inputUsername = document.getElementById('inputUsername').value;
+		 var inputToken = document.getElementById('inputToken').value;
+		 var checkboxRememberMe = document.getElementById('checkboxRememberMe').checked;
+		 if(checkboxRememberMe) {
+		   localStorage.setItem('username', inputUsername);
+		   localStorage.setItem('token', inputToken);
+		 }
+		})
+	  }
+	  getLocalStorage();
+	  setLocalStorage();
+
+	}());
+
+</script>
+</html>
