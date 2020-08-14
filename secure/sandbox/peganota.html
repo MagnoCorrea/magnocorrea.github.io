@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width"/>
+	<meta charSet="utf-8"/>
+	<title>Magno Correa - Pega Nota</title>
+	<script src="jquery-3.5.1.js"></script>
+</head>
+	<body>
+	<h1>Pega Nota</h1>
+	<div id="div-success" style="background:green;">&nbsp;</div>
+	<div id="div-dataFilter" style="background:blue;">&nbsp;</div>
+	<div id="div-error" style="background:red;">&nbsp;</div>
+	</body>
+<script>
+function get() {
+	$.ajax
+	({
+	  type: "GET",
+	  url: "http://www.sped.fazenda.pr.gov.br/webservices/captcha.php",
+	  headers: {
+		"Referer": "http://www.sped.fazenda.pr.gov.br/modules/conteudo/nfce.php?consulta=completa"
+	  },
+	  success: function (result){
+	   $("#div-success").html(result);
+	  },
+	  dataFilter : function(data, type) {
+	   $("#div-dataFilter").html(data);
+	  },
+	  error: function (request, status, error) {
+	  if(status === 'error'){
+	   $("#div-error").html(status);
+	  }
+	  }
+	});
+}
+
+get();
+
+</script>
+</html>
