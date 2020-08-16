@@ -25,13 +25,14 @@ function myFetch() {
     mode: 'no-cors',
     cache: 'default'
   };
-  var myRequest = new Request('https://www.receitaws.com.br/v1/cnpj/83325498000190', myInit);
+  var myRequest = new Request('https://cors-anywhere.herokuapp.com/https://www.receitaws.com.br/v1/cnpj/83325498000190', myInit);
     return fetch(myRequest)
       .then(response => response.json())
       .then(responseJson => {
         setState(
           {
             isLoading: false,
+            isError: false,
             dataSource: JSON.stringify(responseJson),
           },
           function() {}
