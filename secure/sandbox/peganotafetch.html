@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width"/>
+	<meta charSet="utf-8"/>
+	<title>Magno Correa - Pega Nota</title>
+	<script src="jquery-3.5.1.js"></script>
+</head>
+	<body>
+	<h1>Pega Nota</h1>
+	<div id="div-success" style="background:green;">&nbsp;</div>
+	<div id="div-dataFilter" style="background:blue;">&nbsp;</div>
+	<div id="div-error" style="background:red;">&nbsp;</div>
+	</body>
+<script>
+
+function setState (entrada, f){
+	$("#div-success").text(JSON.stringify(entrada));
+}
+function myFetch() {
+  var myHeaders = new Headers();
+  myHeaders.append("origin", "x-requested-with");
+  
+  var myInit = { method: 'GET',
+    headers: myHeaders,
+    mode: 'cors',
+    cache: 'default'
+  };
+  var myRequest = new Request('https://www.receitaws.com.br/v1/cnpj/83325498000190', myInit);
+    return fetch(myRequest)
+      .then(response => response.json())
+      .then(responseJson => {
+        setState(
+          {
+            isLoading: false,
+            dataSource: JSON.stringify(responseJson),
+          },
+          function() {}
+        );
+      })
+      .catch(error => {
+        setState(
+          {
+            isLoading: false,
+            isError: true,
+            error: JSON.stringify(error),
+          },
+          function() {}
+        );
+      });
+}
+myFetch();
+
+</script>
+
+</html>
