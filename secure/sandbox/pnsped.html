@@ -32,11 +32,19 @@ function myFetch() {
     return fetch(myRequest)
       .then(response => response.blob())
       .then(images => {
+	var b64 ;
+        var reader = new FileReader();
+         reader.readAsDataURL(images); 
+         reader.onloadend = function() {
+           var base64data = reader.result;
+           console.log(base64data);
+           b64 = base64data;
+         }
         setState(
           {
             isLoading: false,
             isError: false,
-            dataSource: URL.createObjectURL(images),
+            dataSource: b64,
           },
           function() {}
         );
