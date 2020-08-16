@@ -19,10 +19,13 @@ function setState (entrada, f){
 function myFetch() {
   var myHeaders = new Headers();
   myHeaders.append("origin", "x-requested-with");
+  myHeaders.append("X-Requested-With", "origin");
+	
+	
   
   var myInit = { method: 'GET',
     headers: myHeaders,
-    mode: 'no-cors',
+    mode: 'cors',
     cache: 'default'
   };
   var myRequest = new Request('https://cors-anywhere.herokuapp.com/https://www.receitaws.com.br/v1/cnpj/83325498000190', myInit);
