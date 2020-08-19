@@ -1,5 +1,10 @@
 {
   "UserID": 1,
+  "Fullname" : "Teste",
+  "Email" : "email@email.com",
   "Points" : 1,
+  "Gender" : "male",
+  "GenresArr" : "Action,Fiction",
+  "userGender" : 0,
   "PreferedGenres" : "Action,Fiction"
 }
