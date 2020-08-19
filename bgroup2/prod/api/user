@@ -2,5 +2,8 @@
   "Fullname" : "Teste",
   "Email" " : "email@email.com",
   "Points" : 1,
-  "Gender" : "male"
+  "Gender" : "male",
+  "GenresArr" : "",
+  "userGender" : 0,
+  
 }
