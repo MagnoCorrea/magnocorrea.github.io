@@ -3,18 +3,18 @@
 		"imgUrl" : "http://i0.wp.com/shairart.com/blog/wp-content/uploads/2016/01/5.-Vermeer-The-Girl-with-the-Pearl-Earring-shairart.com_.jpg",
 		"originalName": "Meisje met de parel",
 		"translatedName" : "[Moça com o Brinco de Pérola]",
-		"author": "Johannes [Vermeer]",
+		"author": "Johannes [Vermeer]"
 	},
 	{
 		"imgUrl" : "https://www.infoescola.com/wp-content/uploads/2012/04/nascimento-de-venus-scaled.jpg",
 		"originalName": "Nascita di Venere",
 		"translatedName" : "[O nascimento de Vênus]",
-		"author": "Sandro [Botticelli]",
+		"author": "Sandro [Botticelli]"
 	},
 	{
 		"imgUrl" : "http://i0.wp.com/shairart.com/blog/wp-content/uploads/2016/01/3.-Pierre-Auguste-Renoir-Bal-du-moulin-de-la-Galette-shairart.com_.jpg",
 		"originalName": "Bal du Le Moulin de la Galette",
 		"translatedName" : "[Um baile em Le Moulin de la Galette]",
-		"author": "Pierre Auguste [Renoir]",
-	},
+		"author": "Pierre Auguste [Renoir]"
+	}
 ]
