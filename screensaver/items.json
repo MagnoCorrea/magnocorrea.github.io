@@ -19,8 +19,14 @@
 	},
 	{
 		"imgUrl" : "https://www.museodelprado.es/imagenes/Documentos/imgsem/db/db7e/db7ecb77-760f-4e51-966e-6119df351bbb/966cb474-4118-4e3c-ab8d-f08057477bec.jpg",
-		"originalName": "Origen de la República Romana",
-		"translatedName" : "[Origem da República Romana]",
-		"author": "PLASENCIA Y MAESTRO, CASTO"
+		"originalName": "Origen de la República Romana (año 598 antes de la era cristiana)",
+		"translatedName" : "[Origem da República Romana (ano 598 antes da era cristã)]",
+		"author": "[Casto] Plasencia y Maestro",
+		"date" : "1877",
+		"Technique" : "oil",
+		"Media" : "canvas",
+		"dimensions" : "Height: 428 cm; Weight: 690 cm",
+		"Place" : "Museo del Prado",
+		"ref" : "https://www.museodelprado.es/coleccion/obra-de-arte/origen-de-la-republica-romana-ao-598-antes-de-la/db7ecb77-760f-4e51-966e-6119df351bbb"
 	}
 ]
