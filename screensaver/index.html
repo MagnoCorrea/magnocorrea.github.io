@@ -41,7 +41,10 @@
 
 <script>
 $(document).ready(function(){
-	$.getJSON( "items.json", addItems);
+	$.getJSON( "items.json", function(data) {
+		console.log(data.length);
+		addItems(data);
+	});
 });
 function addItems(items){
   for(var i=0 ; i< items.length ; i++) {
