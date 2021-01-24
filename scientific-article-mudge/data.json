@@ -1,0 +1,39 @@
+//TODO Criar cadastro de metricas
+var metrics = 
+[
+	{"id": 0, "field": "A", "name" : "palavras-chave"},
+	{"id": 1, "field": "B", "name" : "tempo de publicação"}, 
+	{"id": 2, "field": "C", "name" : "fator de impacto do periódico"},
+	{"id": 3, "field": "D", "name" : "ranking do autor mais pesado"}, 
+	{"id": 4, "field": "E", "name" : "nome do periódico"},
+	{"id": 5, "field": "F", "name" : "classificação no Qualis"}
+];
+
+//TODO Verificar scores
+var balance = [
+	{
+		"name": "muito maior",
+		"simbol" : ">>",
+		"score": 5
+	},
+	{
+		"name": "maior",
+		"simbol" : ">",
+		"score": 4
+	},
+	{
+		"name": "igual",
+		"simbol" : "=",
+		"score": 3
+	},
+	{
+		"name": "menor",
+		"simbol" : "<",
+		"score": 2
+	},
+	{
+		"name": "muito menor",
+		"simbol" : "<<",
+		"score": 1
+	}
+];
