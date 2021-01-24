@@ -1,0 +1,13 @@
+// Metricas escolhidas pelo usuario do sistema
+var choosedMetrics = 
+[
+	{"id": 0, "field": "A", "name" : "palavras-chave"},
+	{"id": 1, "field": "B", "name" : "tempo de publicação"}, 
+	{"id": 3, "field": "D", "name" : "ranking do autor mais pesado"}
+];
+
+var mudgeDiagram = [
+  { "x" : "0", "y" : "1", "balance" : ">>" },
+  { "x" : "0", "y" : "3", "balance" :  ">" },
+  { "x" : "1", "y" : "3", "balance" : "<<" }
+];
