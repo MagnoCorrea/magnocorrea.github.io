@@ -654,7 +654,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             } // First load set the container width
 
 
-            if (this.current_index == null) {
+            if (this.current_index == null && this.options.autoAdjustHeight) {
               this.container.height(selPage.outerHeight());
             }
 

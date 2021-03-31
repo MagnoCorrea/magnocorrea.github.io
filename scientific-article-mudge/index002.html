@@ -20,6 +20,53 @@
 
 </head>
 <body>
+
+    <br />
+    <p>
+      <label>Theme:</label>
+      <select id="theme_selector">
+        <option value="default">Default</option>
+        <option value="arrows" selected>Arrows</option>
+        <option value="dots">Dots</option>
+        <option value="progress">Progress</option>
+      </select>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="checkbox" id="dark_mode" value="1" />
+      <label for="dark_mode">Dark Mode</label>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="checkbox" id="is_justified" value="1" checked />
+      <label for="is_justified">Justified</label>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <label>Animation:</label>
+      <select id="animation">
+            <option value="none">None</option>
+            <option value="fade">Fade</option>
+            <option value="slide-horizontal" selected>Slide Horizontal</option>
+            <option value="slide-vertical">Slide Vertical</option>
+            <option value="slide-swing">Slide Swing</option>
+      </select>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <label>Go To:</label>
+      <select id="got_to_step">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+      </select>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <label>External Buttons:</label>
+      <button class="btn btn-secondary" id="prev-btn" type="button">Go Previous</button>
+      <button class="btn btn-secondary" id="next-btn" type="button">Go Next</button>
+      <button class="btn btn-danger" id="reset-btn" type="button">Reset Wizard</button>
+    </p>
+    <br />
+
+
     <!-- SmartWizard html -->
     <div id="smartwizard">
 
@@ -64,8 +111,8 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th>Metric Type</th>
-                        <th>Metric</th>
+                      <th>Metric Type</th>
+                      <th>Metric</th>
                       <th></th>
                       <th></th>
                       </tr>
@@ -74,10 +121,10 @@
                     <!-- This is our clonable table line -->
                     <tr class="hide">
                       <td>
-                        <select class="form-control">
-                          <option value="Palavra Chave">Palavra Chave</option>
-                          <option value="Tempo de publicação">Tempo de publicação</option>
-                          <option value="Qualificacao em sistema Externo">Qualificacao em sistema Externo</option>
+                        <select class="custom-select custom-select-lg mb-3">
+                        <option value="Palavra Chave">Palavra Chave</option>
+                        <option value="Tempo de publicação">Tempo de publicação</option>
+                        <option value="Qualificacao em sistema Externo">Qualificacao em sistema Externo</option>
                         </select>
                       </td>
                       <td contenteditable="true">-</td>
@@ -96,14 +143,8 @@
               </div>
             </div>
             <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-              <div class="container">
                 <h3>Defining Balance</h3>
-                <div class="row">
-                    Escolha a relação entre cada métrica escolhida.
-                </div>
-                <div class="row" id="metrics">
-                </div>
-              </div>
+                <div>Escolha a relação entre cada métrica escolhida. </div>
             </div>
             <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
@@ -164,6 +205,13 @@
                 }
             });
 
+            // External Button Events
+            $("#reset-btn").on("click", function() {
+                // Reset wizard
+                $('#smartwizard').smartWizard("reset");
+                return true;
+            });
+
             $("#prev-btn").on("click", function() {
                 // Navigate previous
                 $('#smartwizard').smartWizard("prev");
@@ -176,13 +224,61 @@
                 return true;
             });
 
-            $("#smartwizard").on("stepContent", stateMachine);
-          });
+
+            // Demo Button Events
+            $("#got_to_step").on("change", function() {
+                // Go to step
+                var step_index = $(this).val() - 1;
+                $('#smartwizard').smartWizard("goToStep", step_index);
+                return true;
+            });
+
+
+            $("#dark_mode").on("click", function() {
+                // Change dark mode
+                var options = {
+                  darkMode: $(this).prop("checked")
+                };
+
+                $('#smartwizard').smartWizard("setOptions", options);
+                return true;
+            });
+
+            $("#is_justified").on("click", function() {
+                // Change Justify
+                var options = {
+                  justified: $(this).prop("checked")
+                };
+
+                $('#smartwizard').smartWizard("setOptions", options);
+                return true;
+            });
+
+            $("#animation").on("change", function() {
+                // Change theme
+                var options = {
+                  transition: {
+                      animation: $(this).val()
+                  },
+                };
+                $('#smartwizard').smartWizard("setOptions", options);
+                return true;
+            });
+
+            $("#theme_selector").on("change", function() {
+                // Change theme
+                var options = {
+                  theme: $(this).val()
+                };
+                $('#smartwizard').smartWizard("setOptions", options);
+                return true;
+            });
+
+        });
     </script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/multiselect.js"></script>
     <script src="js/table.js"></script>
-    <script src="js/main.js"></script>
     <script type="text/javascript">
 	$(document).ready(function() {
 		$('#undo_redo').multiselect();

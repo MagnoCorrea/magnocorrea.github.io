@@ -27,6 +27,12 @@ jQuery.fn.pop = [].pop;
 jQuery.fn.shift = [].shift;
 
 $BTN.click(function () {
+var data = exportMetrics();
+  // Output the result
+  $EXPORT.text(JSON.stringify(data));
+});
+
+function exportMetrics() {
   var $rows = $TABLE.find('tr:not(:hidden)');
   var headers = [];
   var data = [];
@@ -37,6 +43,7 @@ $BTN.click(function () {
   });
   
   // Turn all existing rows into a loopable array
+  var field = 65; //65 = A (A maiúsculo)
   $rows.each(function () {
     var $td = $(this).find('td');
     var h = {};
@@ -50,12 +57,13 @@ $BTN.click(function () {
         h[header] = $td.eq(i).text();   
       }
     });
+    // Acrescentando outros valores
+    h['field'] = String.fromCharCode(field); field++;
+    h['score'] = 0;
     data.push(h);
   });
-  
-  // Output the result
-  $EXPORT.text(JSON.stringify(data));
-});
+  return data;  
+}
 
 String.prototype.toCamelCase = function () {
   return this.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
