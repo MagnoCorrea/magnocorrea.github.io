@@ -18,10 +18,11 @@ var balance = [
     }
 ];
 var mudgeDiagram = [];
+var metrics = [];
 function stateMachine(e, anchorObject, stepIndex, stepDirection) {
     switch (stepIndex) {
         case 1:
-            var metrics = exportMetrics();
+            metrics = exportMetrics();
             var html = "";
             console.log(stepDirection);
             //backward e forward
@@ -33,7 +34,15 @@ function stateMachine(e, anchorObject, stepIndex, stepDirection) {
                 html += generateHTML(tmp);
             });
             $("#metrics").html(html);
-            break;
+        break;
+        case 2:
+            var metricCalculatedHTML = '';
+            metrics = calculateMudge(mudgeDiagram, metrics);
+            metrics.forEach(metric => {
+                metricCalculatedHTML += '|' + metric.field + '|' + metric.score + '|<br>';
+            });
+            $("#metricCalculatedHTML").html(metricCalculatedHTML);
+        break;
     
         default:
             break;
