@@ -24,7 +24,8 @@ function stateMachine(e, anchorObject, stepIndex, stepDirection) {
             var metrics = exportMetrics();
             var html = "";
             console.log(stepDirection);
-            if ("" == stepDirection) {
+            //backward e forward
+            if ("forward" == stepDirection) {
                 
             }
             mudgeDiagram = genMudge(metrics, balance[0]);
