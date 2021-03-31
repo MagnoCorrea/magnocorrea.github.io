@@ -92,3 +92,34 @@ function genMudge(metric, minimumBalance) {
     }
     return retorno;
   }
+/**
+ * 
+ * @param {O diagrama com os pesos informado pelo usuário} mudgeDiagram 
+ * @param {As métricas calculadas} metric 
+ */
+function calculateMudge(mudgeDiagram, metric) {
+  // Fazendo leitura por linha
+
+  for(var i = 0; i< mudgeDiagram.length; i++) {
+    var tmp = mudgeDiagram[i];
+      var metricElement = getMetric(metric, tmp.fieldFrom);
+      metricElement.score += tmp.balance.score;
+    }
+    console.log(metric);
+     return metric;
+}
+   
+    
+    function getMetric(metric, field) {
+      for(var i = 0; i< metric.length; i++) {
+        var tmp =metric[i];
+        if(isFilterEquals(tmp, field)) {
+          return tmp;
+        }
+      }
+    }
+    
+    function isFilterEquals(metricElement, field) {
+      return metricElement.field === field;
+    }
+    
