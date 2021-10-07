@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+      integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/gh/wouterbulten/kalmanjs@79d9def2cf67acf2befe794509530be4cc58ab21/dist/kalman.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.min.js"
+      integrity="sha512-BKbSR+cfyxLdMAsE0naLReFSLg8/pjbgfxHh/k/kUC82Hy7r6HtR5hLhobaln2gcTvzkyyehrdREdjpsQwy2Jw=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"
+      integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="chart-growth-kalman-data-legend"></div>
+    <canvas style="max-width: 700px" id="chart-growth-kalman-data"></canvas>
+    <div id="app">
+      <div>
+        <input type="range" min="0" max="1" step="0.01" v-model="R" />
+        <span>R = {{ R }} : options.R (Process noise)</span>
+      </div>
+      <div>
+        <input type="range" min="0" max="100" step="1" v-model="Q" />
+        <span>Q = {{ Q }} : options.Q (Measurement noise)</span>
+      </div>
+      <div>
+        <input type="range" min="0" max="6" step="0.01" v-model="A" />
+        <span>A = {{ A }} : options.A (State vector)</span>
+      </div>
+      <div>
+        <input type="range" min="0" max="100" step="0.1" v-model="B" />
+        <span>B = {{ B }} : options.B (Control vector)</span>
+      </div>
+      <div>
+        <input type="range" min="0" max="6" step="0.01" v-model="C" />
+        <span>C = {{ C }} : options.C (Measurement vector)</span>
+      </div>
+      <div>
+        <input type="range" min="0" max="50" step="1" v-model="u" />
+        <span>u = {{ u }} : u (control)</span>
+      </div>
+      <h3>Kalmanjs Options Object</h3>
+      <pre>
+        {{ {R,Q,A,B,C} }}
+      </pre>
+    </div>
+    <script>
+      // INPUT DATA
+
+      const noisyDataLinear = [
+        0.023805546,
+0.017060892,
+0.003857725,
+-0.008083342,
+0.015520869,
+0.00520781,
+0.004671002,
+0.007458888,
+0.015360174,
+0.010558494,
+0.007761576,
+0.006311224,
+0.053881106,
+-0.012673566,
+0.048578556,
+0.017081813,
+0.012926128,
+-0.131394477,
+-0.169238322,
+-0.209714649,
+0.446313031,
+-0.059893401,
+-0.080317071,
+0.049187964,
+0.010776913,
+-0.194777345,
+-0.25508668,
+0.32250874,
+0.030483055,
+0.103245898,
+0.023782781,
+0.024695681,
+-0.205822701,
+-0.18831365,
+0.322341218,
+-0.010433166,
+-0.210840984,
+0.205642258,
+0.013523179,
+0.038402054,
+-0.226252655,
+-0.338604263,
+0.259937444,
+0.077306419,
+0.035372933,
+-0.024148883,
+0.00249048,
+0.011936893,
+-0.010902384,
+-0.012434534,
+-0.100521624,
+0.026813613,
+-0.008768113,
+0.023142359,
+0.012229513,
+0.013824414,
+0.0267638,
+-0.036598451,
+0.050663955,
+0.027033458,
+-0.009719454,
+0.016247147,
+-0.011051792,
+0.007575461,
+-0.068188214,
+0.158148953,
+-0.115528135,
+0.121699467,
+-0.087887109,
+-0.070717726,
+0.01109718,
+0.004126011,
+-0.101213868,
+0.129452249,
+0.017144896,
+0.078040666,
+-0.056918133,
+-0.001625624,
+-0.172242931,
+-0.228922282,
+0.135529529,
+0.165969924,
+-0.049759228,
+0.20115147,
+-0.243848703,
+0.033121623,
+-0.212428326,
+-0.44680135,
+0.516533892,
+0.065728412,
+-0.147008929,
+0.129552128,
+-0.128612771,
+-0.116315357,
+-0.508354738,
+0.51137631,
+-0.077157092,
+0.159701283,
+0.051422105,
+-0.130198059,
+-0.17329607,
+-0.657092204,
+0.492842743,
+0.024087862,
+0.070310502,
+0.008891611,
+-0.019156096,
+-0.13594779,
+-0.411028211,
+0.485702694,
+-0.135090884,
+0.114383973,
+0.071070714,
+-0.079231889,
+-0.146360321,
+-0.464800176,
+0.382736709,
+0.095443771,
+-0.11551541,
+0.044371357,
+-0.029406234,
+0.041190356,
+-0.363112246,
+0.047249793,
+0.086122175,
+-0.002855078,
+0.318203554,
+0.165322294,
+
+      ];
+
+      $(window).ready(function () {});
+    </script>
+    <script>
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            R: 0,
+            Q: 0,
+            A: 0,
+            B: 0,
+            C: 0,
+            u: 0,
+          };
+        },
+        watch: {
+          $data: {
+            immediate: true,
+            handler: _.debounce(function () {
+              this.onChanged();
+              Vue.nextTick();
+            }, 100),
+            deep: true,
+          },
+        },
+        mounted() {
+          this.R = 0.21;
+          this.Q = 29;
+          this.A = 3.22;
+          this.B = 0.6;
+          this.C = 2;
+          this.u = 0.3;
+          Vue.nextTick();
+        },
+        methods: {
+          onChanged() {
+            // KALMAN FILTERING DATA
+
+            const growthFilter = new KalmanFilter({
+              R: +this.R,
+              Q: +this.Q,
+              A: +this.A,
+              B: +this.B,
+              C: +this.C,
+            });
+            const u = +this.u;
+            const dataGrowthKalman = noisyDataLinear.map(function (v) {
+              return growthFilter.filter(v, u);
+            });
+
+            // PLOTTING DATA
+
+            const plotDataGrowthKalman = {
+              labels: noisyDataLinear.map(function (y, i) {
+                return i;
+              }),
+              datasets: [
+                {
+                  label: "Kalman estimate with A=1.1",
+                  fill: false,
+                  backgroundColor: "rgba(220,220,220,0)",
+                  borderColor: "rgba(55,14,156,0.4)",
+                  pointBorderColor: "rgba(55,14,156,1)",
+                  pointBackgroundColor: "#fff",
+                  pointHoverBackgroundColor: "#fff",
+                  pointHoverBorderColor: "rgba(220,220,220,1)",
+                  data: dataGrowthKalman,
+                },
+                {
+                  label: "Noisy data",
+                  fill: false,
+                  backgroundColor: "rgba(220,220,220,0)",
+                  borderColor: "rgba(201,48,119,0)",
+                  pointBorderColor: "rgba(201,48,119,1.0)",
+                  pointBackgroundColor: "#fff",
+                  pointHoverBackgroundColor: "#fff",
+                  pointHoverBorderColor: "rgba(220,220,220,1)",
+                  data: noisyDataLinear,
+                },
+              ],
+            };
+
+            const ctx = $("#chart-growth-kalman-data").get(0).getContext("2d");
+            const growthKalmanChart = new Chart(ctx, {
+              type: "line",
+              data: plotDataGrowthKalman,
+              options: {
+                animation: {
+                  duration: 0,
+                },
+              },
+            });
+            $("#chart-growth-kalman-data-legend").html(
+              growthKalmanChart.generateLegend()
+            );
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
