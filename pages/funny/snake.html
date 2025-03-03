@@ -45,6 +45,10 @@
         <canvas id="gameCanvas"></canvas>
     </div>
     <script>
+        document.documentElement.requestFullscreen().catch(err => {
+            console.log("Falha ao entrar em tela cheia:", err);
+        });
+
 	let startX, startY, endX, endY;
 
         function handleGesture() {
