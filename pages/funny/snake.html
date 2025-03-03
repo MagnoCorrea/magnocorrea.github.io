@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #282c34;
+            overflow: hidden;
+        }
+        #score {
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: white;
+            background: black;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        #gameContainer {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: calc(100vh - 40px);
+        }
+        canvas {
+            background-color: black;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="score"><span>🍎 Pontos: 0</span> <span>Nível: 🐍</span> <span>Velocidade: 150ms</span></div>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    <script>
+        function drawGrid(ctx, cellSize) {
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+                        
+            for (let x = 0; x <= canvas.width; x += cellSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            for (let y = 0; y <= canvas.height; y += cellSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
+    </script>
+	
+    <script>
+        function drawPixel(ctx, x, y, color, pixelSize) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, pixelSize, pixelSize);
+        }
+
+        function getColor(row, gameOverText) {
+            const gradient = ["#ff0000", "#ff5500", "#ffaa00", "#ffff00"];
+            return gradient[Math.floor(row / (gameOverText.length / gradient.length))];
+        }
+
+        function drawGameOver() {
+	        document.addEventListener("keydown", null);
+
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const pixelSize = 20;
+			const gameOverText = [
+				" 0000  000  00 00  00000     000  0   0 00000  0000 ",
+				"0     0   0 0 0 0  0        0   0 0   0 0      0   0",
+				"0  00 00000 0 0 0  000      0   0 0   0 000    0000 ",
+				"0   0 0   0 0   0  0        0   0  0 0  0      0  0",
+				" 000  0   0 0   0  00000     000    0   00000  0   0"
+			];
+
+            //canvas.width = window.innerWidth;
+            //canvas.height = window.innerHeight;
+
+            const cols = gameOverText[0].length;
+            const rows = gameOverText.length;
+            const startX = (canvas.width - cols * pixelSize) / 2;
+            const startY = (canvas.height - rows * pixelSize) / 2;
+            
+            let delay = 0;
+            
+            gameOverText.forEach((line, rowIndex) => {
+                [...line].forEach((char, colIndex) => {
+                    if (char === '0') {
+                        setTimeout(() => {
+                            drawPixel(ctx, startX + colIndex * pixelSize, startY + rowIndex * pixelSize, getColor(rowIndex, gameOverText), pixelSize);
+                        }, delay);
+                        delay += 10;
+                    }
+                });
+            });
+        }
+    </script>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreDisplay = document.getElementById("score");
+        const gameContainer = document.getElementById("gameContainer");
+
+        const box = 50;
+        let snake = [{ x: 10 * box, y: 10 * box }];
+        let foods = [];
+        let specialFood = null;
+        let direction = "RIGHT";
+        let lastDirection = "RIGHT";
+        let gameRunning = true;
+        let score = 0;
+        let level = 1;
+		let previousLevel = level; // Guarda o nível anterior
+        let speed = 150;
+        let minSpeed = 50;
+        let maxSpeed = 200;
+        const foodDuration = 10000;
+        const specialFoodMinTime = 10000;
+        const specialFoodMaxTime = 20000;
+        const deltaSpeed = 10;
+        let foodCount = getRandomFoodCount();
+        let specialFoodTimer = setSpecialFoodTimer();
+		let gridOn = true;
+
+        function resizeCanvas() {
+            canvas.width = Math.floor(gameContainer.clientWidth / box) * box;
+            canvas.height = Math.floor(gameContainer.clientHeight / box) * box;
+        }
+        window.addEventListener("resize", resizeCanvas);
+
+        function getRandomFoodCount() {
+            return Math.floor(Math.random() * 4) + 2;
+        }
+
+        function getRandomTime(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function generateFood() {
+            foods = [];
+            for (let i = 0; i < foodCount; i++) {
+                let foodX, foodY, collision;
+                do {
+                    foodX = Math.floor(Math.random() * (canvas.width / box)) * box;
+                    foodY = Math.floor(Math.random() * (canvas.height / box)) * box;
+                    collision = snake.some(segment => segment.x === foodX && segment.y === foodY);
+                } while (collision);
+                foods.push({ x: foodX, y: foodY, time: Date.now() });
+            }
+        }
+
+        function generateSpecialFood() {
+            let foodX, foodY, collision;
+            do {
+                foodX = Math.floor(Math.random() * (canvas.width / box)) * box;
+                foodY = Math.floor(Math.random() * (canvas.height / box)) * box;
+                collision = snake.some(segment => segment.x === foodX && segment.y === foodY);
+            } while (collision);
+            specialFood = { x: foodX, y: foodY, time: Date.now() };
+        }
+
+        function setSpecialFoodTimer() {
+            return setTimeout(() => {
+                generateSpecialFood();
+                specialFoodTimer = setSpecialFoodTimer();
+            }, getRandomTime(specialFoodMinTime, specialFoodMaxTime));
+        }
+
+        resizeCanvas();
+        generateFood();
+
+        document.addEventListener("keydown", changeDirection);
+
+        function changeDirection(event) {
+            const key = event.keyCode;
+            let newDirection = direction;
+            let speedChange = 0;
+			if (event.key === "g" || event.key === "G") toggleGrid();
+
+            if (key === 37 && direction !== "RIGHT") newDirection = "LEFT";
+            if (key === 38 && direction !== "DOWN") newDirection = "UP";
+            if (key === 39 && direction !== "LEFT") newDirection = "RIGHT";
+            if (key === 40 && direction !== "UP") newDirection = "DOWN";
+
+            if (newDirection === direction) speedChange = -deltaSpeed;
+            if (newDirection === oppositeDirection(lastDirection)) speedChange = deltaSpeed;
+
+            if (newDirection !== direction) {
+                direction = newDirection;
+               // speed = Math.max(minSpeed, Math.min(maxSpeed, speed + speedChange));
+                lastDirection = direction;
+            }
+			else {
+                if ((key === 37 && direction === "LEFT") ||
+                    (key === 38 && direction === "UP") ||
+                    (key === 39 && direction === "RIGHT") ||
+                    (key === 40 && direction === "DOWN")) {
+                    speed = Math.max(minSpeed, speed - deltaSpeed);
+                }
+                if ((key === 37 && direction === "RIGHT") ||
+                    (key === 38 && direction === "DOWN") ||
+                    (key === 39 && direction === "LEFT") ||
+                    (key === 40 && direction === "UP")) {
+                    speed = Math.min(maxSpeed, speed + deltaSpeed);
+                }
+            }
+			
+            updateScoreDisplay();
+        }
+        function oppositeDirection(dir) {
+            return { "LEFT": "RIGHT", "RIGHT": "LEFT", "UP": "DOWN", "DOWN": "UP" }[dir];
+        }
+
+        function updateScoreDisplay() {
+            let levelDisplay = "🐍".repeat(level);
+            scoreDisplay.innerHTML = `<span>🍎 Pontos: ${score}</span> <span>Nível: ${levelDisplay}</span> <span>Velocidade: ${speed}ms</span>`;
+        }
+		
+		function toggleGrid(){
+			gridOn = !gridOn;
+		}
+
+        function checkCollision() {
+            for (let i = 1; i < snake.length; i++) {
+                if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
+					gameRunning = false;
+                    drawGameOver();
+                    //location.reload();
+                }
+            }
+        }
+		
+		function checkLevelChange() {
+			// Define o level baseado no score
+			level = Math.floor(score / 10) + 1;
+			
+			// Verifica se o level mudou
+			if (level !== previousLevel) {
+				speed = Math.max(minSpeed, speed - deltaSpeed);
+				minSpeed -= deltaSpeed;
+				maxSpeed -= deltaSpeed;
+				previousLevel = level;
+			}
+			updateScoreDisplay();
+		}
+
+        function draw() {
+            if (!gameRunning) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+			if(gridOn) drawGrid(ctx, box);
+
+            let now = Date.now();
+            foods = foods.filter(f => now - f.time < foodDuration);
+            if (foods.length === 0) {
+                foodCount = getRandomFoodCount();
+                generateFood();
+            }
+
+            ctx.fillStyle = "red";
+            foods.forEach(f => ctx.fillRect(f.x, f.y, box, box));
+
+            if (specialFood && now - specialFood.time < foodDuration) {
+                ctx.fillStyle = "yellow";
+                ctx.fillRect(specialFood.x, specialFood.y, box, box);
+            } else {
+                specialFood = null;
+            }
+
+            snake.forEach((segment, i) => {
+                ctx.fillStyle = i === 0 ? "lime" : "green";
+                ctx.fillRect(segment.x, segment.y, box, box);
+            });
+
+            let snakeX = snake[0].x;
+            let snakeY = snake[0].y;
+
+            if (direction === "LEFT") snakeX -= box;
+            if (direction === "UP") snakeY -= box;
+            if (direction === "RIGHT") snakeX += box;
+            if (direction === "DOWN") snakeY += box;
+
+            snakeX = (snakeX + canvas.width) % canvas.width;
+            snakeY = (snakeY + canvas.height) % canvas.height;
+
+
+            foods = foods.filter(f => {
+                if (snakeX === f.x && snakeY === f.y) {
+                    score++;
+                    checkLevelChange();
+                    return false;
+                }
+                return true;
+            });
+
+            if (specialFood && snakeX === specialFood.x && snakeY === specialFood.y) {
+                score += 5;
+				checkLevelChange();
+                specialFood = null;
+            }
+
+
+            updateScoreDisplay();
+            snake.unshift({ x: snakeX, y: snakeY });
+            if (snake.length > score + 1) snake.pop();
+            checkCollision();
+            setTimeout(draw, speed);
+        }
+        draw();
+    </script>
+</body>
+</html>
