@@ -45,6 +45,45 @@
         <canvas id="gameCanvas"></canvas>
     </div>
     <script>
+	let startX, startY, endX, endY;
+
+        function handleGesture() {
+            let deltaX = endX - startX;
+            let deltaY = endY - startY;
+            let result = "";
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX > 50) {
+                    result = "RIGHT";
+                } else if (deltaX < -50) {
+                    result = "LEFT";
+                }
+            } else {
+                if (deltaY > 50) {
+                    result = "DOWN";
+                } else if (deltaY < -50) {
+                    result = "UP";
+                }
+            }
+
+	    if (result) {
+                direction = result;
+		    updateScoreDisplay();
+            }
+        }
+        gestureBox.addEventListener("touchstart", function(event) {
+            startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
+        });
+
+        gestureBox.addEventListener("touchend", function(event) {
+            endX = event.changedTouches[0].clientX;
+            endY = event.changedTouches[0].clientY;
+            handleGesture();
+        });
+
+    </script>
+    <script>
         function drawGrid(ctx, cellSize) {
             ctx.strokeStyle = "white";
             ctx.lineWidth = 1;
