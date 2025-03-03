@@ -160,7 +160,7 @@ function closeFullscreen() {
 
         function drawGameOver() {
 	        document.addEventListener("keydown", null);
-		addEventListener("dblclick", location.reload());
+			//document.addEventListener("dblclick", alert("oops");
 
             const canvas = document.getElementById("gameCanvas");
             const ctx = canvas.getContext("2d");
@@ -194,6 +194,36 @@ function closeFullscreen() {
                     }
                 });
             });
+			drawButton(canvas, ctx, (canvas.height + rows * pixelSize)/2 );
+			
+        }
+		
+		function drawButton(canvas, ctx, yStart) {
+
+            const buttonWidth = 150;
+            const buttonHeight = 50;
+            const x = (canvas.width - buttonWidth) / 2;
+            const y = yStart;
+            
+            ctx.fillStyle = "#007BFF";
+            ctx.fillRect(x, y, buttonWidth, buttonHeight);
+            
+            ctx.fillStyle = "white";
+            ctx.font = "20px Courier";
+            ctx.fillText("Reload", x + 35, y + 30);
+			
+			canvas.addEventListener("click", function(event) {
+				const rect = canvas.getBoundingClientRect();
+				const x = event.clientX - rect.left;
+				const y = event.clientY - rect.top;
+				
+				const buttonX = (canvas.width - buttonWidth) / 2;
+				const buttonY = yStart;
+				
+				if (x >= buttonX && x <= buttonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+					location.reload();
+				}
+			});
         }
     </script>
     <script>
