@@ -44,11 +44,48 @@
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
     </div>
-    <script>
-        document.documentElement.requestFullscreen().catch(err => {
-            console.log("Falha ao entrar em tela cheia:", err);
-        });
+<script>
+/* Close fullscreen */
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+}
 
+var isFullScreen = false;
+addEventListener("dblclick", function() {
+    var el = document.documentElement;
+	var rfs = el.requestFullscreen /* Chrome  */
+        || el.mozRequestFullScreen     /* Firefox */
+        || el.webkitRequestFullScreen  /* Safari  */
+        || el.msRequestFullscreen      /* IE11    */
+    ;
+	if(isFullScreen) {
+		closeFullscreen();
+		isFullScreen = false;
+	}else {
+		rfs.call(el);
+		isFullScreen = true;
+	}
+});
+/* Close fullscreen */
+function closeFullscreen() {
+  if (document.exitFullscreen) {		/* Chrome  */
+    document.exitFullscreen();
+  } else if (document.mozExitFullscreen) {	/* Firefox */
+    document.mozExitFullscreen();
+  } else if (document.webkitExitFullscreen) {	/* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {	/* IE11 */
+    document.msExitFullscreen();
+  }
+}
+</script>
+    <script>
 	let startX, startY, endX, endY;
 
         function handleGesture() {
