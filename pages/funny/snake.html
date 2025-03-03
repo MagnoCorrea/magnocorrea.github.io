@@ -89,20 +89,21 @@ function closeFullscreen() {
 	let startX, startY, endX, endY;
 
         function handleGesture() {
+	    const sensibility = 30;
             let deltaX = endX - startX;
             let deltaY = endY - startY;
             let result = "";
 
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (deltaX > 50) {
+                if (deltaX > sensibility) {
                     result = "RIGHT";
-                } else if (deltaX < -50) {
+                } else if (deltaX < -sensibility) {
                     result = "LEFT";
                 }
             } else {
-                if (deltaY > 50) {
+                if (deltaY > sensibility) {
                     result = "DOWN";
-                } else if (deltaY < -50) {
+                } else if (deltaY < -sensibility) {
                     result = "UP";
                 }
             }
@@ -159,11 +160,12 @@ function closeFullscreen() {
 
         function drawGameOver() {
 	        document.addEventListener("keydown", null);
+		addEventListener("dblclick", location.reload());
 
             const canvas = document.getElementById("gameCanvas");
             const ctx = canvas.getContext("2d");
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const pixelSize = (canvas.width >= 1000?20:canvas.width>= 500?10:5);
+            const pixelSize = (canvas.width >= 1000?20:canvas.width>= 500?10:5); //Tamanho do pixel responsivo
 			const gameOverText = [
 				" 0000  000  00 00  00000     000  0   0 00000  0000 ",
 				"0     0   0 0 0 0  0        0   0 0   0 0      0   0",
