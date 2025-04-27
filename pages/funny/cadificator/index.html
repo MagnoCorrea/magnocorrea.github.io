@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medidor de Imagem</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="toolbar">
+        <button id="rulerBtn">Régua</button>
+        <button id="protractorBtn">Transferidor</button>
+        <label for="scaleInput">Proporção (px/cm):</label>
+        <input type="number" id="scaleInput" value="1" min="1">
+        <span id="distanceDisplay">Distância: 0 cm</span>
+    </div>
+    <canvas id="imageCanvas"></canvas>
+    <input type="file" id="imageInput" accept="image/*">
+    <script src="script.js"></script>
+</body>
+</html>
