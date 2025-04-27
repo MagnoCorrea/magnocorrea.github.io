@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.toolbar button, .toolbar input, .toolbar label, .toolbar span {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+#imageCanvas {
+    display: block;
+    margin-top: 50px; /* Espaço para a toolbar */
+    width: 100vw;
+    height: calc(100vh - 50px);
+    background-color: #e0e0e0; /* Cor de fundo para o canvas */
+}
+
+#imageInput {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
