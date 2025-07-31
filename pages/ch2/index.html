@@ -649,7 +649,7 @@
                 
                 // Simular encontro de peers
                 setTimeout(() => {
-                    const fakePeers = ['peer1', 'peer2', 'peer3'];
+                    const fakePeers = [];//MAGNO ['peer1', 'peer2', 'peer3'];
                     fakePeers.forEach(peerId => {
                         if (peerId !== this.peerId) {
                             this.connectToPeer(peerId);
