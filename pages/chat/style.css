@@ -1,0 +1,335 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.status {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.status.connected {
+    background: #4CAF50;
+}
+
+.status.connecting {
+    background: #FF9800;
+}
+
+.connection-section {
+    padding: 40px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.connection-controls {
+    width: 100%;
+    max-width: 500px;
+}
+
+.control-group {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.control-group h3 {
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 500;
+}
+
+.separator {
+    text-align: center;
+    margin: 30px 0;
+    color: #999;
+    font-weight: 600;
+    position: relative;
+}
+
+.separator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ddd;
+    z-index: 1;
+}
+
+.separator {
+    background: white;
+    padding: 0 20px;
+    z-index: 2;
+    position: relative;
+}
+
+.btn {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #333;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+}
+
+.room-info {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9ff;
+    border-radius: 10px;
+    border: 2px dashed #4facfe;
+}
+
+.room-info p {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.room-code-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.room-code-container input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 14px;
+    background: white;
+}
+
+.join-room-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.join-room-container input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.join-room-container input:focus {
+    border-color: #4facfe;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.chat-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+
+.chat-header {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header span {
+    font-family: monospace;
+    background: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #fafafa;
+}
+
+.message {
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.message.own {
+    justify-content: flex-end;
+}
+
+.message-content {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    word-wrap: break-word;
+}
+
+.message.own .message-content {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.message.other .message-content {
+    background: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 4px;
+}
+
+.message-time {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 5px;
+}
+
+.chat-input {
+    padding: 20px;
+    background: white;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.chat-input input:focus {
+    border-color: #4facfe;
+}
+
+.system-message {
+    text-align: center;
+    margin: 20px 0;
+    color: #666;
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* Scrollbar personalizada */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        margin: 10px;
+        min-height: calc(100vh - 20px);
+    }
+    
+    .connection-section {
+        padding: 20px;
+    }
+    
+    .room-code-container,
+    .join-room-container {
+        flex-direction: column;
+    }
+    
+    .room-code-container input,
+    .join-room-container input {
+        margin-bottom: 10px;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+    
+    .chat-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
