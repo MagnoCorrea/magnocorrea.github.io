@@ -633,6 +633,9 @@
             joinTopic(topic) {
                 this.currentTopic = topic;
                 document.getElementById('currentTopic').textContent = topic;
+
+                // Anunciar meu peerId no GunDB
+                this.gun.get('topic-peers').get(topic).get(this.peerId).put({ active: true, timestamp: Date.now() });
                 
                 // Procurar por peers no mesmo tópico
                 this.findPeersForTopic(topic);
@@ -640,7 +643,7 @@
                 // Adicionar mensagem de sistema
                 this.addSystemMessage(`Entrou no tópico: ${topic}`);
             }
-            
+           
             // Encontrar peers para um tópico específico
             findPeersForTopic(topic) {
                 // Na implementação real, isso usaria a DHT para encontrar peers
@@ -649,14 +652,11 @@
                 
                 // Simular encontro de peers
                 setTimeout(() => {
-                    const fakePeers = [];//MAGNO ['peer1', 'peer2', 'peer3'];
-                    fakePeers.forEach(peerId => {
-                        if (peerId !== this.peerId) {
+                    this.gun.get('topic-peers').get(topic).map().on((data, peerId) => {
+                        if (peerId !== this.peerId && data && data.active) {
                             this.connectToPeer(peerId);
                         }
                     });
-                    
-                    this.updatePeerCount(fakePeers.length + 1);
                 }, 2000);
             }
             
