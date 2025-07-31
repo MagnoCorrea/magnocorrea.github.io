@@ -428,439 +428,397 @@
                 </div>
             </div>
         </header>
-        
         <div class="main-content">
             <div class="sidebar">
                 <div class="panel">
-                    <h2 class="panel-title">
-                        <span>📡</span> Tópicos da Rede
-                    </h2>
+                    <h2 class="panel-title"><span>📡</span> Tópicos da Rede</h2>
                     <ul class="topic-list" id="topicList">
-                        <li class="topic-item active">
-                            <span>Geral</span>
-                            <span class="peer-count">12</span>
-                        </li>
-                        <li class="topic-item">
-                            <span>Tecnologia</span>
-                            <span class="peer-count">8</span>
-                        </li>
-                        <li class="topic-item">
-                            <span>Open Source</span>
-                            <span class="peer-count">5</span>
-                        </li>
+                        <li class="topic-item active"><span>Geral</span> <span class="peer-count">0</span></li>
+                        <li class="topic-item"><span>Tecnologia</span> <span class="peer-count">0</span></li>
+                        <li class="topic-item"><span>Open Source</span> <span class="peer-count">0</span></li>
                     </ul>
                 </div>
-                
                 <div class="panel">
-                    <h2 class="panel-title">
-                        <span>🔍</span> Descobrir Tópicos
-                    </h2>
+                    <h2 class="panel-title"><span>🔍</span> Descobrir Tópicos</h2>
                     <p>Busque por tópicos na rede DHT:</p>
                     <div class="discovery-controls">
-                        <input type="text" placeholder="Nome do tópico" style="flex:1;padding:10px;border-radius:30px;border:1px solid var(--border);">
-                        <button class="btn btn-success">Buscar</button>
+                        <input type="text" id="searchTopicInput" placeholder="Nome do tópico" style="flex:1;padding:10px;border-radius:30px;border:1px solid var(--border);">
+                        <button class="btn btn-success" id="searchTopicBtn">Buscar</button>
                     </div>
                 </div>
-                
                 <div class="discovery-panel">
-                    <h2 class="panel-title">
-                        <span>⚙️</span> Configurações de Rede
-                    </h2>
+                    <h2 class="panel-title"><span>⚙️</span> Configurações de Rede</h2>
                     <div class="discovery-controls">
-                        <button class="btn" id="toggleNetwork">
-                            <span id="networkStatusText">Conectado</span>
-                        </button>
-                        <button class="btn btn-warning" id="copyPeerId">
-                            Copiar Meu ID
-                        </button>
+                        <button class="btn" id="toggleNetwork"><span id="networkStatusText">Conectado</span></button>
+                        <button class="btn btn-warning" id="copyPeerId">Copiar Meu ID</button>
                     </div>
                 </div>
             </div>
-            
             <div class="chat-container">
                 <div class="chat-header">
                     <div class="chat-title">Tópico: <span id="currentTopic">Geral</span></div>
                     <div class="chat-peers">
                         <span>Peers:</span>
-                        <div class="peer-list">
-                            <div class="peer">A</div>
-                            <div class="peer">B</div>
-                            <div class="peer">C</div>
-                            <div class="peer">+9</div>
-                        </div>
+                        <div class="peer-list" id="peerListAvatars"></div>
                     </div>
                 </div>
-                
-                <div class="messages-container" id="messagesContainer">
-                    <div class="message message-system">
-                        Conectado à rede DHT com 12 peers no tópico
-                    </div>
-                    
-                    <div class="message peer">
-                        Olá pessoal! Como está a rede hoje?
-                        <div class="message-info">Peer:A23F • 10:45</div>
-                    </div>
-                    
-                    <div class="message self">
-                        Tudo estável por aqui! Acabei de me conectar.
-                        <div class="message-info">Você • 10:46</div>
-                    </div>
-                    
-                    <div class="message peer">
-                        Estamos testando um novo protocolo de compressão de mensagens. Alguém interessado?
-                        <div class="message-info">Peer:8B1C • 10:47</div>
-                    </div>
-                </div>
-                
+                <div class="messages-container" id="messagesContainer"></div>
                 <div class="message-input-area">
                     <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
                     <button id="sendButton">➤</button>
                 </div>
             </div>
         </div>
-        
         <footer>
             <p>Sistema de chat descentralizado inspirado no protocolo BitTorrent • DHT + WebRTC • Sem servidores centrais</p>
         </footer>
     </div>
 
-    <!-- Bibliotecas para rede P2P -->
+    <!-- PeerJS e GunDB -->
     <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gun/0.2020.1235/gun.min.js"></script>
-    
     <script>
-        // Sistema de Chat Descentralizado estilo BitTorrent
-        class ChatTorrent {
-            constructor() {
-                // Configuração da rede
-                this.peer = null;
-                this.peerId = null;
-                this.connections = {};
-                this.currentTopic = 'geral';
-                this.peerCount = 0;
-                this.messageCount = 0;
-                
-                // Elementos DOM
-                this.peerCountEl = document.getElementById('peerCount');
-                this.topicCountEl = document.getElementById('topicCount');
-                this.messageCountEl = document.getElementById('messageCount');
-                this.networkStatusEl = document.getElementById('networkStatus');
-                this.networkStatusText = document.getElementById('networkStatusText');
-                this.messagesContainer = document.getElementById('messagesContainer');
-                this.messageInput = document.getElementById('messageInput');
-                this.sendButton = document.getElementById('sendButton');
-                this.toggleNetworkBtn = document.getElementById('toggleNetwork');
-                this.copyPeerIdBtn = document.getElementById('copyPeerId');
-                
-                // Iniciar a rede
-                this.initNetwork();
-                this.setupEventListeners();
-            }
-            
-            // Inicializar a rede P2P
-            initNetwork() {
-                // Criar instância Peer com conexão a servidores públicos
-                this.peer = new Peer({
-                    host: '0.peerjs.com',
-                    port: 443,
-                    path: '/',
-                    config: {
-                        iceServers: [
-                            { urls: 'stun:stun.l.google.com:19302' },
-                            { urls: 'stun:global.stun.twilio.com:3478' }
-                        ]
-                    }
-                });
-                
-                // Quando o Peer estiver pronto
-                this.peer.on('open', (id) => {
-                    this.peerId = id;
-                    this.updateNetworkStatus('connected');
-                    console.log(`Meu Peer ID: ${id}`);
-                    
-                    // Conectar à rede DHT (exemplo usando GunDB)
-                    this.initDHT();
-                    
-                    // Atualizar contagem de peers
-                    this.updatePeerCount(1);
-                });
-                
-                // Lidar com conexões de entrada
-                this.peer.on('connection', (conn) => {
-                    this.handleIncomingConnection(conn);
-                });
-                
-                // Lidar com erros
-                this.peer.on('error', (err) => {
-                    console.error('PeerJS error:', err);
-                    this.updateNetworkStatus('disconnected');
-                });
-                
-                // Quando desconectado
-                this.peer.on('disconnected', () => {
-                    this.updateNetworkStatus('disconnected');
-                });
-            }
-            
-            // Inicializar DHT (Distributed Hash Table)
-            initDHT() {
-                // GunDB fornece uma implementação de DHT para browsers
-                //MAGNO this.gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
-                this.gun = Gun(['https://gun.defucc.me/gun']);
-                
-                // Entrar no tópico atual
-                this.joinTopic(this.currentTopic);
-                // Monitorar a rede para estatísticas
-                this.gun.get('network').get('stats').on((data) => {
-                    console.log('Dados recebidos de GunDB:', data);
-                    if (typeof data !== 'object' || data === null) return;
-                    this.peerCount = data.peers || 0;
-                    this.topicCount = data.topics || 0;
-                    this.updateUIStats();
-                });
-                
-                // Atualizar estatísticas periodicamente
-                setInterval(() => {
-                    this.gun.get('network').get('stats').put({
-                        peers: this.peerCount || 0,
-                        topics: this.topicCount || 0,
-                        timestamp: Date.now()
-                    });
-                }, 30000);
-            }
-            
-            // Entrar em um tópico de chat
-            joinTopic(topic) {
-                this.currentTopic = topic;
-                document.getElementById('currentTopic').textContent = topic;
+    class ChatTorrent {
+        constructor() {
+            this.peer = null;
+            this.peerId = null;
+            this.connections = {};
+            this.currentTopic = 'Geral'; // Inicialmente "Geral"
+            this.peerCount = 0;
+            this.topicCount = 0;
+            this.messageCount = 0;
+            this.knownPeers = new Set();
 
-                // Anunciar meu peerId no GunDB
-                this.gun.get('topic-peers').get(topic).get(this.peerId).put({ active: true, timestamp: Date.now() });
-                
-                // Procurar por peers no mesmo tópico
-                this.findPeersForTopic(topic);
-                
-                // Adicionar mensagem de sistema
-                this.addSystemMessage(`Entrou no tópico: ${topic}`);
-            }
-           
-            // Encontrar peers para um tópico específico
-            findPeersForTopic(topic) {
-                // Na implementação real, isso usaria a DHT para encontrar peers
-                // Aqui é uma simulação
-                console.log(`Buscando peers para tópico: ${topic}`);
-                
-                // Simular encontro de peers
-                setTimeout(() => {
-                    this.gun.get('topic-peers').get(topic).map().on((data, peerId) => {
-                        if (peerId !== this.peerId && data && data.active) {
-                            this.connectToPeer(peerId);
-                        }
-                    });
-                }, 2000);
-            }
-            
-            // Conectar a outro peer
-            connectToPeer(peerId) {
-                if (this.connections[peerId]) return;
-                
-                // Estabelecer conexão de dados
-                const conn = this.peer.connect(peerId, {
-                    reliable: true,
-                    serialization: 'json'
-                });
-                
-                conn.on('open', () => {
-                    this.connections[peerId] = conn;
-                    this.updatePeerCount(Object.keys(this.connections).length + 1);
-                    this.addSystemMessage(`Conectado ao peer: ${peerId.substring(0, 6)}`);
-                });
-                
-                conn.on('data', (data) => {
-                    this.handlePeerMessage(peerId, data);
-                });
-                
-                conn.on('close', () => {
-                    delete this.connections[peerId];
-                    this.updatePeerCount(Object.keys(this.connections).length + 1);
-                    this.addSystemMessage(`Peer desconectado: ${peerId.substring(0, 6)}`);
-                });
-            }
-            
-            // Lidar com conexão de entrada
-            handleIncomingConnection(conn) {
-                const peerId = conn.peer;
-                
-                conn.on('open', () => {
-                    this.connections[peerId] = conn;
-                    this.updatePeerCount(Object.keys(this.connections).length + 1);
-                    this.addSystemMessage(`Peer conectado: ${peerId.substring(0, 6)}`);
-                });
-                
-                conn.on('data', (data) => {
-                    this.handlePeerMessage(peerId, data);
-                });
-                
-                conn.on('close', () => {
-                    delete this.connections[peerId];
-                    this.updatePeerCount(Object.keys(this.connections).length + 1);
-                    this.addSystemMessage(`Peer desconectado: ${peerId.substring(0, 6)}`);
-                });
-            }
-            
-            // Lidar com mensagens de peers
-            handlePeerMessage(peerId, data) {
-                if (data.type === 'message') {
-                    this.addMessage(peerId.substring(0, 6), data.content, 'peer');
-                    this.messageCount++;
-                    this.updateUIStats();
-                } else if (data.type === 'topic-join') {
-                    this.addSystemMessage(`Peer ${peerId.substring(0, 6)} entrou no tópico`);
+            this.peerCountEl = document.getElementById('peerCount');
+            this.topicCountEl = document.getElementById('topicCount');
+            this.messageCountEl = document.getElementById('messageCount');
+            this.networkStatusEl = document.getElementById('networkStatus');
+            this.networkStatusText = document.getElementById('networkStatusText');
+            this.messagesContainer = document.getElementById('messagesContainer');
+            this.messageInput = document.getElementById('messageInput');
+            this.sendButton = document.getElementById('sendButton');
+            this.toggleNetworkBtn = document.getElementById('toggleNetwork');
+            this.copyPeerIdBtn = document.getElementById('copyPeerId');
+            this.peerListAvatars = document.getElementById('peerListAvatars');
+            this.topicList = document.getElementById('topicList');
+            this.searchTopicInput = document.getElementById('searchTopicInput');
+            this.searchTopicBtn = document.getElementById('searchTopicBtn');
+
+            this.initNetwork();
+            this.setupEventListeners();
+        }
+
+        // Inicializar PeerJS
+        initNetwork() {
+            this.peer = new Peer({
+                host: '0.peerjs.com',
+                port: 443,
+                path: '/',
+                config: {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:global.stun.twilio.com:3478' }
+                    ]
                 }
-            }
-            
-            // Enviar mensagem para todos os peers conectados
-            broadcastMessage(message) {
-                if (!message.trim()) return;
-                
-                const data = {
-                    type: 'message',
-                    content: message,
-                    topic: this.currentTopic,
-                    timestamp: Date.now(),
-                    sender: this.peerId
-                };
-                
-                Object.values(this.connections).forEach(conn => {
-                    if (conn.open) {
-                        conn.send(data);
+            });
+
+            this.peer.on('open', (id) => {
+                this.peerId = id;
+                this.updateNetworkStatus('connected');
+                this.initDHT();
+                this.updatePeerCount(1);
+            });
+
+            this.peer.on('connection', (conn) => {
+                this.handleIncomingConnection(conn);
+            });
+
+            this.peer.on('error', (err) => {
+                console.error('PeerJS error:', err);
+                this.updateNetworkStatus('disconnected');
+            });
+
+            this.peer.on('disconnected', () => {
+                this.updateNetworkStatus('disconnected');
+            });
+        }
+
+        initDHT() {
+            this.gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+
+            // Atualiza lista de tópicos dinamicamente
+            this.gun.get('topic-peers').map().once((data, topic) => {
+                if (topic && topic !== this.currentTopic) {
+                    // Adiciona tópicos dinâmicos no menu se não existir
+                    if (![...this.topicList.children].some(li => li.textContent.trim().startsWith(topic))) {
+                        const li = document.createElement('li');
+                        li.className = "topic-item";
+                        li.innerHTML = `<span>${topic}</span> <span class="peer-count">0</span>`;
+                        this.topicList.appendChild(li);
+                        li.addEventListener('click', () => this.handleTopicClick(li));
+                    }
+                }
+            });
+
+            this.joinTopic(this.currentTopic);
+
+            // Atualiza número de tópicos na UI
+            this.gun.get('topic-peers').map().once((data, topic) => {
+                if (topic) {
+                    this.topicCount++;
+                    this.topicCountEl.textContent = this.topicCount;
+                }
+            });
+        }
+
+        // Anuncia seu peerId no GunDB do tópico, escuta outros peers, conecta a eles
+        joinTopic(topic) {
+            this.currentTopic = topic;
+            document.getElementById('currentTopic').textContent = topic;
+            // Limpa mensagens e peers na troca de tópico
+            this.messagesContainer.innerHTML = '';
+            this.knownPeers.clear();
+            this.peerListAvatars.innerHTML = '';
+
+            // Anunciar meu peerId na DHT
+            this.gun.get('topic-peers').get(topic).get(this.peerId).put({ active: true, timestamp: Date.now() });
+
+            // Escuta peers ativos neste tópico e conecta a eles
+            this.gun.get('topic-peers').get(topic).map().on((data, peerId) => {
+                if (
+                    peerId && 
+                    peerId !== this.peerId && 
+                    data && 
+                    data.active &&
+                    !this.connections[peerId]
+                ) {
+                    this.connectToPeer(peerId);
+                }
+                // Atualiza lista de peers na interface
+                this.updatePeersListUI();
+            });
+
+            // Atualiza contador de peers no menu lateral
+            this.gun.get('topic-peers').get(topic).map().on((data, peerId) => {
+                // Atualiza contador na sidebar
+                [...this.topicList.children].forEach(li => {
+                    if (li.querySelector('span').textContent === topic) {
+                        let count = 0;
+                        this.gun.get('topic-peers').get(topic).map().once((d, id) => {
+                            if(d && d.active) count++;
+                        });
+                        setTimeout(() => {
+                            li.querySelector('.peer-count').textContent = count;
+                        }, 500);
                     }
                 });
-                
-                // Adicionar a própria mensagem na interface
-                this.addMessage('Você', message, 'self');
+            });
+
+            this.addSystemMessage(`Entrou no tópico: ${topic}`);
+            this.findPeersForTopic(topic);
+        }
+
+        findPeersForTopic(topic) {
+            // Já implementado acima via .map().on() em joinTopic
+            // Mantido só por compatibilidade
+        }
+
+        // Conecta a outro peer via PeerJS
+        connectToPeer(peerId) {
+            if (this.connections[peerId]) return;
+            const conn = this.peer.connect(peerId, { reliable: true, serialization: 'json' });
+
+            conn.on('open', () => {
+                this.connections[peerId] = conn;
+                this.knownPeers.add(peerId);
+                this.updatePeerCount(Object.keys(this.connections).length + 1);
+                this.updatePeersListUI();
+                this.addSystemMessage(`Conectado ao peer: ${peerId.substring(0, 6)}`);
+                // Avise ao peer que entrou no tópico
+                conn.send({ type: 'topic-join', topic: this.currentTopic });
+            });
+
+            conn.on('data', (data) => {
+                this.handlePeerMessage(peerId, data);
+            });
+
+            conn.on('close', () => {
+                delete this.connections[peerId];
+                this.knownPeers.delete(peerId);
+                this.updatePeerCount(Object.keys(this.connections).length + 1);
+                this.updatePeersListUI();
+                this.addSystemMessage(`Peer desconectado: ${peerId.substring(0, 6)}`);
+            });
+        }
+
+        handleIncomingConnection(conn) {
+            const peerId = conn.peer;
+            conn.on('open', () => {
+                this.connections[peerId] = conn;
+                this.knownPeers.add(peerId);
+                this.updatePeerCount(Object.keys(this.connections).length + 1);
+                this.updatePeersListUI();
+                this.addSystemMessage(`Peer conectado: ${peerId.substring(0, 6)}`);
+            });
+
+            conn.on('data', (data) => {
+                this.handlePeerMessage(peerId, data);
+            });
+
+            conn.on('close', () => {
+                delete this.connections[peerId];
+                this.knownPeers.delete(peerId);
+                this.updatePeerCount(Object.keys(this.connections).length + 1);
+                this.updatePeersListUI();
+                this.addSystemMessage(`Peer desconectado: ${peerId.substring(0, 6)}`);
+            });
+        }
+
+        handlePeerMessage(peerId, data) {
+            if (data.type === 'message') {
+                this.addMessage(peerId.substring(0, 6), data.content, 'peer');
                 this.messageCount++;
                 this.updateUIStats();
-            }
-            
-            // Adicionar mensagem ao chat
-            addMessage(sender, text, type) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', type);
-                
-                const messageContent = document.createElement('div');
-                messageContent.textContent = text;
-                
-                const messageInfo = document.createElement('div');
-                messageInfo.classList.add('message-info');
-                messageInfo.textContent = `${sender} • ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
-                
-                messageElement.appendChild(messageContent);
-                messageElement.appendChild(messageInfo);
-                this.messagesContainer.appendChild(messageElement);
-                
-                // Scroll para o final
-                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
-            }
-            
-            // Adicionar mensagem de sistema
-            addSystemMessage(text) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', 'message-system');
-                messageElement.textContent = text;
-                this.messagesContainer.appendChild(messageElement);
-                
-                // Scroll para o final
-                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
-            }
-            
-            // Atualizar status da rede
-            updateNetworkStatus(status) {
-                this.networkStatusEl.className = 'status-indicator';
-                this.networkStatusEl.classList.add(`status-${status}`);
-                
-                switch(status) {
-                    case 'connected':
-                        this.networkStatusText.textContent = 'Conectado';
-                        break;
-                    case 'connecting':
-                        this.networkStatusText.textContent = 'Conectando...';
-                        break;
-                    case 'disconnected':
-                        this.networkStatusText.textContent = 'Desconectado';
-                        break;
-                }
-            }
-            
-            // Atualizar contagem de peers
-            updatePeerCount(count) {
-                this.peerCount = count;
-                this.updateUIStats();
-            }
-            
-            // Atualizar estatísticas na UI
-            updateUIStats() {
-                this.peerCountEl.textContent = this.peerCount;
-                this.topicCountEl.textContent = this.topicCount;
-                this.messageCountEl.textContent = this.messageCount;
-            }
-            
-            // Configurar event listeners
-            setupEventListeners() {
-                // Enviar mensagem
-                this.sendButton.addEventListener('click', () => {
-                    this.broadcastMessage(this.messageInput.value);
-                    this.messageInput.value = '';
-                });
-                
-                this.messageInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        this.broadcastMessage(this.messageInput.value);
-                        this.messageInput.value = '';
-                    }
-                });
-                
-                // Alternar estado da rede
-                this.toggleNetworkBtn.addEventListener('click', () => {
-                    if (this.peer.disconnected) {
-                        this.peer.reconnect();
-                        this.updateNetworkStatus('connecting');
-                    } else {
-                        this.peer.disconnect();
-                        this.updateNetworkStatus('disconnected');
-                    }
-                });
-                
-                // Copiar ID do peer
-                this.copyPeerIdBtn.addEventListener('click', () => {
-                    if (this.peerId) {
-                        navigator.clipboard.writeText(this.peerId)
-                            .then(() => {
-                                alert('ID do peer copiado para a área de transferência!');
-                            })
-                            .catch(err => {
-                                console.error('Falha ao copiar ID:', err);
-                            });
-                    }
-                });
-                
-                // Trocando de tópicos
-                document.querySelectorAll('.topic-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        document.querySelectorAll('.topic-item').forEach(i => {
-                            i.classList.remove('active');
-                        });
-                        item.classList.add('active');
-                        this.joinTopic(item.querySelector('span').textContent);
-                    });
-                });
+            } else if (data.type === 'topic-join') {
+                this.addSystemMessage(`Peer ${peerId.substring(0, 6)} entrou no tópico`);
             }
         }
-        
-        // Iniciar o aplicativo quando o DOM estiver carregado
-        document.addEventListener('DOMContentLoaded', () => {
-            const app = new ChatTorrent();
-        });
+
+        broadcastMessage(message) {
+            if (!message.trim()) return;
+            const data = {
+                type: 'message',
+                content: message,
+                topic: this.currentTopic,
+                timestamp: Date.now(),
+                sender: this.peerId
+            };
+            Object.values(this.connections).forEach(conn => {
+                if (conn.open) {
+                    conn.send(data);
+                }
+            });
+            this.addMessage('Você', message, 'self');
+            this.messageCount++;
+            this.updateUIStats();
+        }
+
+        addMessage(sender, text, type) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', type);
+
+            const messageContent = document.createElement('div');
+            messageContent.textContent = text;
+
+            const messageInfo = document.createElement('div');
+            messageInfo.classList.add('message-info');
+            messageInfo.textContent = `${sender} • ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+
+            messageElement.appendChild(messageContent);
+            messageElement.appendChild(messageInfo);
+            this.messagesContainer.appendChild(messageElement);
+
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }
+
+        addSystemMessage(text) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'message-system');
+            messageElement.textContent = text;
+            this.messagesContainer.appendChild(messageElement);
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }
+
+        updateNetworkStatus(status) {
+            this.networkStatusEl.className = 'status-indicator';
+            this.networkStatusEl.classList.add(`status-${status}`);
+            switch(status) {
+                case 'connected': this.networkStatusText.textContent = 'Conectado'; break;
+                case 'connecting': this.networkStatusText.textContent = 'Conectando...'; break;
+                case 'disconnected': this.networkStatusText.textContent = 'Desconectado'; break;
+            }
+        }
+
+        updatePeerCount(count) {
+            this.peerCount = count;
+            this.updateUIStats();
+        }
+
+        updateUIStats() {
+            this.peerCountEl.textContent = this.peerCount;
+            this.topicCountEl.textContent = this.topicCount;
+            this.messageCountEl.textContent = this.messageCount;
+        }
+
+        updatePeersListUI() {
+            // Mostra a si e os peers conectados, com as iniciais
+            this.peerListAvatars.innerHTML = '';
+            const selfDiv = document.createElement('div');
+            selfDiv.className = 'peer';
+            selfDiv.textContent = 'Você';
+            this.peerListAvatars.appendChild(selfDiv);
+
+            Object.keys(this.connections).forEach(peerId => {
+                const div = document.createElement('div');
+                div.className = 'peer';
+                div.textContent = peerId.substring(0, 2).toUpperCase();
+                this.peerListAvatars.appendChild(div);
+            });
+        }
+
+        setupEventListeners() {
+            this.sendButton.addEventListener('click', () => {
+                this.broadcastMessage(this.messageInput.value);
+                this.messageInput.value = '';
+            });
+
+            this.messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.broadcastMessage(this.messageInput.value);
+                    this.messageInput.value = '';
+                }
+            });
+
+            this.toggleNetworkBtn.addEventListener('click', () => {
+                if (this.peer.disconnected) {
+                    this.peer.reconnect();
+                    this.updateNetworkStatus('connecting');
+                } else {
+                    this.peer.disconnect();
+                    this.updateNetworkStatus('disconnected');
+                }
+            });
+
+            this.copyPeerIdBtn.addEventListener('click', () => {
+                if (this.peerId) {
+                    navigator.clipboard.writeText(this.peerId)
+                        .then(() => alert('ID do peer copiado para a área de transferência!'))
+                        .catch(err => console.error('Falha ao copiar ID:', err));
+                }
+            });
+
+            // Troca de tópicos pelo menu
+            document.querySelectorAll('.topic-item').forEach(item => {
+                item.addEventListener('click', () => this.handleTopicClick(item));
+            });
+
+            // Busca de tópico manual
+            this.searchTopicBtn.addEventListener('click', () => {
+                const t = this.searchTopicInput.value.trim();
+                if (t) this.joinTopic(t);
+            });
+        }
+
+        handleTopicClick(item) {
+            document.querySelectorAll('.topic-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            this.joinTopic(item.querySelector('span').textContent);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const app = new ChatTorrent();
+    });
     </script>
 </body>
-</html>
+</html>	
