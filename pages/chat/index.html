@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat P2P</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chat P2P - Comunicação Direta</h1>
+            <div class="status" id="status">Desconectado</div>
+        </header>
+
+        <div class="connection-section" id="connectionSection">
+            <div class="connection-controls">
+                <div class="control-group">
+                    <h3>Criar Nova Sala</h3>
+                    <button id="createRoom" class="btn btn-primary">Criar Sala</button>
+                    <div id="roomInfo" class="room-info hidden">
+                        <p>Compartilhe este código com seu contato:</p>
+                        <div class="room-code-container">
+                            <input type="text" id="roomCode" readonly>
+                            <button id="copyCode" class="btn btn-secondary">Copiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator">OU</div>
+
+                <div class="control-group">
+                    <h3>Entrar em Sala Existente</h3>
+                    <div class="join-room-container">
+                        <input type="text" id="joinRoomCode" placeholder="Cole o código da sala aqui">
+                        <button id="joinRoom" class="btn btn-primary">Entrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-section hidden" id="chatSection">
+            <div class="chat-header">
+                <span id="chatRoomCode"></span>
+                <button id="leaveRoom" class="btn btn-danger">Sair da Sala</button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <!-- Mensagens aparecerão aqui -->
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+                <button id="sendMessage" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
