@@ -609,21 +609,20 @@
                 
                 // Entrar no tópico atual
                 this.joinTopic(this.currentTopic);
-                
+                console.log('Dados recebidos de GunDB:', data);
                 // Monitorar a rede para estatísticas
                 this.gun.get('network').get('stats').on((data) => {
-                    if (data) {
-                        this.peerCount = data.peers || 0;
-                        this.topicCount = data.topics || 0;
-                        this.updateUIStats();
-                    }
+                    if (typeof data !== 'object' || data === null) return;
+                    this.peerCount = data.peers || 0;
+                    this.topicCount = data.topics || 0;
+                    this.updateUIStats();
                 });
                 
                 // Atualizar estatísticas periodicamente
                 setInterval(() => {
                     this.gun.get('network').get('stats').put({
-                        peers: this.peerCount,
-                        topics: this.topicCount,
+                        peers: this.peerCount || 0,
+                        topics: this.topicCount || 0,
                         timestamp: Date.now()
                     });
                 }, 30000);
