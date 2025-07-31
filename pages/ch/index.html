@@ -1,0 +1,32 @@
+<!-- index.html -->
+<html>
+<body>
+<textarea id="offer" placeholder="Oferta"></textarea>
+<textarea id="answer" placeholder="Resposta"></textarea>
+<button id="createOffer">Criar Oferta</button>
+<button id="setAnswer">Definir Resposta</button>
+<script>
+let pc = new RTCPeerConnection();
+
+pc.onicecandidate = e => {
+  if (e.candidate) return;
+  document.getElementById("offer").value = JSON.stringify(pc.localDescription);
+};
+
+document.getElementById("createOffer").onclick = async () => {
+  let offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+};
+
+document.getElementById("setAnswer").onclick = async () => {
+  let answer = JSON.parse(document.getElementById("answer").value);
+  await pc.setRemoteDescription(answer);
+};
+
+// Exemplo de canal de dados
+let channel = pc.createDataChannel("chat");
+channel.onopen = () => channel.send("Olá, peer!");
+channel.onmessage = e => alert("Recebido: " + e.data);
+</script>
+</body>
+</html>
