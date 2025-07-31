@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatTorrent - Chat Descentralizado</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a2530;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --gray: #7f8c8d;
+            --border: #bdc3c7;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .network-info {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 6px;
+        }
+        
+        .network-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--success);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: var(--light);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel {
+            padding: 20px;
+        }
+        
+        .panel-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title i {
+            color: var(--secondary);
+        }
+        
+        .topic-list {
+            list-style: none;
+        }
+        
+        .topic-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .topic-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .topic-item.active {
+            background: var(--secondary);
+            color: white;
+            border-left-color: var(--primary);
+        }
+        
+        .peer-count {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-title {
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+        
+        .chat-peers {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .peer-list {
+            display: flex;
+        }
+        
+        .peer {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-left: -8px;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .peer:first-child {
+            margin-left: 0;
+        }
+        
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.self {
+            background: var(--secondary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message.peer {
+            background: #e3e3e3;
+            color: var(--dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message-system {
+            align-self: center;
+            background: var(--warning);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .message-info {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        .message-input-area {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 15px;
+        }
+        
+        #messageInput {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        #messageInput:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        #sendButton {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        #sendButton:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .discovery-panel {
+            margin-top: auto;
+            background: white;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .discovery-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border-radius: 30px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-connected {
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+        }
+        
+        .status-connecting {
+            background: var(--warning);
+            box-shadow: 0 0 8px var(--warning);
+        }
+        
+        .status-disconnected {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .network-info {
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🌐</div>
+                <div class="logo-text">ChatTorrent</div>
+            </div>
+            <div class="network-info">
+                <div class="network-stat">
+                    <span class="stat-value" id="peerCount">0</span>
+                    <span class="stat-label">Peers</span>
+                </div>
+                <div class="network-stat">
+                    <span class="stat-value" id="topicCount">0</span>
+                    <span class="stat-label">Tópicos</span>
+                </div>
+                <div class="network-stat">
+                    <span class="stat-value" id="messageCount">0</span>
+                    <span class="stat-label">Mensagens</span>
+                </div>
+                <div class="network-stat">
+                    <span class="stat-value">
+                        <span class="status-indicator status-connected" id="networkStatus"></span>
+                    </span>
+                    <span class="stat-label">Rede</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <span>📡</span> Tópicos da Rede
+                    </h2>
+                    <ul class="topic-list" id="topicList">
+                        <li class="topic-item active">
+                            <span>Geral</span>
+                            <span class="peer-count">12</span>
+                        </li>
+                        <li class="topic-item">
+                            <span>Tecnologia</span>
+                            <span class="peer-count">8</span>
+                        </li>
+                        <li class="topic-item">
+                            <span>Open Source</span>
+                            <span class="peer-count">5</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <span>🔍</span> Descobrir Tópicos
+                    </h2>
+                    <p>Busque por tópicos na rede DHT:</p>
+                    <div class="discovery-controls">
+                        <input type="text" placeholder="Nome do tópico" style="flex:1;padding:10px;border-radius:30px;border:1px solid var(--border);">
+                        <button class="btn btn-success">Buscar</button>
+                    </div>
+                </div>
+                
+                <div class="discovery-panel">
+                    <h2 class="panel-title">
+                        <span>⚙️</span> Configurações de Rede
+                    </h2>
+                    <div class="discovery-controls">
+                        <button class="btn" id="toggleNetwork">
+                            <span id="networkStatusText">Conectado</span>
+                        </button>
+                        <button class="btn btn-warning" id="copyPeerId">
+                            Copiar Meu ID
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">Tópico: <span id="currentTopic">Geral</span></div>
+                    <div class="chat-peers">
+                        <span>Peers:</span>
+                        <div class="peer-list">
+                            <div class="peer">A</div>
+                            <div class="peer">B</div>
+                            <div class="peer">C</div>
+                            <div class="peer">+9</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="messages-container" id="messagesContainer">
+                    <div class="message message-system">
+                        Conectado à rede DHT com 12 peers no tópico
+                    </div>
+                    
+                    <div class="message peer">
+                        Olá pessoal! Como está a rede hoje?
+                        <div class="message-info">Peer:A23F • 10:45</div>
+                    </div>
+                    
+                    <div class="message self">
+                        Tudo estável por aqui! Acabei de me conectar.
+                        <div class="message-info">Você • 10:46</div>
+                    </div>
+                    
+                    <div class="message peer">
+                        Estamos testando um novo protocolo de compressão de mensagens. Alguém interessado?
+                        <div class="message-info">Peer:8B1C • 10:47</div>
+                    </div>
+                </div>
+                
+                <div class="message-input-area">
+                    <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+                    <button id="sendButton">➤</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Sistema de chat descentralizado inspirado no protocolo BitTorrent • DHT + WebRTC • Sem servidores centrais</p>
+        </footer>
+    </div>
+
+    <!-- Bibliotecas para rede P2P -->
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gun/0.2020.1235/gun.min.js"></script>
+    
+    <script>
+        // Sistema de Chat Descentralizado estilo BitTorrent
+        class ChatTorrent {
+            constructor() {
+                // Configuração da rede
+                this.peer = null;
+                this.peerId = null;
+                this.connections = {};
+                this.currentTopic = 'geral';
+                this.peerCount = 0;
+                this.messageCount = 0;
+                
+                // Elementos DOM
+                this.peerCountEl = document.getElementById('peerCount');
+                this.topicCountEl = document.getElementById('topicCount');
+                this.messageCountEl = document.getElementById('messageCount');
+                this.networkStatusEl = document.getElementById('networkStatus');
+                this.networkStatusText = document.getElementById('networkStatusText');
+                this.messagesContainer = document.getElementById('messagesContainer');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.toggleNetworkBtn = document.getElementById('toggleNetwork');
+                this.copyPeerIdBtn = document.getElementById('copyPeerId');
+                
+                // Iniciar a rede
+                this.initNetwork();
+                this.setupEventListeners();
+            }
+            
+            // Inicializar a rede P2P
+            initNetwork() {
+                // Criar instância Peer com conexão a servidores públicos
+                this.peer = new Peer({
+                    host: '0.peerjs.com',
+                    port: 443,
+                    path: '/',
+                    config: {
+                        iceServers: [
+                            { urls: 'stun:stun.l.google.com:19302' },
+                            { urls: 'stun:global.stun.twilio.com:3478?transport=udp' }
+                        ]
+                    }
+                });
+                
+                // Quando o Peer estiver pronto
+                this.peer.on('open', (id) => {
+                    this.peerId = id;
+                    this.updateNetworkStatus('connected');
+                    console.log(`Meu Peer ID: ${id}`);
+                    
+                    // Conectar à rede DHT (exemplo usando GunDB)
+                    this.initDHT();
+                    
+                    // Atualizar contagem de peers
+                    this.updatePeerCount(1);
+                });
+                
+                // Lidar com conexões de entrada
+                this.peer.on('connection', (conn) => {
+                    this.handleIncomingConnection(conn);
+                });
+                
+                // Lidar com erros
+                this.peer.on('error', (err) => {
+                    console.error('PeerJS error:', err);
+                    this.updateNetworkStatus('disconnected');
+                });
+                
+                // Quando desconectado
+                this.peer.on('disconnected', () => {
+                    this.updateNetworkStatus('disconnected');
+                });
+            }
+            
+            // Inicializar DHT (Distributed Hash Table)
+            initDHT() {
+                // GunDB fornece uma implementação de DHT para browsers
+                this.gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+                
+                // Entrar no tópico atual
+                this.joinTopic(this.currentTopic);
+                
+                // Monitorar a rede para estatísticas
+                this.gun.get('network').get('stats').on((data) => {
+                    if (data) {
+                        this.peerCount = data.peers || 0;
+                        this.topicCount = data.topics || 0;
+                        this.updateUIStats();
+                    }
+                });
+                
+                // Atualizar estatísticas periodicamente
+                setInterval(() => {
+                    this.gun.get('network').get('stats').put({
+                        peers: this.peerCount,
+                        topics: this.topicCount,
+                        timestamp: Date.now()
+                    });
+                }, 30000);
+            }
+            
+            // Entrar em um tópico de chat
+            joinTopic(topic) {
+                this.currentTopic = topic;
+                document.getElementById('currentTopic').textContent = topic;
+                
+                // Procurar por peers no mesmo tópico
+                this.findPeersForTopic(topic);
+                
+                // Adicionar mensagem de sistema
+                this.addSystemMessage(`Entrou no tópico: ${topic}`);
+            }
+            
+            // Encontrar peers para um tópico específico
+            findPeersForTopic(topic) {
+                // Na implementação real, isso usaria a DHT para encontrar peers
+                // Aqui é uma simulação
+                console.log(`Buscando peers para tópico: ${topic}`);
+                
+                // Simular encontro de peers
+                setTimeout(() => {
+                    const fakePeers = ['peer1', 'peer2', 'peer3'];
+                    fakePeers.forEach(peerId => {
+                        if (peerId !== this.peerId) {
+                            this.connectToPeer(peerId);
+                        }
+                    });
+                    
+                    this.updatePeerCount(fakePeers.length + 1);
+                }, 2000);
+            }
+            
+            // Conectar a outro peer
+            connectToPeer(peerId) {
+                if (this.connections[peerId]) return;
+                
+                // Estabelecer conexão de dados
+                const conn = this.peer.connect(peerId, {
+                    reliable: true,
+                    serialization: 'json'
+                });
+                
+                conn.on('open', () => {
+                    this.connections[peerId] = conn;
+                    this.updatePeerCount(Object.keys(this.connections).length + 1);
+                    this.addSystemMessage(`Conectado ao peer: ${peerId.substring(0, 6)}`);
+                });
+                
+                conn.on('data', (data) => {
+                    this.handlePeerMessage(peerId, data);
+                });
+                
+                conn.on('close', () => {
+                    delete this.connections[peerId];
+                    this.updatePeerCount(Object.keys(this.connections).length + 1);
+                    this.addSystemMessage(`Peer desconectado: ${peerId.substring(0, 6)}`);
+                });
+            }
+            
+            // Lidar com conexão de entrada
+            handleIncomingConnection(conn) {
+                const peerId = conn.peer;
+                
+                conn.on('open', () => {
+                    this.connections[peerId] = conn;
+                    this.updatePeerCount(Object.keys(this.connections).length + 1);
+                    this.addSystemMessage(`Peer conectado: ${peerId.substring(0, 6)}`);
+                });
+                
+                conn.on('data', (data) => {
+                    this.handlePeerMessage(peerId, data);
+                });
+                
+                conn.on('close', () => {
+                    delete this.connections[peerId];
+                    this.updatePeerCount(Object.keys(this.connections).length + 1);
+                    this.addSystemMessage(`Peer desconectado: ${peerId.substring(0, 6)}`);
+                });
+            }
+            
+            // Lidar com mensagens de peers
+            handlePeerMessage(peerId, data) {
+                if (data.type === 'message') {
+                    this.addMessage(peerId.substring(0, 6), data.content, 'peer');
+                    this.messageCount++;
+                    this.updateUIStats();
+                } else if (data.type === 'topic-join') {
+                    this.addSystemMessage(`Peer ${peerId.substring(0, 6)} entrou no tópico`);
+                }
+            }
+            
+            // Enviar mensagem para todos os peers conectados
+            broadcastMessage(message) {
+                if (!message.trim()) return;
+                
+                const data = {
+                    type: 'message',
+                    content: message,
+                    topic: this.currentTopic,
+                    timestamp: Date.now(),
+                    sender: this.peerId
+                };
+                
+                Object.values(this.connections).forEach(conn => {
+                    if (conn.open) {
+                        conn.send(data);
+                    }
+                });
+                
+                // Adicionar a própria mensagem na interface
+                this.addMessage('Você', message, 'self');
+                this.messageCount++;
+                this.updateUIStats();
+            }
+            
+            // Adicionar mensagem ao chat
+            addMessage(sender, text, type) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', type);
+                
+                const messageContent = document.createElement('div');
+                messageContent.textContent = text;
+                
+                const messageInfo = document.createElement('div');
+                messageInfo.classList.add('message-info');
+                messageInfo.textContent = `${sender} • ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+                
+                messageElement.appendChild(messageContent);
+                messageElement.appendChild(messageInfo);
+                this.messagesContainer.appendChild(messageElement);
+                
+                // Scroll para o final
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+            
+            // Adicionar mensagem de sistema
+            addSystemMessage(text) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'message-system');
+                messageElement.textContent = text;
+                this.messagesContainer.appendChild(messageElement);
+                
+                // Scroll para o final
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+            
+            // Atualizar status da rede
+            updateNetworkStatus(status) {
+                this.networkStatusEl.className = 'status-indicator';
+                this.networkStatusEl.classList.add(`status-${status}`);
+                
+                switch(status) {
+                    case 'connected':
+                        this.networkStatusText.textContent = 'Conectado';
+                        break;
+                    case 'connecting':
+                        this.networkStatusText.textContent = 'Conectando...';
+                        break;
+                    case 'disconnected':
+                        this.networkStatusText.textContent = 'Desconectado';
+                        break;
+                }
+            }
+            
+            // Atualizar contagem de peers
+            updatePeerCount(count) {
+                this.peerCount = count;
+                this.updateUIStats();
+            }
+            
+            // Atualizar estatísticas na UI
+            updateUIStats() {
+                this.peerCountEl.textContent = this.peerCount;
+                this.topicCountEl.textContent = this.topicCount;
+                this.messageCountEl.textContent = this.messageCount;
+            }
+            
+            // Configurar event listeners
+            setupEventListeners() {
+                // Enviar mensagem
+                this.sendButton.addEventListener('click', () => {
+                    this.broadcastMessage(this.messageInput.value);
+                    this.messageInput.value = '';
+                });
+                
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.broadcastMessage(this.messageInput.value);
+                        this.messageInput.value = '';
+                    }
+                });
+                
+                // Alternar estado da rede
+                this.toggleNetworkBtn.addEventListener('click', () => {
+                    if (this.peer.disconnected) {
+                        this.peer.reconnect();
+                        this.updateNetworkStatus('connecting');
+                    } else {
+                        this.peer.disconnect();
+                        this.updateNetworkStatus('disconnected');
+                    }
+                });
+                
+                // Copiar ID do peer
+                this.copyPeerIdBtn.addEventListener('click', () => {
+                    if (this.peerId) {
+                        navigator.clipboard.writeText(this.peerId)
+                            .then(() => {
+                                alert('ID do peer copiado para a área de transferência!');
+                            })
+                            .catch(err => {
+                                console.error('Falha ao copiar ID:', err);
+                            });
+                    }
+                });
+                
+                // Trocando de tópicos
+                document.querySelectorAll('.topic-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        document.querySelectorAll('.topic-item').forEach(i => {
+                            i.classList.remove('active');
+                        });
+                        item.classList.add('active');
+                        this.joinTopic(item.querySelector('span').textContent);
+                    });
+                });
+            }
+        }
+        
+        // Iniciar o aplicativo quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = new ChatTorrent();
+        });
+    </script>
+</body>
+</html>
