@@ -605,7 +605,8 @@
             // Inicializar DHT (Distributed Hash Table)
             initDHT() {
                 // GunDB fornece uma implementação de DHT para browsers
-                this.gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+                //MAGNO this.gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+                this.gun = Gun(['https://gun.defucc.me/gun']);
                 
                 // Entrar no tópico atual
                 this.joinTopic(this.currentTopic);
