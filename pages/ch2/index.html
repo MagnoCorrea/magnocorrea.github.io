@@ -609,9 +609,9 @@
                 
                 // Entrar no tópico atual
                 this.joinTopic(this.currentTopic);
-                console.log('Dados recebidos de GunDB:', data);
                 // Monitorar a rede para estatísticas
                 this.gun.get('network').get('stats').on((data) => {
+                    console.log('Dados recebidos de GunDB:', data);
                     if (typeof data !== 'object' || data === null) return;
                     this.peerCount = data.peers || 0;
                     this.topicCount = data.topics || 0;
