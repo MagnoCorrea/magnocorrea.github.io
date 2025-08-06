@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC P2P Chat</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Connection Panel -->
+        <div class="connection-panel" id="connectionPanel">
+            <div class="panel-header">
+                <h2>🔗 Connect to Peer</h2>
+                <div class="connection-status" id="connectionStatus">Status: disconnected</div>
+            </div>
+            
+            <div class="connection-controls" id="connectionControls">
+                <!-- Username Setup -->
+                <div class="control-group">
+                    <label for="usernameInput">Your Username:</label>
+                    <div class="input-row">
+                        <input type="text" id="usernameInput" placeholder="Enter your username" maxlength="20">
+                        <button id="setUsernameBtn" class="btn btn-secondary">Set</button>
+                    </div>
+                </div>
+
+                <!-- Create Connection -->
+                <div class="control-group">
+                    <h3>1. Create Connection (Host)</h3>
+                    <button id="createOfferBtn" class="btn btn-primary">Create Offer</button>
+                    <div class="textarea-container">
+                        <label for="offerTextarea">Share this offer with the other person:</label>
+                        <textarea id="offerTextarea" placeholder="Offer will appear here..." readonly></textarea>
+                        <button id="copyOfferBtn" class="btn btn-small">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Join Connection -->
+                <div class="control-group">
+                    <h3>2. Join Connection (Guest)</h3>
+                    <div class="textarea-container">
+                        <label for="offerTextarea">Paste the offer you received:</label>
+                        <textarea id="offerInput" placeholder="Paste offer here..."></textarea>
+                        <button id="handleOfferBtn" class="btn btn-primary">Handle Offer</button>
+                    </div>
+                    
+                    <div class="textarea-container">
+                        <label for="answerTextarea">Send this answer back:</label>
+                        <textarea id="answerTextarea" placeholder="Answer will appear here..." readonly></textarea>
+                        <button id="copyAnswerBtn" class="btn btn-small">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Complete Connection -->
+                <div class="control-group">
+                    <h3>3. Complete Connection (Host)</h3>
+                    <div class="textarea-container">
+                        <label for="answerInput">Paste the answer you received:</label>
+                        <textarea id="answerInput" placeholder="Paste answer here..."></textarea>
+                        <button id="handleAnswerBtn" class="btn btn-primary">Complete Connection</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="panel-toggle" id="panelToggle">Hide Panel</button>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <header class="chat-header">
+                <div class="chat-title">
+                    <h1>WebRTC P2P Chat</h1>
+                    <span class="status-indicator offline"></span>
+                    <span class="status-text">Disconnected</span>
+                </div>
+            </header>
+            
+            <main class="chat-window">
+                <div class="messages" id="messages" role="log" aria-live="polite" aria-label="Chat messages"></div>
+                
+                <form class="input-container" id="messageForm" autocomplete="off">
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            placeholder="Connect to start chatting..." 
+                            maxlength="500"
+                            aria-label="Message input"
+                            required
+                            disabled
+                        />
+                        <button 
+                            type="submit" 
+                            id="sendButton" 
+                            aria-label="Connect to send messages"
+                            disabled
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="char-counter">
+                        <span id="charCount">0</span>/500
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        // Panel toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const panel = document.getElementById('connectionPanel');
+            const toggle = document.getElementById('panelToggle');
+            
+            if (toggle && panel) {
+                toggle.addEventListener('click', function() {
+                    panel.classList.toggle('collapsed');
+                    toggle.textContent = panel.classList.contains('collapsed') ? 'Show Panel' : 'Hide Panel';
+                });
+            }
+            
+            // Update textarea references for the new IDs
+            const offerInput = document.getElementById('offerInput');
+            const answerInput = document.getElementById('answerInput');
+            
+            if (offerInput) {
+                document.getElementById('offerTextarea').addEventListener('input', function() {
+                    if (!offerInput.value) {
+                        offerInput.value = this.value;
+                    }
+                });
+            }
+            
+            if (answerInput) {
+                document.getElementById('answerTextarea').addEventListener('input', function() {
+                    if (!answerInput.value) {
+                        answerInput.value = this.value;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
