@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemplo de Hospedagem</title>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* Carrossel */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .carousel {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 24px;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .carousel-container:hover .carousel-button {
+      opacity: 1;
+    }
+
+    .carousel-button.prev { left: 10px; }
+    .carousel-button.next { right: 10px; }
+
+    /* Conteúdo */
+    .content {
+      position: relative;
+      z-index: 2;
+      margin-top: -20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .title { font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+    .subtitle { font-size: 16px; color: #666; margin-bottom: 15px; }
+    .rating { font-size: 14px; margin-bottom: 10px; color: #444; }
+    .price { font-size: 18px; font-weight: bold; color: #E61E4D; margin-top: 15px; }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #E61E4D, #D70566);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .button:hover { opacity: 0.9; }
+
+    .host-info { display: flex; align-items: center; margin-top: 15px; }
+    .host-info img { width: 50px; height: 50px; border-radius: 50%; margin-right: 12px; }
+    .extra-info { margin-top: 20px; line-height: 1.6; }
+
+    /* Mapa */
+    #map { width: 100%; height: 400px; margin-top: 40px; border-radius: 12px; }
+
+    /* Legenda */
+    .legend {
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      line-height: 24px;
+    }
+
+    .legend img {
+      vertical-align: middle;
+      width: 24px;
+      height: 24px;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Carrossel -->
+  <div class="carousel-container">
+    <div class="carousel" id="carousel">
+      <img src="https://picsum.photos/id/1018/1000/600" alt="Foto 1">
+      <img src="https://picsum.photos/id/1015/1000/600" alt="Foto 2">
+      <img src="https://picsum.photos/id/1019/1000/600" alt="Foto 3">
+    </div>
+    <button class="carousel-button prev" onclick="prevSlide()">&#10094;</button>
+    <button class="carousel-button next" onclick="nextSlide()">&#10095;</button>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="content">
+    <div class="card">
+      <div class="title">Quarto casal, individual e família</div>
+      <div class="subtitle">Localizado no Jardim Botânico, Brasil</div>
+      <div class="rating">⭐ 4,73 · 158 comentários</div>
+      <div class="subtitle">4 quartos · 11 camas · Banheiro compartilhado</div>
+
+      <div class="host-info">
+        <img src="https://picsum.photos/50" alt="Host">
+        <div>
+          <div><strong>Hospede-se com Thailes Cunha</strong></div>
+          <div style="font-size: 14px; color: #666;">7 anos hospedando</div>
+        </div>
+      </div>
+
+      <div class="price">R$64 / noite</div>
+      <a href="#" class="button">Reservar</a>
+
+      <div class="extra-info">
+        <h3>Sobre o local</h3>
+        <p>Ambiente confortável e familiar, ideal para casais, viajantes individuais ou grupos maiores. 
+        O espaço conta com áreas comuns aconchegantes, incluindo sala de estar ampla e bem iluminada.</p>
+
+        <h3>O que você vai encontrar</h3>
+        <ul>
+          <li>Wi-Fi rápido e gratuito</li>
+          <li>Cozinha compartilhada equipada</li>
+          <li>Área externa com jardim</li>
+          <li>Estacionamento gratuito</li>
+        </ul>
+
+        <h3>Políticas</h3>
+        <p>Cancelamento gratuito até 24h antes do check-in.</p>
+      </div>
+
+      <!-- Mapa -->
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS e MarkerCluster -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+  <script>
+    // Carrossel manual
+    const carousel = document.getElementById('carousel');
+    const totalSlides = carousel.children.length;
+    let currentIndex = 0;
+
+    function showSlide(index) {
+      if (index < 0) index = totalSlides - 1;
+      if (index >= totalSlides) index = 0;
+      currentIndex = index;
+      carousel.style.transform = `translateX(-${index * 100}%)`;
+    }
+    function prevSlide() { showSlide(currentIndex - 1); }
+    function nextSlide() { showSlide(currentIndex + 1); }
+
+    // Inicializa o mapa
+    const map = L.map('map').setView([-22.9519, -43.2105], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Ícones personalizados
+    const icons = {
+      restaurante: L.icon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/1046/1046784.png', iconSize:[30,30], iconAnchor:[15,30], popupAnchor:[0,-30]}),
+      parque:      L.icon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/427/427735.png', iconSize:[30,30], iconAnchor:[15,30], popupAnchor:[0,-30]}),
+      mercado:     L.icon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/1046/1046781.png', iconSize:[30,30], iconAnchor:[15,30], popupAnchor:[0,-30]}),
+      farmacia:    L.icon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/2965/2965567.png', iconSize:[30,30], iconAnchor:[15,30], popupAnchor:[0,-30]})
+    };
+
+    // Pontos próximos
+    const pontos = [
+      {name:"Mercado Local", coords:[-22.9525, -43.2100], type:"mercado"},
+      {name:"Parque Central", coords:[-22.9510, -43.2120], type:"parque"},
+      {name:"Restaurante Japonês", coords:[-22.9505, -43.2090], type:"restaurante"},
+      {name:"Farmácia do Bairro", coords:[-22.9520, -43.2085], type:"farmacia"},
+      {name:"Mercado Orgânico", coords:[-22.9530, -43.2110], type:"mercado"},
+      {name:"Café e Restaurante", coords:[-22.9498, -43.2080], type:"restaurante"}
+    ];
+
+    // Cluster de marcadores
+    const markers = L.markerClusterGroup();
+    pontos.forEach(p => {
+      const marker = L.marker(p.coords, {icon: icons[p.type]})
+                      .bindPopup(`<b>${p.name}</b>`);
+      markers.addLayer(marker);
+    });
+    map.addLayer(markers);
+
+    // Legenda
+    const legend = L.control({position: 'bottomright'});
+    legend.onAdd = function(map) {
+      const div = L.DomUtil.create('div', 'legend');
+      div.innerHTML = '<h4>Legenda</h4>';
+      div.innerHTML += `<img src="${icons.restaurante.options.iconUrl}"> Restaurante<br>`;
+      div.innerHTML += `<img src="${icons.parque.options.iconUrl}"> Parque<br>`;
+      div.innerHTML += `<img src="${icons.mercado.options.iconUrl}"> Mercado<br>`;
+      div.innerHTML += `<img src="${icons.farmacia.options.iconUrl}"> Farmácia<br>`;
+      return div;
+    };
+    legend.addTo(map);
+  </script>
+
+</body>
+</html>
