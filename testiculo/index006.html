@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venda de Imóveis</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+    #sidebar {
+      width: 30%;
+      min-width: 250px;
+      max-width: 50%;
+      background: #f8f8f8;
+      border-right: 3px solid #ccc;
+      overflow-y: auto;
+      resize: horizontal;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    #map {
+      flex: 1;
+    }
+    .filters {
+      margin-bottom: 10px;
+    }
+    .filters input {
+      width: 100%;
+      margin-bottom: 5px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .filters .range {
+      display: flex;
+      gap: 5px;
+    }
+    .filters .range input {
+      flex: 1;
+    }
+    .card {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+    .card:hover {
+      background: #f0f0f0;
+    }
+    .card.active {
+      border: 2px solid #007BFF;
+      background: #e9f3ff;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        overflow: auto;
+      }
+      #sidebar {
+        width: 100%;
+        max-width: 100%;
+        border-right: none;
+        flex: none;
+        order: 2;
+      }
+      #map {
+        width: 100%;
+        order: 1;
+        height: 300px;
+      }
+      .filters {
+        position: sticky;
+        top: 0;
+        background: #f8f8f8;
+        z-index: 10;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    }
+
+    @media (max-width: 768px) and (orientation: portrait) {
+      #map {
+        order: 1;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <div class="filters" id="filters">
+      <input type="text" id="searchInput" placeholder="Buscar imóvel por nome...">
+      <div class="range">
+        <input type="number" id="minPrice" placeholder="Preço mín (R$)">
+        <input type="number" id="maxPrice" placeholder="Preço máx (R$)">
+      </div>
+    </div>
+    <div id="listings"></div>
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+  <script>
+    const map = L.map('map').setView([-23.55, -46.63], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+    }).addTo(map);
+
+    const markers = L.markerClusterGroup();
+    const imóveis = [
+      { id: 1, nome: "Casa Jardim Paulista", coords: [-23.56, -46.65], preço: 950000, imagem: "https://via.placeholder.com/300x200?text=Casa+Jardim+Paulista" },
+      { id: 2, nome: "Apartamento Consolação", coords: [-23.55, -46.66], preço: 720000, imagem: "https://via.placeholder.com/300x200?text=Apartamento+Consolação" },
+      { id: 3, nome: "Sobrado Vila Mariana", coords: [-23.59, -46.63], preço: 1200000, imagem: "https://via.placeholder.com/300x200?text=Sobrado+Vila+Mariana" },
+      { id: 4, nome: "Studio Bela Vista", coords: [-23.55, -46.64], preço: 500000, imagem: "https://via.placeholder.com/300x200?text=Studio+Bela+Vista" },
+      { id: 5, nome: "Casa Mooca", coords: [-23.56, -46.58], preço: 870000, imagem: "https://via.placeholder.com/300x200?text=Casa+Mooca" },
+      { id: 6, nome: "Apartamento Tatuapé", coords: [-23.54, -46.57], preço: 690000, imagem: "https://via.placeholder.com/300x200?text=Apartamento+Tatuapé" },
+      { id: 7, nome: "Cobertura Higienópolis", coords: [-23.54, -46.67], preço: 2100000, imagem: "https://via.placeholder.com/300x200?text=Cobertura+Higienópolis" },
+      { id: 8, nome: "Casa Santana", coords: [-23.48, -46.62], preço: 880000, imagem: "https://via.placeholder.com/300x200?text=Casa+Santana" },
+      { id: 9, nome: "Apartamento Ipiranga", coords: [-23.59, -46.61], preço: 750000, imagem: "https://via.placeholder.com/300x200?text=Apartamento+Ipiranga" },
+      { id: 10, nome: "Casa Campo Belo", coords: [-23.62, -46.67], preço: 1350000, imagem: "https://via.placeholder.com/300x200?text=Casa+Campo+Belo" },
+      { id: 11, nome: "Apartamento Lapa", coords: [-23.52, -46.70], preço: 820000, imagem: "https://via.placeholder.com/300x200?text=Apartamento+Lapa" },
+      { id: 12, nome: "Sobrado Perdizes", coords: [-23.53, -46.68], preço: 1150000, imagem: "https://via.placeholder.com/300x200?text=Sobrado+Perdizes" },
+      { id: 13, nome: "Casa Pirituba", coords: [-23.49, -46.72], preço: 640000, imagem: "https://via.placeholder.com/300x200?text=Casa+Pirituba" },
+      { id: 14, nome: "Apartamento Vila Madalena", coords: [-23.55, -46.69], preço: 1000000, imagem: "https://via.placeholder.com/300x200?text=Apartamento+Vila+Madalena" },
+      { id: 15, nome: "Chácara Mairiporã", coords: [-23.32, -46.58], preço: 1800000, imagem: "https://via.placeholder.com/300x200?text=Chácara+Mairiporã" },
+      { id: 16, nome: "Casa Guarulhos", coords: [-23.45, -46.53], preço: 700000, imagem: "https://via.placeholder.com/300x200?text=Casa+Guarulhos" },
+      { id: 17, nome: "Apartamento Osasco", coords: [-23.53, -46.79], preço: 600000, imagem: "https://via.placeholder.com/300x200?text=Apartamento+Osasco" },
+      { id: 18, nome: "Cobertura Santo André", coords: [-23.66, -46.53], preço: 1400000, imagem: "https://via.placeholder.com/300x200?text=Cobertura+Santo+André" },
+      { id: 19, nome: "Casa São Caetano", coords: [-23.62, -46.55], preço: 950000, imagem: "https://via.placeholder.com/300x200?text=Casa+São+Caetano" },
+      { id: 20, nome: "Apartamento Diadema", coords: [-23.68, -46.62], preço: 550000, imagem: "https://via.placeholder.com/300x200?text=Apartamento+Diadema" }
+    ];
+
+    const listingsContainer = document.getElementById("listings");
+    const searchInput = document.getElementById("searchInput");
+    const minPriceInput = document.getElementById("minPrice");
+    const maxPriceInput = document.getElementById("maxPrice");
+    const filtersDiv = document.getElementById("filters");
+
+    function renderListings(filtros = {}) {
+      listingsContainer.innerHTML = "";
+      markers.clearLayers();
+
+      imóveis.forEach(imóvel => {
+        const matchNome = !filtros.nome || imóvel.nome.toLowerCase().includes(filtros.nome);
+        const matchMin = !filtros.min || imóvel.preço >= filtros.min;
+        const matchMax = !filtros.max || imóvel.preço <= filtros.max;
+
+        if (matchNome && matchMin && matchMax) {
+          const marker = L.marker(imóvel.coords).bindPopup(`<b>${imóvel.nome}</b><br>R$ ${imóvel.preço.toLocaleString()}`);
+          markers.addLayer(marker);
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${imóvel.imagem}" alt="${imóvel.nome}">
+            <h4>${imóvel.nome}</h4>
+            <p>R$ ${imóvel.preço.toLocaleString()}</p>
+          `;
+          listingsContainer.appendChild(card);
+
+          card.addEventListener("click", () => {
+            map.setView(imóvel.coords, 15);
+            marker.openPopup();
+
+            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+            card.classList.add("active");
+          });
+        }
+      });
+
+      map.addLayer(markers);
+    }
+
+    function aplicarFiltros() {
+      const filtros = {
+        nome: searchInput.value.toLowerCase(),
+        min: minPriceInput.value ? parseInt(minPriceInput.value) : null,
+        max: maxPriceInput.value ? parseInt(maxPriceInput.value) : null,
+      };
+      renderListings(filtros);
+    }
+
+    searchInput.addEventListener("input", aplicarFiltros);
+    minPriceInput.addEventListener("input", aplicarFiltros);
+    maxPriceInput.addEventListener("input", aplicarFiltros);
+
+    renderListings();
+
+    function ajustarAlturaMapa() {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+        const alturaFiltro = filtersDiv.offsetHeight;
+        const alturaMapa = window.innerHeight - alturaFiltro;
+        document.getElementById("map").style.height = alturaMapa + "px";
+      } else {
+        document.getElementById("map").style.height = "";
+      }
+    }
+
+    window.addEventListener("resize", ajustarAlturaMapa);
+    window.addEventListener("load", ajustarAlturaMapa);
+  </script>
+</body>
+</html>
