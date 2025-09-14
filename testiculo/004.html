@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemplo de Hospedagem</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* Carrossel integrado */
+    .carousel-container {
+      position: relative; /* Antes era fixed */
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      z-index: 1; /* fica atrás do conteúdo */
+    }
+
+    .carousel {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      animation: slide 15s infinite;
+    }
+
+    .carousel img {
+      width: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      33% { transform: translateX(-100%); }
+      66% { transform: translateX(-200%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Conteúdo principal */
+    .content {
+      position: relative;
+      z-index: 2; /* acima do carrossel */
+      margin-top: -20px; /* sobreposição de 20px */
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .rating {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #E61E4D;
+      margin-top: 15px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #E61E4D, #D70566);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .button:hover {
+      opacity: 0.9;
+    }
+
+    .host-info {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    .host-info img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+
+    .extra-info {
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Carrossel integrado -->
+  <div class="carousel-container">
+    <div class="carousel">
+      <img src="https://picsum.photos/id/1018/1000/600" alt="Foto 1">
+      <img src="https://picsum.photos/id/1015/1000/600" alt="Foto 2">
+      <img src="https://picsum.photos/id/1019/1000/600" alt="Foto 3">
+    </div>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="content">
+    <div class="card">
+      <div class="title">Quarto casal, individual e família</div>
+      <div class="subtitle">Localizado no Jardim Botânico, Brasil</div>
+      <div class="rating">⭐ 4,73 · 158 comentários</div>
+      <div class="subtitle">4 quartos · 11 camas · Banheiro compartilhado</div>
+
+      <div class="host-info">
+        <img src="https://picsum.photos/50" alt="Host">
+        <div>
+          <div><strong>Hospede-se com Thailes Cunha</strong></div>
+          <div style="font-size: 14px; color: #666;">7 anos hospedando</div>
+        </div>
+      </div>
+
+      <div class="price">R$64 / noite</div>
+      <a href="#" class="button">Reservar</a>
+
+      <div class="extra-info">
+        <h3>Sobre o local</h3>
+        <p>Ambiente confortável e familiar, ideal para casais, viajantes individuais ou grupos maiores. 
+        O espaço conta com áreas comuns aconchegantes, incluindo sala de estar ampla e bem iluminada.</p>
+
+        <h3>O que você vai encontrar</h3>
+        <ul>
+          <li>Wi-Fi rápido e gratuito</li>
+          <li>Cozinha compartilhada equipada</li>
+          <li>Área externa com jardim</li>
+          <li>Estacionamento gratuito</li>
+        </ul>
+
+        <h3>Políticas</h3>
+        <p>Cancelamento gratuito até 24h antes do check-in.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
