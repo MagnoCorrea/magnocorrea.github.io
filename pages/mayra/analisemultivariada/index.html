@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Multivariada - Questionário de Acessibilidade Web</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📊 Análise Multivariada de Questionário</h1>
+            <p class="subtitle">Análise de Acessibilidade Web com Técnicas Estatísticas Avançadas</p>
+        </header>
+
+        <!-- Upload Section -->
+        <section class="upload-section" id="uploadSection">
+            <div class="upload-box">
+                <div class="upload-icon">📁</div>
+                <h2>Faça Upload do Arquivo CSV</h2>
+                <p>Selecione um arquivo CSV com o questionário de acessibilidade</p>
+                <input type="file" id="csvFile" accept=".csv" class="file-input">
+                <label for="csvFile" class="upload-button">
+                    <span>Escolher Arquivo</span>
+                </label>
+                <div id="fileName" class="file-name"></div>
+                <button id="analyzeButton" class="analyze-button" style="display:none;">
+                    Iniciar Análise
+                </button>
+            </div>
+            
+            <div class="info-box">
+                <h3>ℹ️ Informações</h3>
+                <ul>
+                    <li>Formato: CSV com separador ponto e vírgula (;)</li>
+                    <li>Encoding: UTF-8</li>
+                    <li>Primeira linha: Cabeçalhos das colunas</li>
+                    <li>Análises: Correlação, PCA, Clustering, t-SNE</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Progress Section -->
+        <section class="progress-section" id="progressSection" style="display:none;">
+            <h2>⚙️ Processando Análise...</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">Carregando dados...</p>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" style="display:none;">
+            <!-- Navigation Tabs -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="overview">📋 Visão Geral</button>
+                <button class="tab-button" data-tab="descriptive">📊 Descritiva</button>
+                <button class="tab-button" data-tab="correlation">🔗 Correlação</button>
+                <button class="tab-button" data-tab="pca">🎯 PCA</button>
+                <button class="tab-button" data-tab="clustering">🔵 Clustering</button>
+                <button class="tab-button" data-tab="profiles">👥 Perfis</button>
+                <button class="tab-button" data-tab="export">💾 Exportar</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Overview Tab -->
+                <div id="overviewTab" class="tab-panel active">
+                    <h2>📋 Visão Geral dos Dados</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-value" id="totalResponses">0</div>
+                            <div class="stat-label">Total de Respostas</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">❓</div>
+                            <div class="stat-value" id="totalQuestions">0</div>
+                            <div class="stat-label">Total de Questões</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value" id="completeness">0%</div>
+                            <div class="stat-label">Taxa de Completude</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔵</div>
+                            <div class="stat-value" id="clustersFound">0</div>
+                            <div class="stat-label">Clusters Identificados</div>
+                        </div>
+                    </div>
+                    
+                    <div class="data-preview">
+                        <h3>👁️ Todos os Dados</h3>
+                        <div class="pagination-controls">
+                            <button id="prevPage" class="pagination-btn">← Anterior</button>
+                            <span id="pageInfo" class="page-info">Página 1</span>
+                            <button id="nextPage" class="pagination-btn">Próxima →</button>
+                            <select id="rowsPerPage" class="rows-select">
+                                <option value="10">10 linhas</option>
+                                <option value="25" selected>25 linhas</option>
+                                <option value="50">50 linhas</option>
+                                <option value="100">100 linhas</option>
+                            </select>
+                            <span id="totalInfo" class="total-info"></span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="dataPreviewTable"></table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descriptive Tab -->
+                <div id="descriptiveTab" class="tab-panel">
+                    <h2>📊 Análise Descritiva 
+                        <button class="info-btn" onclick="showInfo('descriptive')">ℹ️ Info</button>
+                    </h2>
+                    
+                    <h3 style="margin-top: 20px; color: #667eea;">👥 Perfil Demográfico</h3>
+                    <div class="analysis-grid">
+                        <div class="chart-box">
+                            <h3>Faixa Etária</h3>
+                            <canvas id="ageChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Pessoa com Deficiência</h3>
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Escolaridade</h3>
+                            <canvas id="educationChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Área de Atuação (Top 10)</h3>
+                            <canvas id="areaChart"></canvas>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px; color: #667eea;">♿ Conhecimento e Prática em Acessibilidade</h3>
+                    <div class="analysis-grid">
+                        <div class="chart-box">
+                            <h3>Uso de WCAG</h3>
+                            <canvas id="wcagChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Apps Desenvolvidos são Acessíveis?</h3>
+                            <canvas id="appsAccessibleChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Sistemas da Empresa são Acessíveis?</h3>
+                            <canvas id="knowledgeChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Preocupação com Acessibilidade</h3>
+                            <canvas id="concernChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Implementação de Técnicas</h3>
+                            <canvas id="implementationChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Ferramentas de Validação (Top 8)</h3>
+                            <canvas id="toolsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px; color: #667eea;">📈 Experiência e Motivações</h3>
+                    <div class="analysis-grid">
+                        <div class="chart-box">
+                            <h3>Tempo de Experiência na Função</h3>
+                            <canvas id="experienceChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Motivações para Usar Ferramentas (Top 8)</h3>
+                            <canvas id="difficultiesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Correlation Tab -->
+                <div id="correlationTab" class="tab-panel">
+                    <h2>🔗 Análise de Correlação 
+                        <button class="info-btn" onclick="showInfo('correlation')">ℹ️ Info</button>
+                    </h2>
+                    <div class="correlation-controls">
+                        <label>
+                            <input type="checkbox" id="showOnlySignificant" checked>
+                            Mostrar apenas correlações significativas (|r| > 0.3)
+                        </label>
+                    </div>
+                    <div class="chart-container full-width correlation-matrix-container">
+                        <canvas id="correlationMatrix"></canvas>
+                    </div>
+                    <div class="correlation-table">
+                        <h3>🔝 Todas as Correlações (Ordenadas por Força)</h3>
+                        <p style="color: #666; font-size: 0.9em; margin-top: 10px;">
+                            Total de pares de variáveis analisados. Use a barra de rolagem para navegar.
+                        </p>
+                        <div class="table-scroll-container">
+                            <table id="topCorrelations"></table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PCA Tab -->
+                <div id="pcaTab" class="tab-panel">
+                    <h2>🎯 Análise de Componentes Principais (PCA) 
+                        <button class="info-btn" onclick="showInfo('pca')">ℹ️ Info</button>
+                    </h2>
+                    <div class="pca-grid">
+                        <div class="chart-box">
+                            <h3>Scree Plot - Variância Explicada 
+                                <button class="info-btn-small" onclick="showInfo('screePlot')">ℹ️</button>
+                            </h3>
+                            <canvas id="screePlot"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Variância Acumulada 
+                                <button class="info-btn-small" onclick="showInfo('cumulativeVariance')">ℹ️</button>
+                            </h3>
+                            <canvas id="cumulativeVariance"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container full-width">
+                        <h3>Biplot - PC1 vs PC2 
+                            <button class="info-btn-small" onclick="showInfo('biplot')">ℹ️</button>
+                        </h3>
+                        <canvas id="pcaBiplot"></canvas>
+                    </div>
+                    <div class="pca-summary">
+                        <h3>📈 Resumo da Análise PCA 
+                            <button class="info-btn-small" onclick="showInfo('pcaSummary')">ℹ️</button>
+                        </h3>
+                        <div id="pcaSummary"></div>
+                    </div>
+                </div>
+
+                <!-- Clustering Tab -->
+                <div id="clusteringTab" class="tab-panel">
+                    <h2>🔵 Análise de Clusters 
+                        <button class="info-btn" onclick="showInfo('clustering')">ℹ️ Info</button>
+                    </h2>
+                    <div class="clustering-grid">
+                        <div class="chart-box">
+                            <h3>Método do Cotovelo 
+                                <button class="info-btn-small" onclick="showInfo('elbow')">ℹ️</button>
+                            </h3>
+                            <canvas id="elbowChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Distribuição dos Clusters 
+                                <button class="info-btn-small" onclick="showInfo('clusterDist')">ℹ️</button>
+                            </h3>
+                            <canvas id="clusterDistribution"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container full-width">
+                        <h3>Visualização dos Clusters (PCA Projection) 
+                            <button class="info-btn-small" onclick="showInfo('clusterPCA')">ℹ️</button>
+                        </h3>
+                        <canvas id="clusterVisualization"></canvas>
+                    </div>
+                    
+                    <div class="chart-grid">
+                        <div class="chart-container">
+                            <h3>t-SNE Visualization 
+                                <button class="info-btn-small" onclick="showInfo('tsneViz')">ℹ️</button>
+                            </h3>
+                            <canvas id="tsneChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>t-SNE com Clusters 
+                                <button class="info-btn-small" onclick="showInfo('tsneClusters')">ℹ️</button>
+                            </h3>
+                            <canvas id="tsneClusterChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-grid">
+                        <div class="chart-container">
+                            <h3>Dendrograma - Clustering Hierárquico 
+                                <button class="info-btn-small" onclick="showInfo('dendrogram')">ℹ️</button>
+                            </h3>
+                            <div id="dendrogramChart" style="width: 100%; height: 1100px; overflow-x: auto;"></div>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Estrutura Hierárquica 
+                                <button class="info-btn-small" onclick="showInfo('hierarchy')">ℹ️</button>
+                            </h3>
+                            <canvas id="hierarchyChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="cluster-profiles">
+                        <h3>📊 Perfil dos Clusters 
+                            <button class="info-btn-small" onclick="showInfo('clusterProfile')">ℹ️</button>
+                        </h3>
+                        <div id="clusterProfiles"></div>
+                    </div>
+                </div>
+
+                <!-- Profiles Tab -->
+                <div id="profilesTab" class="tab-panel">
+                    <h2>👥 Análise de Perfis dos Respondentes 
+                        <button class="info-btn" onclick="showInfo('profiles')">ℹ️ Info</button>
+                    </h2>
+                    <div class="profiles-grid">
+                        <div class="profile-card">
+                            <h3>👤 Persona 1: "O Desenvolvedor Alheio"</h3>
+                            <div class="persona-details">
+                                <p><strong>Características:</strong></p>
+                                <ul>
+                                    <li>Pouco conhecimento de WCAG</li>
+                                    <li>Não implementa acessibilidade</li>
+                                    <li>Baixa preocupação</li>
+                                </ul>
+                                <p><strong>Percentual:</strong> <span id="persona1Pct">0%</span></p>
+                                <p><strong>Estratégia:</strong> Sensibilização e treinamento básico</p>
+                            </div>
+                        </div>
+                        <div class="profile-card">
+                            <h3>💪 Persona 2: "O Engajado"</h3>
+                            <div class="persona-details">
+                                <p><strong>Características:</strong></p>
+                                <ul>
+                                    <li>Alto conhecimento de WCAG</li>
+                                    <li>Implementa sempre</li>
+                                    <li>Alta preocupação</li>
+                                </ul>
+                                <p><strong>Percentual:</strong> <span id="persona2Pct">0%</span></p>
+                                <p><strong>Estratégia:</strong> Certificação e papel de liderança</p>
+                            </div>
+                        </div>
+                        <div class="profile-card">
+                            <h3>🎨 Persona 3: "O Designer Consciente"</h3>
+                            <div class="persona-details">
+                                <p><strong>Características:</strong></p>
+                                <ul>
+                                    <li>Conhecimento moderado de WCAG</li>
+                                    <li>Implementa ocasionalmente</li>
+                                    <li>Alta preocupação</li>
+                                </ul>
+                                <p><strong>Percentual:</strong> <span id="persona3Pct">0%</span></p>
+                                <p><strong>Estratégia:</strong> Ferramentas e suporte prático</p>
+                            </div>
+                        </div>
+                        <div class="profile-card">
+                            <h3>🔴 Persona 4: "Caso Especial"</h3>
+                            <div class="persona-details">
+                                <p><strong>Características:</strong></p>
+                                <ul>
+                                    <li>Perfil atípico</li>
+                                    <li>Respostas inconsistentes</li>
+                                    <li>Outlier</li>
+                                </ul>
+                                <p><strong>Percentual:</strong> <span id="persona4Pct">0%</span></p>
+                                <p><strong>Estratégia:</strong> Investigação individual</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container full-width">
+                        <h3>Análise Cruzada: Conhecimento × Implementação</h3>
+                        <canvas id="crossAnalysis"></canvas>
+                    </div>
+                    
+                    <h3>🔬 Testes de Independência Chi-Quadrado</h3>
+                    <div class="chart-grid">
+                        <div class="chart-container">
+                            <h4>Estatísticas χ²</h4>
+                            <canvas id="chiSquareChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>V de Cramér - Força da Associação</h4>
+                            <canvas id="cramerVChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div id="chiSquareDetails" class="details-section"></div>
+                </div>
+
+                <!-- Export Tab -->
+                <div id="exportTab" class="tab-panel">
+                    <h2>💾 Exportar Resultados</h2>
+                    <div class="export-options">
+                        <div class="export-card">
+                            <h3>📊 Relatório Completo (HTML)</h3>
+                            <p>Baixe um relatório HTML completo com todos os gráficos e análises</p>
+                            <button class="export-button" id="exportHTML">
+                                <span>📄</span> Exportar HTML
+                            </button>
+                        </div>
+                        <div class="export-card">
+                            <h3>📈 Dados de Correlação (CSV)</h3>
+                            <p>Baixe a matriz de correlação em formato CSV</p>
+                            <button class="export-button" id="exportCorrelation">
+                                <span>📊</span> Exportar CSV
+                            </button>
+                        </div>
+                        <div class="export-card">
+                            <h3>🔵 Clusters (CSV)</h3>
+                            <p>Baixe os dados com os clusters atribuídos</p>
+                            <button class="export-button" id="exportClusters">
+                                <span>🔵</span> Exportar CSV
+                            </button>
+                        </div>
+                        <div class="export-card">
+                            <h3>📋 Resumo Estatístico (JSON)</h3>
+                            <p>Baixe um resumo com todas as estatísticas em JSON</p>
+                            <button class="export-button" id="exportJSON">
+                                <span>📦</span> Exportar JSON
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-report">
+                        <h3>📝 Resumo Executivo</h3>
+                        <div id="executiveSummary"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 Análise Multivariada de Acessibilidade Web | Desenvolvido com ❤️ usando JavaScript, Chart.js e PapaParse</p>
+        </footer>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeInfoModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="analyzer.js"></script>
+    <script src="visualizations.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
