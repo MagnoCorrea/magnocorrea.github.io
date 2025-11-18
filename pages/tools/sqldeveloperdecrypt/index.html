@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta author="Magno Correa">
+    <title>SQL Developer Password Decryptor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 32px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .info-box p {
+            color: #1976d2;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .form-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .hint code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #d63384;
+            font-style: normal;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        textarea {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .options-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+
+        .options-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .filter-group {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        select {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(30, 60, 114, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .results-container {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .results-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-buttons button {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-table thead {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .results-table th {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .results-table td {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .results-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .results-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+            margin-top: 20px;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .filter-group {
+                grid-template-columns: 1fr;
+            }
+
+            .results-table {
+                font-size: 12px;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔓 SQL Developer Password Decryptor</h1>
+        <p class="subtitle">Decriptador de Senhas SQL Developer 19.2+ (AES-256-CBC com PBKDF2)</p>
+
+        <div class="info-box">
+            <p><strong>ℹ️ Sobre:</strong> Esta ferramenta decripta senhas de conexões exportadas do SQL Developer 19.2+.</p>
+            <p><strong>🔑 Chave de Decriptação:</strong> Use a chave de criptografia do arquivo de exportação ou o valor do atributo 'db.system.id' do arquivo 'product-preferences.xml'.</p>
+            <p><strong>📄 Formato:</strong> O arquivo deve estar em formato JSON contendo as conexões exportadas.</p>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="jsonFile">Arquivo JSON (SQL Developer Export):</label>
+                <div class="hint">
+                    💡 O arquivo de EXPORTAÇÃO de Conexões ou o arquivo disponível em:<br>
+                    <code>%APPDATA%\SQL Developer\system&lt;VERSÃO&gt;\o.jdeveloper.db.connection\connections.json</code>
+                </div>
+                <input 
+                    type="file" 
+                    id="jsonFile" 
+                    accept=".json"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="jsonText">Ou Cole o Conteúdo JSON:</label>
+                <textarea 
+                    id="jsonText" 
+                    placeholder='{"connections": [...]}'
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="decryptKey">Chave de Decriptação: *</label>
+                <div class="hint">
+                    💡 Use a chave digitada na hora de salvar o arquivo de EXPORTAÇÃO de conexões ou o valor do atributo <strong>'db.system.id'</strong> disponível em:<br>
+                    <code>%APPDATA%\SQL Developer\system&lt;VERSÃO&gt;\o.sqldeveloper\product-preferences.xml</code>
+                </div>
+                <input 
+                    type="text" 
+                    id="decryptKey" 
+                    placeholder="Digite a chave de decriptação"
+                    required
+                />
+            </div>
+        </div>
+
+        <div class="options-section">
+            <div class="options-title">⚙️ Opções</div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="showHeaders" checked>
+                <label for="showHeaders">Mostrar cabeçalhos</label>
+            </div>
+
+            <div class="filter-group">
+                <select id="filterType">
+                    <option value="">Sem Filtro</option>
+                    <option value="name">Filtrar por Nome</option>
+                    <option value="user">Filtrar por Usuário</option>
+                </select>
+                <input 
+                    type="text" 
+                    id="filterValue" 
+                    placeholder="Digite o padrão regex (opcional)"
+                    disabled
+                />
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="button" onclick="processDecryption()">🔐 Decriptar Senhas</button>
+            <button type="button" onclick="clearResults()">🗑️ Limpar</button>
+        </div>
+
+        <div id="results" class="results-container">
+            <div class="results-header">
+                <div class="results-title">📊 Resultados:</div>
+                <div class="export-buttons">
+                    <button onclick="exportToCSV()">📥 Exportar CSV</button>
+                    <button onclick="exportToTable()">📥 Exportar Tabela</button>
+                </div>
+            </div>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>User</th>
+                        <th>Password</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        let decryptedConnections = [];
+
+        // Habilitar/desabilitar campo de filtro
+        document.getElementById('filterType').addEventListener('change', function() {
+            const filterValue = document.getElementById('filterValue');
+            filterValue.disabled = this.value === '';
+            if (this.value === '') {
+                filterValue.value = '';
+            }
+        });
+
+        // Carregar arquivo JSON
+        document.getElementById('jsonFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('jsonText').value = event.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Função para obter senha da conexão
+        function getConnectionPassword(connection) {
+            try {
+                return connection.info.password || '';
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Função para decriptar senha
+        function decryptPassword(encryptedPwd, decryptionKey) {
+            try {
+                // Decodificar Base64
+                const b64pwd = CryptoJS.enc.Base64.parse(encryptedPwd);
+                
+                // Separar IV (primeiros 16 bytes) e senha criptografada
+                const iv = CryptoJS.lib.WordArray.create(b64pwd.words.slice(0, 4), 16);
+                const pwd = CryptoJS.lib.WordArray.create(
+                    b64pwd.words.slice(4), 
+                    b64pwd.sigBytes - 16
+                );
+                
+                // Salt fixo: \x06\xb6a#=h2\xb8
+                const salt = CryptoJS.lib.WordArray.create([
+                    0x06b66123, 0x3d6832b8
+                ], 8);
+                
+                // Derivar chave usando PBKDF2
+                const key = CryptoJS.PBKDF2(decryptionKey, salt, {
+                    keySize: 256/32,
+                    iterations: 5000,
+                    hasher: CryptoJS.algo.SHA256
+                });
+                
+                // Decriptar usando AES-256-CBC
+                const decrypted = CryptoJS.AES.decrypt(
+                    { ciphertext: pwd },
+                    key,
+                    {
+                        iv: iv,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.Pkcs7
+                    }
+                );
+                
+                // Converter para string UTF-8
+                const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+                
+                if (!decryptedText) {
+                    return '**ERROR** decrypting';
+                }
+                
+                return decryptedText;
+            } catch (error) {
+                console.error('Erro ao decriptar:', error);
+                return '**ERROR** decrypting';
+            }
+        }
+
+        // Função principal de processamento
+        function processDecryption() {
+            const jsonText = document.getElementById('jsonText').value.trim();
+            const decryptKey = document.getElementById('decryptKey').value.trim();
+            const filterType = document.getElementById('filterType').value;
+            const filterValue = document.getElementById('filterValue').value.trim();
+            const messageDiv = document.getElementById('message');
+            
+            // Limpar mensagens anteriores
+            messageDiv.innerHTML = '';
+            
+            // Validações
+            if (!jsonText) {
+                showError('Por favor, carregue um arquivo JSON ou cole o conteúdo.');
+                return;
+            }
+            
+            if (!decryptKey) {
+                showError('Por favor, informe a chave de decriptação.');
+                return;
+            }
+            
+            try {
+                // Parse do JSON
+                const data = JSON.parse(jsonText);
+                
+                if (!data.connections || !Array.isArray(data.connections)) {
+                    showError('Formato JSON inválido. O arquivo deve conter um array "connections".');
+                    return;
+                }
+                
+                // Processar conexões
+                decryptedConnections = data.connections.map(conn => {
+                    const pwdRaw = getConnectionPassword(conn);
+                    return {
+                        name: conn.name || '',
+                        user: conn.info?.user || '',
+                        pwd: pwdRaw ? decryptPassword(pwdRaw, decryptKey) : ''
+                    };
+                });
+                
+                // Aplicar filtro se necessário
+                if (filterType && filterValue) {
+                    try {
+                        const regex = new RegExp(filterValue);
+                        decryptedConnections = decryptedConnections.filter(conn => 
+                            regex.test(conn[filterType])
+                        );
+                    } catch (e) {
+                        showError('Padrão regex inválido: ' + e.message);
+                        return;
+                    }
+                }
+                
+                // Exibir resultados
+                displayResults();
+                showSuccess(`${decryptedConnections.length} conexão(ões) processada(s) com sucesso!`);
+                
+            } catch (error) {
+                showError('Erro ao processar JSON: ' + error.message);
+            }
+        }
+
+        // Função para exibir resultados
+        function displayResults() {
+            const resultsBody = document.getElementById('resultsBody');
+            const resultsContainer = document.getElementById('results');
+            
+            resultsBody.innerHTML = '';
+            
+            decryptedConnections.forEach(conn => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${escapeHtml(conn.name)}</td>
+                    <td>${escapeHtml(conn.user)}</td>
+                    <td>${escapeHtml(conn.pwd)}</td>
+                `;
+                resultsBody.appendChild(row);
+            });
+            
+            resultsContainer.classList.add('show');
+        }
+
+        // Função para exportar para CSV
+        function exportToCSV() {
+            if (decryptedConnections.length === 0) {
+                showError('Nenhum resultado para exportar.');
+                return;
+            }
+            
+            const showHeaders = document.getElementById('showHeaders').checked;
+            let csv = '';
+            
+            if (showHeaders) {
+                csv = 'Name,User,Password\n';
+            }
+            
+            decryptedConnections.forEach(conn => {
+                csv += `"${conn.name}","${conn.user}","${conn.pwd}"\n`;
+            });
+            
+            downloadFile(csv, 'sql_developer_passwords.csv', 'text/csv');
+        }
+
+        // Função para exportar tabela formatada
+        function exportToTable() {
+            if (decryptedConnections.length === 0) {
+                showError('Nenhum resultado para exportar.');
+                return;
+            }
+            
+            const showHeaders = document.getElementById('showHeaders').checked;
+            const colWidths = [50, 30, 30];
+            let table = '';
+            
+            if (showHeaders) {
+                table += padString('Name', colWidths[0]) + ' ';
+                table += padString('User', colWidths[1]) + ' ';
+                table += padString('Password', colWidths[2]) + '\n';
+                table += '-'.repeat(colWidths[0]) + ' ';
+                table += '-'.repeat(colWidths[1]) + ' ';
+                table += '-'.repeat(colWidths[2]) + '\n';
+            }
+            
+            decryptedConnections.forEach(conn => {
+                table += padString(conn.name, colWidths[0]) + ' ';
+                table += padString(conn.user, colWidths[1]) + ' ';
+                table += padString(conn.pwd, colWidths[2]) + '\n';
+            });
+            
+            downloadFile(table, 'sql_developer_passwords.txt', 'text/plain');
+        }
+
+        // Função auxiliar para preencher string
+        function padString(str, width) {
+            if (str.length > width) {
+                return str.substring(0, width - 3) + '...';
+            }
+            return str.padEnd(width, ' ');
+        }
+
+        // Função para download de arquivo
+        function downloadFile(content, filename, contentType) {
+            const blob = new Blob([content], { type: contentType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // Função para limpar resultados
+        function clearResults() {
+            document.getElementById('jsonText').value = '';
+            document.getElementById('jsonFile').value = '';
+            document.getElementById('decryptKey').value = '';
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterValue').value = '';
+            document.getElementById('filterValue').disabled = true;
+            document.getElementById('resultsBody').innerHTML = '';
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('message').innerHTML = '';
+            decryptedConnections = [];
+        }
+
+        // Funções para exibir mensagens
+        function showError(message) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="error-message">❌ ${escapeHtml(message)}</div>`;
+        }
+
+        function showSuccess(message) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="success-message">✅ ${escapeHtml(message)}</div>`;
+        }
+
+        // Função para escapar HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
