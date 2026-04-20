@@ -718,18 +718,22 @@
       <div class="section-title" style="justify-content:space-between;margin-bottom:10px;">
         <span><span class="icon">🎨</span> Fundo</span>
         <div class="bg-mode-toggle">
-          <button class="bg-mode-btn active" id="bgModeBlur" data-mode="blur">✦ Preencher</button>
-          <button class="bg-mode-btn" id="bgModeColor" data-mode="color">🎨 Cor</button>
+          <button class="bg-mode-btn" id="bgModeBlur" data-mode="blur">✦ Preencher</button>
+          <button class="bg-mode-btn active" id="bgModeColor" data-mode="color">🎨 Cor</button>
         </div>
       </div>
-      <div id="bgColorRow" style="display:none;">
-        <input type="color" id="bgColor" value="#000000">
+      <div id="bgColorRow">
+        <input type="color" id="bgColor" value="#ffffff">
       </div>
-      <div id="bgBlurRow">
+      <div id="bgBlurRow" style="display:none;">
         <span class="blur-hint">Fundo borrado gerado da imagem carregada</span>
         <label class="ctrl" style="margin-top:10px;margin-bottom:0;">
           <div class="label-row"><span>Intensidade do Blur</span><span class="val" id="blurVal">28px</span></div>
           <input type="range" id="blurRange" min="4" max="80" step="1" value="28">
+        </label>
+        <label class="ctrl" style="margin-top:10px;margin-bottom:0;">
+          <div class="label-row"><span>Zoom do Fundo</span><span class="val" id="bgZoomVal">1.00x</span></div>
+          <input type="range" id="bgZoomRange" min="0.5" max="4" step="0.01" value="1">
         </label>
       </div>
     </div>
@@ -766,17 +770,29 @@
         </select>
       </label>
       <div class="section-title" style="margin-top:10px;"><span class="icon">📍</span> Posição</div>
-      <div class="wm-position-grid" id="wmPosGrid">
-        <button class="wm-pos-btn" data-pos="top-left">↖ SE</button>
-        <button class="wm-pos-btn" data-pos="top-center">↑ SC</button>
-        <button class="wm-pos-btn" data-pos="top-right">↗ SD</button>
-        <button class="wm-pos-btn" data-pos="center-left">← ME</button>
-        <button class="wm-pos-btn" data-pos="center">⊙ Centro</button>
-        <button class="wm-pos-btn" data-pos="center-right">→ MD</button>
-        <button class="wm-pos-btn" data-pos="bottom-left">↙ IE</button>
-        <button class="wm-pos-btn" data-pos="bottom-center">↓ IC</button>
-        <button class="wm-pos-btn" data-pos="bottom-right">↘ ID</button>
-        <button class="wm-pos-btn scattered" data-pos="scattered">⊞ Espalhado</button>
+      <div id="wmPosGrid">
+        <div class="wm-position-grid">
+          <button class="wm-pos-btn" data-pos="top-left">↖ SE</button>
+          <button class="wm-pos-btn" data-pos="top-center">↑ SC</button>
+          <button class="wm-pos-btn" data-pos="top-right">↗ SD</button>
+          <button class="wm-pos-btn" data-pos="center-left">← ME</button>
+          <button class="wm-pos-btn" data-pos="center">⊙ Centro</button>
+          <button class="wm-pos-btn" data-pos="center-right">→ MD</button>
+          <button class="wm-pos-btn" data-pos="bottom-left">↙ IE</button>
+          <button class="wm-pos-btn" data-pos="bottom-center">↓ IC</button>
+          <button class="wm-pos-btn" data-pos="bottom-right">↘ ID</button>
+          <button class="wm-pos-btn scattered" data-pos="scattered">⊞ Espalhado</button>
+        </div>
+        <div id="wmScatteredControls" style="display:none;">
+          <label class="ctrl" style="margin-top:10px;margin-bottom:0;">
+            <div class="label-row"><span>Espaçamento</span><span class="val" id="wmSpacingVal">60</span></div>
+            <input type="range" id="wmSpacingRange" min="0" max="300" step="1" value="60">
+          </label>
+          <label class="ctrl" style="margin-top:10px;margin-bottom:0;">
+            <div class="label-row"><span>Rotação</span><span class="val" id="wmRotVal">-30°</span></div>
+            <input type="range" id="wmRotRange" min="-180" max="180" step="1" value="-30">
+          </label>
+        </div>
       </div>
     </div>
   </aside>
@@ -920,6 +936,13 @@
   const qualityRange = document.getElementById('qualityRange');
   const qualVal = document.getElementById('qualVal');
   const bgModeBlur = document.getElementById('bgModeBlur');
+  const bgZoomRange = document.getElementById('bgZoomRange');
+  const bgZoomVal = document.getElementById('bgZoomVal');
+  const wmSpacingRange = document.getElementById('wmSpacingRange');
+  const wmSpacingVal = document.getElementById('wmSpacingVal');
+  const wmRotRange = document.getElementById('wmRotRange');
+  const wmRotVal = document.getElementById('wmRotVal');
+  const wmScatteredControls = document.getElementById('wmScatteredControls');
   const bgModeColor = document.getElementById('bgModeColor');
   const bgColorRow = document.getElementById('bgColorRow');
   const bgBlurRow = document.getElementById('bgBlurRow');
@@ -941,7 +964,8 @@
   let wmPosition = 'bottom-right';
   // FIX: default exportFormat = jpeg
   let exportFormat = 'jpeg';
-  let bgMode = 'blur'; // 'blur' | 'color'
+  let bgMode = 'color'; // 'blur' | 'color'
+  let bgZoom = 1.0;
   const isMobile = () => window.innerWidth <= 860;
   let leftOpen = false, rightOpen = false;
 
@@ -1138,7 +1162,14 @@
 
   function fitImage() {
     if (!img) return;
-    zoom = Math.max(outW / img.width, outH / img.height);
+    if (circular) {
+      // Circular: cover to fill the circle
+      zoom = Math.max(outW / img.width, outH / img.height);
+    } else {
+      // Fit entirely inside with 10px margin on the smallest dimension
+      const margin = 25;
+      zoom = Math.min((outW - margin * 2) / img.width, (outH - margin * 2) / img.height);
+    }
     dx = 0; dy = 0; rotation = 0;
     zoomRange.value = zoom;
     rotRange.value = 0;
@@ -1169,8 +1200,11 @@
     wmPosGrid.querySelectorAll('.wm-pos-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     wmPosition = btn.dataset.pos;
+    wmScatteredControls.style.display = wmPosition === 'scattered' ? '' : 'none';
     render();
   });
+  wmSpacingRange.addEventListener('input', () => { wmSpacingVal.textContent = wmSpacingRange.value; render(); });
+  wmRotRange.addEventListener('input', () => { wmRotVal.textContent = wmRotRange.value + '°'; render(); });
 
   // ===== EXPORT FORMAT =====
   [fmtPng, fmtJpeg, fmtWebp].forEach(btn => {
@@ -1195,6 +1229,7 @@
     });
   });
   blurRange.addEventListener('input', () => { blurVal.textContent = blurRange.value + 'px'; render(); });
+  bgZoomRange.addEventListener('input', () => { bgZoom = +bgZoomRange.value; bgZoomVal.textContent = bgZoom.toFixed(2) + 'x'; render(); });
 
   // ===== DESKTOP: Mouse Drag + Wheel =====
   let mouseDown = false;
@@ -1402,23 +1437,25 @@
       octx.font = `${fontSize}px "${font}"`;
       octx.fillStyle = hexToRgba(wmColor.value, alpha);
       octx.textBaseline = 'middle';
-      const margin = 30;
+      const margin = 25;
 
       if (wmPosition === 'scattered') {
         octx.font = `bold ${fontSize}px "${font}"`;
         const tm = octx.measureText(text);
         const tw = tm.width;
-        const spacingX = tw + 60;
-        const spacingY = fontSize + 50;
-        const cols = Math.ceil(outW / spacingX) + 1;
-        const rows = Math.ceil(outH / spacingY) + 1;
+        const spacing = +wmSpacingRange.value;
+        const wmRot = +wmRotRange.value * Math.PI / 180;
+        const spacingX = tw + spacing;
+        const spacingY = fontSize + spacing * 0.6;
+        const cols = Math.ceil(outW / spacingX) + 2;
+        const rows = Math.ceil(outH / spacingY) + 2;
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
             const x = c * spacingX - tw / 2 + (r % 2 === 0 ? 0 : spacingX / 2);
             const y = r * spacingY;
             octx.save();
             octx.translate(x, y);
-            octx.rotate(-30 * Math.PI / 180);
+            octx.rotate(wmRot);
             octx.fillText(text, 0, 0);
             octx.restore();
           }
@@ -1492,7 +1529,7 @@
     // mas com zoom mínimo para cobrir toda a área — garante que não sobre espaço vazio.
     const coverScale = Math.max(targetW / img.width, targetH / img.height);
     // O zoom do fundo acompanha o zoom principal, mas nunca fica menor que coverScale
-    const bgZoom = Math.max(zoom, coverScale);
+    const effectiveBgZoom = Math.max(zoom * bgZoom, coverScale);
 
     // Renderiza a imagem transformada num canvas intermediário (sem blur)
     const pad = blurAmount * 2; // padding para evitar borda branca do blur
@@ -1505,7 +1542,7 @@
     tctx.save();
     tctx.translate(tmp.width / 2 + dx, tmp.height / 2 + dy);
     tctx.rotate(rotation * Math.PI / 180);
-    tctx.scale(bgZoom, bgZoom);
+    tctx.scale(effectiveBgZoom, effectiveBgZoom);
     tctx.drawImage(img, -img.width / 2, -img.height / 2);
     tctx.restore();
 
@@ -1565,23 +1602,25 @@
       ctx.font = `${fontSize}px "${font}"`;
       ctx.fillStyle = hexToRgba(wmColor.value, alpha);
       ctx.textBaseline = 'middle';
-      const margin = 30;
+      const margin = 25;
 
       if (wmPosition === 'scattered') {
         ctx.font = `bold ${fontSize}px "${font}"`;
         const tm = ctx.measureText(text);
         const tw = tm.width;
-        const spacingX = tw + 60;
-        const spacingY = fontSize + 50;
-        const cols = Math.ceil(outW / spacingX) + 1;
-        const rows = Math.ceil(outH / spacingY) + 1;
+        const spacing = +wmSpacingRange.value;
+        const wmRot = +wmRotRange.value * Math.PI / 180;
+        const spacingX = tw + spacing;
+        const spacingY = fontSize + spacing * 0.6;
+        const cols = Math.ceil(outW / spacingX) + 2;
+        const rows = Math.ceil(outH / spacingY) + 2;
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
             const x = c * spacingX - tw / 2 + (r % 2 === 0 ? 0 : spacingX / 2);
             const y = r * spacingY;
             ctx.save();
             ctx.translate(x, y);
-            ctx.rotate(-30 * Math.PI / 180);
+            ctx.rotate(wmRot);
             ctx.fillText(text, 0, 0);
             ctx.restore();
           }
