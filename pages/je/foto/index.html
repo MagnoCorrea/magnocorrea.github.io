@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta autor="Magno Correa">
+<title>Editor de Imagem — Redes Sociais</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242836;
+    --border: #2e3348;
+    --accent: #6c5ce7;
+    --accent-hover: #7f70f0;
+    --text: #e8e8f0;
+    --text-dim: #8888a8;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --left-w: 300px;
+    --right-w: 300px;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .app {
+    display: flex;
+    height: 100vh;
+    height: 100dvh;
+    width: 100vw;
+  }
+
+  /* ===== LEFT SIDEBAR ===== */
+  .sidebar-left {
+    width: var(--left-w);
+    min-width: 240px;
+    max-width: 500px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    touch-action: auto;
+  }
+
+  .sidebar-left::-webkit-scrollbar { width: 6px; }
+  .sidebar-left::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-left::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .resize-left {
+    position: absolute;
+    top: 0; right: -3px;
+    width: 7px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 20;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .resize-left:hover, .resize-left.active { background: var(--accent); }
+
+  /* ===== RIGHT SIDEBAR ===== */
+  .sidebar-right {
+    width: var(--right-w);
+    min-width: 240px;
+    max-width: 500px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    touch-action: auto;
+  }
+
+  .sidebar-right::-webkit-scrollbar { width: 6px; }
+  .sidebar-right::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .resize-right {
+    position: absolute;
+    top: 0; left: -3px;
+    width: 7px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 20;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .resize-right:hover, .resize-right.active { background: var(--accent); }
+
+  /* ===== MAIN AREA ===== */
+  .main-area {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    margin-bottom: 18px;
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .section-title {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-title .icon { font-size: .85rem; }
+
+  /* ===== UPLOAD ===== */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 22px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .25s;
+    background: var(--surface2);
+    touch-action: auto;
+  }
+
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--accent);
+    background: rgba(108,92,231,.08);
+  }
+
+  .upload-zone svg { width: 36px; height: 36px; fill: var(--text-dim); margin-bottom: 6px; }
+  .upload-zone p { font-size: .82rem; color: var(--text-dim); }
+  .upload-zone .hint { font-size: .72rem; margin-top: 4px; }
+
+  /* ===== FORMAT ===== */
+  .format-grid { display: flex; flex-direction: column; gap: 6px; }
+
+  .format-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    transition: all .2s;
+    font-size: .82rem;
+    touch-action: auto;
+  }
+
+  .format-btn:hover { border-color: var(--accent); }
+  .format-btn.active {
+    border-color: var(--accent);
+    background: rgba(108,92,231,.15);
+    box-shadow: 0 0 12px rgba(108,92,231,.15);
+  }
+
+  .format-preview {
+    width: 24px; height: 24px;
+    border: 2px solid var(--text-dim);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .format-btn.active .format-preview { border-color: var(--accent); }
+  .format-info { display: flex; flex-direction: column; }
+  .format-info .name { font-weight: 600; font-size: .82rem; }
+  .format-info .size { font-size: .7rem; color: var(--text-dim); }
+
+  /* ===== CONTROLS ===== */
+  label.ctrl { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  label.ctrl:last-child { margin-bottom: 0; }
+
+  label.ctrl .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .8rem;
+  }
+
+  label.ctrl .label-row span:first-child { color: var(--text-dim); }
+  label.ctrl .label-row .val { color: var(--accent); font-weight: 600; font-size: .78rem; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface2);
+    outline: none;
+    touch-action: auto;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(108,92,231,.4);
+  }
+
+  input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    width: 100%;
+    height: 36px;
+    cursor: pointer;
+    background: var(--surface2);
+    padding: 2px;
+    touch-action: auto;
+  }
+
+  input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+  input[type="color"]::-webkit-color-swatch { border: none; border-radius: 5px; }
+
+  .watermark-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: .85rem;
+    outline: none;
+    transition: border-color .2s;
+    touch-action: auto;
+  }
+
+  .watermark-input:focus { border-color: var(--accent); }
+
+  .wm-position-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .wm-pos-btn {
+    padding: 7px 3px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: .65rem;
+    text-align: center;
+    transition: all .2s;
+    touch-action: auto;
+  }
+
+  .wm-pos-btn:hover { border-color: var(--accent); color: var(--text); }
+  .wm-pos-btn.active {
+    border-color: var(--accent);
+    background: rgba(108,92,231,.2);
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .wm-pos-btn.scattered {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    font-weight: 600;
+    font-size: .72rem;
+  }
+
+  .font-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: .82rem;
+    outline: none;
+    cursor: pointer;
+    touch-action: auto;
+  }
+
+  .font-select:focus { border-color: var(--accent); }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    width: 100%;
+    touch-action: auto;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+  .btn-danger { background: transparent; border: 2px solid var(--danger); color: var(--danger); }
+  .btn-danger:hover { background: rgba(231,76,60,.12); }
+
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-success:hover { background: #27ae60; }
+
+  .btn-share {
+    background: linear-gradient(135deg, #0984e3, #6c5ce7);
+    color: #fff;
+    border: none;
+  }
+
+  .btn-share:hover { opacity: .9; transform: translateY(-1px); }
+  .btn-share:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+  .toggle-row { display: flex; gap: 6px; margin-bottom: 12px; }
+
+  .toggle-btn {
+    flex: 1;
+    padding: 7px 6px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: .72rem;
+    text-align: center;
+    transition: all .2s;
+    touch-action: auto;
+  }
+
+  .toggle-btn:hover { border-color: var(--accent); }
+  .toggle-btn.active { border-color: var(--accent); background: rgba(108,92,231,.15); color: var(--text); }
+
+  /* ===== CANVAS ===== */
+  .canvas-wrapper {
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .canvas-wrapper.active { display: flex; }
+
+  #previewCanvas {
+    max-width: 100%;
+    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    cursor: grab;
+    touch-action: none;
+  }
+
+  #previewCanvas:active { cursor: grabbing; }
+
+  /* ===== UPLOAD PLACEHOLDER (main area) ===== */
+  .placeholder-msg {
+    text-align: center;
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 40px;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    transition: all .25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .placeholder-msg:hover {
+    border-color: var(--accent);
+    background: rgba(108,92,231,.05);
+  }
+
+  .placeholder-msg svg { width: 70px; height: 70px; fill: var(--border); margin-bottom: 14px; transition: fill .25s; }
+  .placeholder-msg:hover svg { fill: var(--accent); }
+  .placeholder-msg p { font-size: .95rem; }
+  .placeholder-msg .sub { font-size: .78rem; margin-top: 6px; }
+  .placeholder-msg .hint-small { font-size: .7rem; margin-top: 4px; color: var(--text-dim); opacity: 0.6; }
+
+  .image-info {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,.7);
+    color: #fff;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: .7rem;
+    display: none;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    z-index: 5;
+  }
+
+  .image-info.active { display: block; }
+
+  .remove-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(0,0,0,.6);
+    border: none;
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    transition: all .2s;
+    z-index: 5;
+  }
+
+  .remove-btn.active { display: flex; }
+  .remove-btn:hover { background: rgba(231,76,60,.6); }
+
+  /* ===== ACTION BAR — Desktop ===== */
+  .action-bar {
+    display: none;
+    gap: 8px;
+    margin-top: 14px;
+    width: 100%;
+    max-width: 460px;
+    z-index: 5;
+    flex-wrap: wrap;
+  }
+
+  .action-bar.visible { display: flex; }
+
+  .action-bar .btn { flex: 1; min-width: 120px; padding: 9px 12px; font-size: .78rem; }
+
+  /* ===== Action bar icon buttons (mobile) ===== */
+  .action-bar .icon-btn {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 14px;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+    flex-shrink: 0;
+    position: relative;
+    touch-action: auto;
+  }
+
+  .action-bar .icon-btn:active { transform: scale(0.92); }
+  .action-bar .icon-btn:disabled { opacity: .35; pointer-events: none; }
+
+  .action-bar .icon-btn.fit-btn {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  }
+
+  .action-bar .icon-btn.download-btn {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+  }
+
+  .action-bar .icon-btn.share-btn {
+    background: linear-gradient(135deg, #0984e3, #6c5ce7);
+  }
+
+  .action-bar .icon-btn::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,.85);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: .7rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+
+  .action-bar .icon-btn:hover::after,
+  .action-bar .icon-btn:active::after { opacity: 1; }
+
+  /* ===== MOBILE FAB BUTTONS ===== */
+  .fab-left, .fab-right {
+    display: none;
+    position: fixed;
+    bottom: 82px;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,.5);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+    transition: background 0.2s, transform 0.2s;
+    touch-action: auto;
+  }
+
+  .fab-left {
+    left: 16px;
+    background: rgba(108,92,231,.88);
+  }
+
+  .fab-right {
+    right: 16px;
+    background: rgba(225,48,108,.88);
+  }
+
+  .fab-left:hover, .fab-right:hover { transform: scale(1.06); }
+  .fab-left.open { background: rgba(108,92,231,.45); }
+  .fab-right.open { background: rgba(225,48,108,.45); }
+
+  /* ===== MOBILE OVERLAY ===== */
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 40;
+    opacity: 0;
+    transition: opacity .3s;
+    backdrop-filter: blur(4px);
+  }
+
+  /* FIX: precisa de display:block quando active */
+  .mobile-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width: 860px) {
+    .sidebar-left, .sidebar-right {
+      position: fixed;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      z-index: 50;
+      width: 85vw !important;
+      max-width: 360px;
+      min-width: unset;
+      transform: translateX(-100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      border: none;
+      box-shadow: 4px 0 30px rgba(0,0,0,.5);
+    }
+
+    .sidebar-left {
+      left: 0;
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-right {
+      right: 0;
+      left: auto;
+      transform: translateX(100%);
+      border-left: 1px solid var(--border);
+      box-shadow: -4px 0 30px rgba(0,0,0,.5);
+    }
+
+    .sidebar-left.open { transform: translateX(0); }
+    .sidebar-right.open { transform: translateX(0); }
+
+    .resize-left, .resize-right { display: none; }
+    .fab-left, .fab-right { display: flex; }
+
+    .main-area { padding: 12px; padding-bottom: 76px; }
+
+    #previewCanvas {
+      max-height: calc(100dvh - 160px);
+    }
+
+    /* FIX: action bar mobile — floating pill com ícones */
+    .action-bar.visible {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: none;
+      width: auto;
+      margin-top: 0;
+      background: rgba(26,29,39,.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 8px 10px;
+      gap: 8px;
+      z-index: 45;
+      box-shadow: 0 4px 30px rgba(0,0,0,.5);
+      flex-wrap: nowrap;
+    }
+
+    /* No mobile: esconde botões com texto, mostra icon-btns */
+    .action-bar .btn { display: none; }
+    .action-bar .icon-btn { display: flex; }
+  }
+
+  /* Desktop: mostra botões de texto, esconde ícones */
+  @media (min-width: 861px) {
+    .action-bar .icon-btn { display: none !important; }
+    .action-bar .btn { display: inline-flex; }
+  }
+
+  /* ===== BG MODE TOGGLE ===== */
+  .bg-mode-toggle {
+    display: flex;
+    gap: 4px;
+  }
+
+  .bg-mode-btn {
+    padding: 4px 10px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: .68rem;
+    font-weight: 600;
+    transition: all .2s;
+    white-space: nowrap;
+    touch-action: auto;
+  }
+
+  .bg-mode-btn:hover { border-color: var(--accent); color: var(--text); }
+  .bg-mode-btn.active {
+    border-color: var(--accent);
+    background: rgba(108,92,231,.18);
+    color: var(--text);
+  }
+
+  .blur-hint {
+    font-size: .72rem;
+    color: var(--text-dim);
+    display: block;
+    line-height: 1.4;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ========== LEFT SIDEBAR ========== -->
+  <aside class="sidebar-left" id="sidebarLeft">
+    <div class="resize-left" id="resizeLeft"></div>
+
+    <div class="section">
+      <div class="section-title"><span class="icon">💾</span> Exportar</div>
+      <label class="ctrl">
+        <div class="label-row"><span>Formato de Arquivo</span></div>
+        <div class="toggle-row">
+          <button class="toggle-btn" data-fmt="png" id="fmtPng">PNG</button>
+          <button class="toggle-btn active" data-fmt="jpeg" id="fmtJpeg">JPG</button>
+          <button class="toggle-btn" data-fmt="webp" id="fmtWebp">WEBP</button>
+        </div>
+      </label>
+      <label class="ctrl" id="qualityCtrl">
+        <div class="label-row"><span>Qualidade</span><span class="val" id="qualVal">92%</span></div>
+        <input type="range" id="qualityRange" min="10" max="100" step="1" value="92">
+      </label>
+    </div>
+
+    <div class="section">
+      <div class="section-title" style="justify-content:space-between;margin-bottom:10px;">
+        <span><span class="icon">🎨</span> Fundo</span>
+        <div class="bg-mode-toggle">
+          <button class="bg-mode-btn active" id="bgModeBlur" data-mode="blur">✦ Preencher</button>
+          <button class="bg-mode-btn" id="bgModeColor" data-mode="color">🎨 Cor</button>
+        </div>
+      </div>
+      <div id="bgColorRow" style="display:none;">
+        <input type="color" id="bgColor" value="#000000">
+      </div>
+      <div id="bgBlurRow">
+        <span class="blur-hint">Fundo borrado gerado da imagem carregada</span>
+        <label class="ctrl" style="margin-top:10px;margin-bottom:0;">
+          <div class="label-row"><span>Intensidade do Blur</span><span class="val" id="blurVal">28px</span></div>
+          <input type="range" id="blurRange" min="4" max="80" step="1" value="28">
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="icon">💧</span> Marca D'água</div>
+      <label class="ctrl">
+        <div class="label-row"><span>Texto</span></div>
+        <input type="text" class="watermark-input" id="wmText" placeholder="@seunome ou seu texto">
+      </label>
+      <label class="ctrl">
+        <div class="label-row"><span>Opacidade</span><span class="val" id="wmOpVal">30%</span></div>
+        <input type="range" id="wmOpacity" min="0" max="100" step="1" value="30">
+      </label>
+      <label class="ctrl">
+        <div class="label-row"><span>Tamanho</span><span class="val" id="wmSizeVal">36</span></div>
+        <input type="range" id="wmSize" min="8" max="200" step="1" value="36">
+      </label>
+      <label class="ctrl">
+        <div class="label-row"><span>Cor</span></div>
+        <input type="color" id="wmColor" value="#ffffff">
+      </label>
+      <label class="ctrl">
+        <div class="label-row"><span>Fonte</span></div>
+        <select class="font-select" id="wmFont">
+          <option value="Arial">Arial</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Courier New">Courier New</option>
+          <option value="Verdana">Verdana</option>
+          <option value="Impact">Impact</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Trebuchet MS">Trebuchet MS</option>
+          <option value="Comic Sans MS">Comic Sans MS</option>
+        </select>
+      </label>
+      <div class="section-title" style="margin-top:10px;"><span class="icon">📍</span> Posição</div>
+      <div class="wm-position-grid" id="wmPosGrid">
+        <button class="wm-pos-btn" data-pos="top-left">↖ SE</button>
+        <button class="wm-pos-btn" data-pos="top-center">↑ SC</button>
+        <button class="wm-pos-btn" data-pos="top-right">↗ SD</button>
+        <button class="wm-pos-btn" data-pos="center-left">← ME</button>
+        <button class="wm-pos-btn" data-pos="center">⊙ Centro</button>
+        <button class="wm-pos-btn" data-pos="center-right">→ MD</button>
+        <button class="wm-pos-btn" data-pos="bottom-left">↙ IE</button>
+        <button class="wm-pos-btn" data-pos="bottom-center">↓ IC</button>
+        <button class="wm-pos-btn" data-pos="bottom-right">↘ ID</button>
+        <button class="wm-pos-btn scattered" data-pos="scattered">⊞ Espalhado</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN AREA ========== -->
+  <main class="main-area" id="mainArea">
+    <!-- Placeholder clicável para upload -->
+    <div class="placeholder-msg" id="placeholder">
+      <svg viewBox="0 0 24 24"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
+      <p>Clique para enviar uma imagem</p>
+      <p class="sub">ou arraste e solte aqui</p>
+      <p class="hint-small">JPG, PNG, WEBP</p>
+    </div>
+
+    <div class="canvas-wrapper" id="canvasWrapper">
+      <canvas id="previewCanvas"></canvas>
+    </div>
+
+    <div class="image-info" id="imageInfo"></div>
+    <button class="remove-btn" id="removeImgBtn" title="Remover imagem">✕</button>
+
+    <!-- Action bar — Desktop com texto / Mobile com ícones -->
+    <div class="action-bar" id="actionBar">
+      <!-- Desktop text buttons -->
+      <button class="btn btn-primary" id="fitBtn">⊞ Ajustar</button>
+      <button class="btn btn-success" id="downloadBtn" disabled>⬇ Baixar</button>
+      <button class="btn btn-share" id="shareBtn" disabled>📤 Compartilhar</button>
+
+      <!-- Mobile icon-only versions -->
+      <button class="icon-btn fit-btn" id="fitBtnIcon" data-tip="Ajustar">⊞</button>
+      <button class="icon-btn download-btn" id="downloadBtnIcon" disabled data-tip="Baixar">⬇</button>
+      <button class="icon-btn share-btn" id="shareBtnIcon" disabled data-tip="Compartilhar">📤</button>
+    </div>
+  </main>
+
+  <!-- ========== RIGHT SIDEBAR ========== -->
+  <aside class="sidebar-right" id="sidebarRight">
+    <div class="resize-right" id="resizeRight"></div>
+
+    <div class="section">
+      <div class="section-title"><span class="icon">📐</span> Formato de Saída</div>
+      <div class="format-grid" id="formatGrid">
+        <button class="format-btn active" data-w="1080" data-h="1350" data-label="4:5">
+          <div class="format-preview" style="width:16px;height:20px;"></div>
+          <div class="format-info"><span class="name">Feed Retrato</span><span class="size">1080 × 1350 — 4:5</span></div>
+        </button>
+        <button class="format-btn" data-w="1080" data-h="1080" data-label="1:1">
+          <div class="format-preview" style="width:18px;height:18px;"></div>
+          <div class="format-info"><span class="name">Feed Quadrado</span><span class="size">1080 × 1080 — 1:1</span></div>
+        </button>
+        <button class="format-btn" data-w="1080" data-h="608" data-label="1.91:1">
+          <div class="format-preview" style="width:22px;height:12px;"></div>
+          <div class="format-info"><span class="name">Feed Paisagem</span><span class="size">1080 × 608 — 1.91:1</span></div>
+        </button>
+        <button class="format-btn" data-w="1080" data-h="1920" data-label="9:16">
+          <div class="format-preview" style="width:12px;height:22px;"></div>
+          <div class="format-info"><span class="name">Stories / Reels</span><span class="size">1080 × 1920 — 9:16</span></div>
+        </button>
+        <button class="format-btn" data-w="320" data-h="320" data-label="1:1" data-circular="true">
+          <div class="format-preview" style="width:18px;height:18px;border-radius:50%;"></div>
+          <div class="format-info"><span class="name">Foto de Perfil</span><span class="size">320 × 320 — Circular</span></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="icon">⚙️</span> Ajustes da Imagem</div>
+      <label class="ctrl">
+        <div class="label-row"><span>Zoom</span><span class="val" id="zoomVal">1.00x</span></div>
+        <input type="range" id="zoomRange" min="0.1" max="5" step="0.01" value="1">
+      </label>
+      <label class="ctrl">
+        <div class="label-row"><span>Rotação</span><span class="val" id="rotVal">0°</span></div>
+        <input type="range" id="rotRange" min="-180" max="180" step="1" value="0">
+      </label>
+      <label class="ctrl">
+        <div class="label-row"><span>Deslocamento X</span><span class="val" id="dxVal">0</span></div>
+        <input type="range" id="dxRange" min="-1000" max="1000" step="1" value="0">
+      </label>
+      <label class="ctrl">
+        <div class="label-row"><span>Deslocamento Y</span><span class="val" id="dyVal">0</span></div>
+        <input type="range" id="dyRange" min="-1000" max="1000" step="1" value="0">
+      </label>
+      <button class="btn btn-danger" id="resetBtn" style="margin-top:10px;">↺ Resetar Ajustes</button>
+    </div>
+  </aside>
+
+</div>
+
+<!-- Mobile overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- Mobile FAB buttons -->
+<button class="fab-left" id="fabLeft" title="Menu opções">☰</button>
+<button class="fab-right" id="fabRight" title="Menu ajustes">⚙</button>
+
+<!-- Hidden file input -->
+<input type="file" id="fileInput" accept="image/*" hidden>
+
+<script>
+(() => {
+  // Elements
+  const fileInput = document.getElementById('fileInput');
+  const formatGrid = document.getElementById('formatGrid');
+  const zoomRange = document.getElementById('zoomRange');
+  const rotRange = document.getElementById('rotRange');
+  const dxRange = document.getElementById('dxRange');
+  const dyRange = document.getElementById('dyRange');
+  const zoomVal = document.getElementById('zoomVal');
+  const rotVal = document.getElementById('rotVal');
+  const dxVal = document.getElementById('dxVal');
+  const dyVal = document.getElementById('dyVal');
+  const resetBtn = document.getElementById('resetBtn');
+  const bgColor = document.getElementById('bgColor');
+  const wmText = document.getElementById('wmText');
+  const wmOpacity = document.getElementById('wmOpacity');
+  const wmSize = document.getElementById('wmSize');
+  const wmColor = document.getElementById('wmColor');
+  const wmFont = document.getElementById('wmFont');
+  const wmPosGrid = document.getElementById('wmPosGrid');
+  const wmOpVal = document.getElementById('wmOpVal');
+  const wmSizeVal = document.getElementById('wmSizeVal');
+  const previewCanvas = document.getElementById('previewCanvas');
+  const ctx = previewCanvas.getContext('2d');
+  const placeholder = document.getElementById('placeholder');
+  const canvasWrapper = document.getElementById('canvasWrapper');
+  const imageInfo = document.getElementById('imageInfo');
+  const removeImgBtn = document.getElementById('removeImgBtn');
+  const actionBar = document.getElementById('actionBar');
+  const mainArea = document.getElementById('mainArea');
+  const fitBtn = document.getElementById('fitBtn');
+  const fitBtnIcon = document.getElementById('fitBtnIcon');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const downloadBtnIcon = document.getElementById('downloadBtnIcon');
+  const shareBtn = document.getElementById('shareBtn');
+  const shareBtnIcon = document.getElementById('shareBtnIcon');
+  const fmtPng = document.getElementById('fmtPng');
+  const fmtJpeg = document.getElementById('fmtJpeg');
+  const fmtWebp = document.getElementById('fmtWebp');
+  const qualityCtrl = document.getElementById('qualityCtrl');
+  const qualityRange = document.getElementById('qualityRange');
+  const qualVal = document.getElementById('qualVal');
+  const bgModeBlur = document.getElementById('bgModeBlur');
+  const bgModeColor = document.getElementById('bgModeColor');
+  const bgColorRow = document.getElementById('bgColorRow');
+  const bgBlurRow = document.getElementById('bgBlurRow');
+  const blurRange = document.getElementById('blurRange');
+  const blurVal = document.getElementById('blurVal');
+  const sidebarLeft = document.getElementById('sidebarLeft');
+  const sidebarRight = document.getElementById('sidebarRight');
+  const resizeLeft = document.getElementById('resizeLeft');
+  const resizeRight = document.getElementById('resizeRight');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const fabLeft = document.getElementById('fabLeft');
+  const fabRight = document.getElementById('fabRight');
+
+  // State
+  let img = null;
+  let outW = 1080, outH = 1350;
+  let circular = false;
+  let zoom = 1, rotation = 0, dx = 0, dy = 0;
+  let wmPosition = 'bottom-right';
+  // FIX: default exportFormat = jpeg
+  let exportFormat = 'jpeg';
+  let bgMode = 'blur'; // 'blur' | 'color'
+  const isMobile = () => window.innerWidth <= 860;
+  let leftOpen = false, rightOpen = false;
+
+  // ===== TOUCH GESTURE STATE =====
+  let gestureState = {
+    mode: 'none',
+    startX: 0, startY: 0,
+    startDx: 0, startDy: 0,
+    startDist: 0, startZoom: 0,
+    startAngle: 0, startRotation: 0,
+  };
+
+  // FIX: these functions receive {x, y} objects from activeTouchIds map
+  function getTouchDistance(t1, t2) {
+    const ddx = t2.x - t1.x;
+    const ddy = t2.y - t1.y;
+    return Math.sqrt(ddx * ddx + ddy * ddy);
+  }
+
+  function getTouchAngle(t1, t2) {
+    return Math.atan2(t2.y - t1.y, t2.x - t1.x);
+  }
+
+  // ===== MOBILE MENU =====
+  function closeSidebars() {
+    leftOpen = false; rightOpen = false;
+    sidebarLeft.classList.remove('open');
+    sidebarRight.classList.remove('open');
+    mobileOverlay.classList.remove('active');
+    fabLeft.classList.remove('open');
+    fabRight.classList.remove('open');
+  }
+
+  function toggleLeft() {
+    if (leftOpen) { closeSidebars(); return; }
+    rightOpen = false;
+    sidebarRight.classList.remove('open');
+    fabRight.classList.remove('open');
+    leftOpen = true;
+    sidebarLeft.classList.add('open');
+    fabLeft.classList.add('open');
+    mobileOverlay.classList.add('active');
+  }
+
+  function toggleRight() {
+    if (rightOpen) { closeSidebars(); return; }
+    leftOpen = false;
+    sidebarLeft.classList.remove('open');
+    fabLeft.classList.remove('open');
+    rightOpen = true;
+    sidebarRight.classList.add('open');
+    fabRight.classList.add('open');
+    mobileOverlay.classList.add('active');
+  }
+
+  fabLeft.addEventListener('click', toggleLeft);
+  fabRight.addEventListener('click', toggleRight);
+  mobileOverlay.addEventListener('click', closeSidebars);
+
+  // FIX: fechar sidebars ao clicar na main area (canvas ou placeholder)
+  mainArea.addEventListener('click', (e) => {
+    // só fecha se algum sidebar estiver aberto e o clique não for em botões internos
+    if (!isMobile()) return;
+    if (leftOpen || rightOpen) {
+      const target = e.target;
+      // não fechar se clicar nos FABs ou nos botões da action bar
+      if (target.closest('#fabLeft') || target.closest('#fabRight') || target.closest('#actionBar')) return;
+      closeSidebars();
+    }
+  });
+
+  // ===== RESIZABLE SIDEBARS (desktop) =====
+  let isResizingLeft = false, isResizingRight = false;
+
+  resizeLeft.addEventListener('mousedown', (e) => {
+    isResizingLeft = true;
+    resizeLeft.classList.add('active');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+
+  resizeRight.addEventListener('mousedown', (e) => {
+    isResizingRight = true;
+    resizeRight.classList.add('active');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (isResizingLeft) {
+      sidebarLeft.style.width = Math.max(240, Math.min(500, e.clientX)) + 'px';
+      render();
+    }
+    if (isResizingRight) {
+      sidebarRight.style.width = Math.max(240, Math.min(500, document.body.getBoundingClientRect().right - e.clientX)) + 'px';
+      render();
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    isResizingLeft = false; isResizingRight = false;
+    resizeLeft.classList.remove('active');
+    resizeRight.classList.remove('active');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+
+  // ===== UPLOAD — placeholder clicável na main area =====
+  placeholder.addEventListener('click', () => fileInput.click());
+  placeholder.addEventListener('dragover', e => { e.preventDefault(); placeholder.style.borderColor = 'var(--accent)'; });
+  placeholder.addEventListener('dragleave', () => { placeholder.style.borderColor = ''; });
+  placeholder.addEventListener('drop', e => {
+    e.preventDefault();
+    placeholder.style.borderColor = '';
+    if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
+  });
+
+  fileInput.addEventListener('change', () => { if (fileInput.files.length) loadFile(fileInput.files[0]); });
+
+  function loadFile(file) {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const image = new Image();
+      image.onload = () => {
+        img = image;
+        placeholder.style.display = 'none';
+        canvasWrapper.classList.add('active');
+        removeImgBtn.classList.add('active');
+        // FIX: usar classe 'visible' em vez de style.display
+        actionBar.classList.add('visible');
+        setActionsEnabled(true);
+        resetAdjustments();
+        fitImage();
+        render();
+        if (isMobile()) closeSidebars();
+      };
+      image.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function setActionsEnabled(enabled) {
+    downloadBtn.disabled = !enabled;
+    downloadBtnIcon.disabled = !enabled;
+    shareBtn.disabled = !enabled;
+    shareBtnIcon.disabled = !enabled;
+  }
+
+  function handleRemoveImage() {
+    img = null;
+    placeholder.style.display = '';
+    canvasWrapper.classList.remove('active');
+    removeImgBtn.classList.remove('active');
+    actionBar.classList.remove('visible');
+    setActionsEnabled(false);
+    imageInfo.classList.remove('active');
+    fileInput.value = '';
+  }
+
+  removeImgBtn.addEventListener('click', handleRemoveImage);
+
+  // ===== FORMAT =====
+  formatGrid.addEventListener('click', e => {
+    const btn = e.target.closest('.format-btn');
+    if (!btn) return;
+    formatGrid.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    outW = +btn.dataset.w;
+    outH = +btn.dataset.h;
+    circular = !!btn.dataset.circular;
+    fitImage();
+    render();
+  });
+
+  // ===== SLIDERS =====
+  zoomRange.addEventListener('input', () => { zoom = +zoomRange.value; zoomVal.textContent = zoom.toFixed(2) + 'x'; render(); });
+  rotRange.addEventListener('input', () => { rotation = +rotRange.value; rotVal.textContent = rotation + '°'; render(); });
+  dxRange.addEventListener('input', () => { dx = +dxRange.value; dxVal.textContent = dx; render(); });
+  dyRange.addEventListener('input', () => { dy = +dyRange.value; dyVal.textContent = dy; render(); });
+
+  resetBtn.addEventListener('click', resetAdjustments);
+
+  function resetAdjustments() {
+    zoom = 1; rotation = 0; dx = 0; dy = 0;
+    zoomRange.value = 1; rotRange.value = 0;
+    dxRange.value = 0; dyRange.value = 0;
+    zoomVal.textContent = '1.00x'; rotVal.textContent = '0°';
+    dxVal.textContent = '0'; dyVal.textContent = '0';
+    render();
+  }
+
+  function fitImage() {
+    if (!img) return;
+    zoom = Math.max(outW / img.width, outH / img.height);
+    dx = 0; dy = 0; rotation = 0;
+    zoomRange.value = zoom;
+    rotRange.value = 0;
+    dxRange.value = 0;
+    dyRange.value = 0;
+    zoomVal.textContent = zoom.toFixed(2) + 'x';
+    rotVal.textContent = '0°';
+    dxVal.textContent = '0';
+    dyVal.textContent = '0';
+    render();
+  }
+
+  fitBtn.addEventListener('click', fitImage);
+  fitBtnIcon.addEventListener('click', fitImage);
+
+  bgColor.addEventListener('input', render);
+
+  // ===== WATERMARK =====
+  wmOpacity.addEventListener('input', () => { wmOpVal.textContent = wmOpacity.value + '%'; render(); });
+  wmSize.addEventListener('input', () => { wmSizeVal.textContent = wmSize.value; render(); });
+  wmText.addEventListener('input', render);
+  wmColor.addEventListener('input', render);
+  wmFont.addEventListener('change', render);
+
+  wmPosGrid.addEventListener('click', e => {
+    const btn = e.target.closest('.wm-pos-btn');
+    if (!btn) return;
+    wmPosGrid.querySelectorAll('.wm-pos-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    wmPosition = btn.dataset.pos;
+    render();
+  });
+
+  // ===== EXPORT FORMAT =====
+  [fmtPng, fmtJpeg, fmtWebp].forEach(btn => {
+    btn.addEventListener('click', () => {
+      [fmtPng, fmtJpeg, fmtWebp].forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      exportFormat = btn.dataset.fmt;
+      qualityCtrl.style.display = exportFormat === 'png' ? 'none' : '';
+    });
+  });
+  qualityRange.addEventListener('input', () => { qualVal.textContent = qualityRange.value + '%'; });
+
+  // ===== BG MODE TOGGLE =====
+  [bgModeBlur, bgModeColor].forEach(btn => {
+    btn.addEventListener('click', () => {
+      [bgModeBlur, bgModeColor].forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      bgMode = btn.dataset.mode;
+      bgColorRow.style.display = bgMode === 'color' ? '' : 'none';
+      bgBlurRow.style.display = bgMode === 'blur' ? '' : 'none';
+      render();
+    });
+  });
+  blurRange.addEventListener('input', () => { blurVal.textContent = blurRange.value + 'px'; render(); });
+
+  // ===== DESKTOP: Mouse Drag + Wheel =====
+  let mouseDown = false;
+
+  previewCanvas.addEventListener('mousedown', e => {
+    if (!img) return;
+    e.preventDefault();
+    mouseDown = true;
+    gestureState.mode = 'pan';
+    gestureState.startX = e.clientX;
+    gestureState.startY = e.clientY;
+    gestureState.startDx = dx;
+    gestureState.startDy = dy;
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (gestureState.mode !== 'pan' || !mouseDown || !img) return;
+    const rect = previewCanvas.getBoundingClientRect();
+    // FIX: scale do movimento relativo ao canvas display size vs output size
+    const scaleX = outW / rect.width;
+    const scaleY = outH / rect.height;
+    dx = gestureState.startDx + (e.clientX - gestureState.startX) * scaleX;
+    dy = gestureState.startDy + (e.clientY - gestureState.startY) * scaleY;
+    dxRange.value = Math.round(dx); dyRange.value = Math.round(dy);
+    dxVal.textContent = Math.round(dx); dyVal.textContent = Math.round(dy);
+    render();
+  });
+
+  window.addEventListener('mouseup', () => {
+    mouseDown = false;
+    gestureState.mode = 'none';
+  });
+
+  previewCanvas.addEventListener('wheel', e => {
+    if (!img) return;
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.05 : 0.05;
+    zoom = Math.max(0.1, Math.min(5, zoom + delta));
+    zoomRange.value = zoom;
+    zoomVal.textContent = zoom.toFixed(2) + 'x';
+    render();
+  }, { passive: false });
+
+  // ===== TOUCH GESTURES =====
+  // FIX: armazenar {x, y} e usar corretamente nos helpers
+  let activeTouchIds = new Map();
+
+  previewCanvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+
+    // Fecha sidebars se abertos
+    if (isMobile() && (leftOpen || rightOpen)) {
+      closeSidebars();
+      return;
+    }
+
+    if (!img) return;
+
+    activeTouchIds.clear();
+    for (let i = 0; i < e.touches.length; i++) {
+      const t = e.touches[i];
+      activeTouchIds.set(t.identifier, { x: t.clientX, y: t.clientY });
+    }
+
+    const tArr = Array.from(activeTouchIds.values());
+
+    if (tArr.length >= 2) {
+      gestureState.mode = 'pinch-rotate';
+      gestureState.startDist = getTouchDistance(tArr[0], tArr[1]);
+      gestureState.startAngle = getTouchAngle(tArr[0], tArr[1]);
+      gestureState.startZoom = zoom;
+      gestureState.startRotation = rotation;
+    } else if (tArr.length === 1) {
+      gestureState.mode = 'pan';
+      gestureState.startX = tArr[0].x;
+      gestureState.startY = tArr[0].y;
+      gestureState.startDx = dx;
+      gestureState.startDy = dy;
+    }
+  }, { passive: false });
+
+  previewCanvas.addEventListener('touchmove', (e) => {
+    if (!img || gestureState.mode === 'none') return;
+    e.preventDefault();
+
+    // Atualiza posições dos toques ativos
+    for (let i = 0; i < e.touches.length; i++) {
+      const t = e.touches[i];
+      activeTouchIds.set(t.identifier, { x: t.clientX, y: t.clientY });
+    }
+
+    const tArr = Array.from(activeTouchIds.values());
+
+    if (gestureState.mode === 'pinch-rotate' && tArr.length >= 2) {
+      // Zoom via pinch
+      const currentDist = getTouchDistance(tArr[0], tArr[1]);
+      const scaleRatio = currentDist / gestureState.startDist;
+      let newZoom = Math.max(0.1, Math.min(5, gestureState.startZoom * scaleRatio));
+      if (newZoom !== zoom) {
+        zoom = newZoom;
+        zoomRange.value = zoom;
+        zoomVal.textContent = zoom.toFixed(2) + 'x';
+      }
+
+      // Rotação via twist
+      const currentAngle = getTouchAngle(tArr[0], tArr[1]);
+      const angleDiff = (currentAngle - gestureState.startAngle) * (180 / Math.PI);
+      let newRotation = gestureState.startRotation + angleDiff;
+      while (newRotation > 180) newRotation -= 360;
+      while (newRotation < -180) newRotation += 360;
+      newRotation = Math.round(newRotation);
+      if (newRotation !== rotation) {
+        rotation = newRotation;
+        rotRange.value = rotation;
+        rotVal.textContent = rotation + '°';
+      }
+      render();
+
+    } else if (gestureState.mode === 'pan' && tArr.length === 1) {
+      const rect = previewCanvas.getBoundingClientRect();
+      // FIX: escala correta — movimento em pixels de tela → pixels do canvas de saída
+      const scaleX = outW / rect.width;
+      const scaleY = outH / rect.height;
+      dx = gestureState.startDx + (tArr[0].x - gestureState.startX) * scaleX;
+      dy = gestureState.startDy + (tArr[0].y - gestureState.startY) * scaleY;
+      dxRange.value = Math.round(dx); dyRange.value = Math.round(dy);
+      dxVal.textContent = Math.round(dx); dyVal.textContent = Math.round(dy);
+      render();
+    }
+  }, { passive: false });
+
+  previewCanvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+
+    // Remove toques encerrados
+    const currentIds = new Set();
+    for (let i = 0; i < e.touches.length; i++) currentIds.add(e.touches[i].identifier);
+    for (const [id] of activeTouchIds) {
+      if (!currentIds.has(id)) activeTouchIds.delete(id);
+    }
+    // Atualiza posições dos toques restantes
+    for (let i = 0; i < e.touches.length; i++) {
+      const t = e.touches[i];
+      activeTouchIds.set(t.identifier, { x: t.clientX, y: t.clientY });
+    }
+
+    const remaining = Array.from(activeTouchIds.values());
+
+    if (remaining.length === 0) {
+      gestureState.mode = 'none';
+    } else if (remaining.length === 1 && gestureState.mode === 'pinch-rotate') {
+      // Transição de pinch para pan
+      gestureState.mode = 'pan';
+      gestureState.startX = remaining[0].x;
+      gestureState.startY = remaining[0].y;
+      gestureState.startDx = dx;
+      gestureState.startDy = dy;
+    }
+  }, { passive: false });
+
+  previewCanvas.addEventListener('touchcancel', () => {
+    gestureState.mode = 'none';
+    activeTouchIds.clear();
+  });
+
+  // ===== EXPORT HELPER =====
+  function exportImage(callback) {
+    const offscreen = document.createElement('canvas');
+    offscreen.width = outW;
+    offscreen.height = outH;
+    const octx = offscreen.getContext('2d');
+
+    octx.clearRect(0, 0, outW, outH);
+    if (bgMode === 'blur' && img) {
+      drawBlurredBackground(octx, outW, outH, +blurRange.value);
+    } else {
+      octx.fillStyle = bgColor.value;
+      octx.fillRect(0, 0, outW, outH);
+    }
+
+    if (circular) {
+      octx.save();
+      octx.beginPath();
+      octx.arc(outW / 2, outH / 2, outW / 2, 0, Math.PI * 2);
+      octx.clip();
+    }
+
+    if (img) {
+      octx.save();
+      octx.translate(outW / 2 + dx, outH / 2 + dy);
+      octx.rotate(rotation * Math.PI / 180);
+      octx.scale(zoom, zoom);
+      octx.drawImage(img, -img.width / 2, -img.height / 2);
+      octx.restore();
+    }
+
+    if (circular) octx.restore();
+
+    const text = wmText.value.trim();
+    if (text) {
+      const fontSize = +wmSize.value;
+      const alpha = +wmOpacity.value / 100;
+      const font = wmFont.value;
+      octx.save();
+      octx.font = `${fontSize}px "${font}"`;
+      octx.fillStyle = hexToRgba(wmColor.value, alpha);
+      octx.textBaseline = 'middle';
+      const margin = 30;
+
+      if (wmPosition === 'scattered') {
+        octx.font = `bold ${fontSize}px "${font}"`;
+        const tm = octx.measureText(text);
+        const tw = tm.width;
+        const spacingX = tw + 60;
+        const spacingY = fontSize + 50;
+        const cols = Math.ceil(outW / spacingX) + 1;
+        const rows = Math.ceil(outH / spacingY) + 1;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = c * spacingX - tw / 2 + (r % 2 === 0 ? 0 : spacingX / 2);
+            const y = r * spacingY;
+            octx.save();
+            octx.translate(x, y);
+            octx.rotate(-30 * Math.PI / 180);
+            octx.fillText(text, 0, 0);
+            octx.restore();
+          }
+        }
+      } else {
+        const positions = {
+          'top-left':      { x: margin,        y: margin + fontSize / 2 },
+          'top-center':    { x: outW / 2,       y: margin + fontSize / 2 },
+          'top-right':     { x: outW - margin,  y: margin + fontSize / 2 },
+          'center-left':   { x: margin,         y: outH / 2 },
+          'center':        { x: outW / 2,       y: outH / 2 },
+          'center-right':  { x: outW - margin,  y: outH / 2 },
+          'bottom-left':   { x: margin,         y: outH - margin - fontSize / 2 },
+          'bottom-center': { x: outW / 2,       y: outH - margin - fontSize / 2 },
+          'bottom-right':  { x: outW - margin,  y: outH - margin - fontSize / 2 },
+        };
+        const pos = positions[wmPosition];
+        if (wmPosition.includes('right')) octx.textAlign = 'right';
+        else if (wmPosition === 'top-center' || wmPosition === 'center' || wmPosition === 'bottom-center') octx.textAlign = 'center';
+        else octx.textAlign = 'left';
+        octx.fillText(text, pos.x, pos.y);
+      }
+      octx.restore();
+    }
+
+    const quality = exportFormat === 'png' ? undefined : qualityRange.value / 100;
+    const mime = exportFormat === 'jpeg' ? 'image/jpeg' : exportFormat === 'webp' ? 'image/webp' : 'image/png';
+    offscreen.toBlob(blob => callback(blob), mime, quality);
+  }
+
+  // ===== DOWNLOAD =====
+  function downloadImage() {
+    if (!img) return;
+    exportImage(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `imagem_${outW}x${outH}.${exportFormat === 'jpeg' ? 'jpg' : exportFormat}`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  downloadBtn.addEventListener('click', downloadImage);
+  downloadBtnIcon.addEventListener('click', downloadImage);
+
+  // ===== SHARE =====
+  async function shareImage() {
+    if (!img) return;
+    try {
+      exportImage(async (blob) => {
+        const ext = exportFormat === 'jpeg' ? 'jpg' : exportFormat;
+        const file = new File([blob], `imagem_${outW}x${outH}.${ext}`, { type: blob.type });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: 'Imagem editada' });
+        } else {
+          downloadImage();
+        }
+      });
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error('Share error:', err);
+    }
+  }
+
+  shareBtn.addEventListener('click', shareImage);
+  shareBtnIcon.addEventListener('click', shareImage);
+
+  // ===== BLURRED BACKGROUND =====
+  function drawBlurredBackground(targetCtx, targetW, targetH, blurAmount) {
+    // Usa a mesma transformação da imagem principal (dx, dy, zoom, rotation)
+    // mas com zoom mínimo para cobrir toda a área — garante que não sobre espaço vazio.
+    const coverScale = Math.max(targetW / img.width, targetH / img.height);
+    // O zoom do fundo acompanha o zoom principal, mas nunca fica menor que coverScale
+    const bgZoom = Math.max(zoom, coverScale);
+
+    // Renderiza a imagem transformada num canvas intermediário (sem blur)
+    const pad = blurAmount * 2; // padding para evitar borda branca do blur
+    const tmp = document.createElement('canvas');
+    tmp.width = targetW + pad * 2;
+    tmp.height = targetH + pad * 2;
+    const tctx = tmp.getContext('2d');
+
+    // Aplica a mesma transformação da imagem principal, centralizada no canvas com padding
+    tctx.save();
+    tctx.translate(tmp.width / 2 + dx, tmp.height / 2 + dy);
+    tctx.rotate(rotation * Math.PI / 180);
+    tctx.scale(bgZoom, bgZoom);
+    tctx.drawImage(img, -img.width / 2, -img.height / 2);
+    tctx.restore();
+
+    // Aplica blur via canvas filter e copia para o destino (recortando o padding)
+    const tmp2 = document.createElement('canvas');
+    tmp2.width = targetW + pad * 2;
+    tmp2.height = targetH + pad * 2;
+    const tctx2 = tmp2.getContext('2d');
+    tctx2.filter = `blur(${blurAmount}px)`;
+    tctx2.drawImage(tmp, 0, 0);
+
+    // Copia somente a área útil (sem o padding) para o canvas destino
+    targetCtx.drawImage(tmp2, pad, pad, targetW, targetH, 0, 0, targetW, targetH);
+
+    // Leve escurecimento para contraste com a imagem principal
+    targetCtx.fillStyle = 'rgba(0,0,0,0.20)';
+    targetCtx.fillRect(0, 0, targetW, targetH);
+  }
+
+  // ===== RENDER =====
+  function render() {
+    if (!img) return;
+
+    previewCanvas.width = outW;
+    previewCanvas.height = outH;
+
+    ctx.clearRect(0, 0, outW, outH);
+    if (bgMode === 'blur' && img) {
+      drawBlurredBackground(ctx, outW, outH, +blurRange.value);
+    } else {
+      ctx.fillStyle = bgColor.value;
+      ctx.fillRect(0, 0, outW, outH);
+    }
+
+    if (circular) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(outW / 2, outH / 2, outW / 2, 0, Math.PI * 2);
+      ctx.clip();
+    }
+
+    ctx.save();
+    ctx.translate(outW / 2 + dx, outH / 2 + dy);
+    ctx.rotate(rotation * Math.PI / 180);
+    ctx.scale(zoom, zoom);
+    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+    ctx.restore();
+
+    if (circular) ctx.restore();
+
+    const text = wmText.value.trim();
+    if (text) {
+      const fontSize = +wmSize.value;
+      const alpha = +wmOpacity.value / 100;
+      const font = wmFont.value;
+      ctx.save();
+      ctx.font = `${fontSize}px "${font}"`;
+      ctx.fillStyle = hexToRgba(wmColor.value, alpha);
+      ctx.textBaseline = 'middle';
+      const margin = 30;
+
+      if (wmPosition === 'scattered') {
+        ctx.font = `bold ${fontSize}px "${font}"`;
+        const tm = ctx.measureText(text);
+        const tw = tm.width;
+        const spacingX = tw + 60;
+        const spacingY = fontSize + 50;
+        const cols = Math.ceil(outW / spacingX) + 1;
+        const rows = Math.ceil(outH / spacingY) + 1;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = c * spacingX - tw / 2 + (r % 2 === 0 ? 0 : spacingX / 2);
+            const y = r * spacingY;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(-30 * Math.PI / 180);
+            ctx.fillText(text, 0, 0);
+            ctx.restore();
+          }
+        }
+      } else {
+        const positions = {
+          'top-left':      { x: margin,        y: margin + fontSize / 2 },
+          'top-center':    { x: outW / 2,       y: margin + fontSize / 2 },
+          'top-right':     { x: outW - margin,  y: margin + fontSize / 2 },
+          'center-left':   { x: margin,         y: outH / 2 },
+          'center':        { x: outW / 2,       y: outH / 2 },
+          'center-right':  { x: outW - margin,  y: outH / 2 },
+          'bottom-left':   { x: margin,         y: outH - margin - fontSize / 2 },
+          'bottom-center': { x: outW / 2,       y: outH - margin - fontSize / 2 },
+          'bottom-right':  { x: outW - margin,  y: outH - margin - fontSize / 2 },
+        };
+        const pos = positions[wmPosition];
+        if (wmPosition.includes('right')) ctx.textAlign = 'right';
+        else if (wmPosition === 'top-center' || wmPosition === 'center' || wmPosition === 'bottom-center') ctx.textAlign = 'center';
+        else ctx.textAlign = 'left';
+        ctx.fillText(text, pos.x, pos.y);
+      }
+      ctx.restore();
+    }
+
+    imageInfo.classList.add('active');
+    imageInfo.textContent = `${outW} × ${outH} px | Zoom: ${zoom.toFixed(2)}x | Rotação: ${rotation}°`;
+  }
+
+  function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+})();
+</script>
+</body>
+</html>
