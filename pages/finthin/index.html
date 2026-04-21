@@ -1774,9 +1774,13 @@ async function parseNF(url) {
 
   try {
     const fetchUrl = nfProxyUrl
+      ? nfProxyUrl + url
+      : url;
+    /* MAGNO. O proxy não entende url enconded. Ele passa direto
+    const fetchUrl = nfProxyUrl
       ? nfProxyUrl + encodeURIComponent(url)
       : url;
-
+*/
     const response = await fetch(fetchUrl, { signal: AbortSignal.timeout(15000)});
     if (!response.ok) throw new Error('HTTP ' + response.status);
     const html = await response.text();
