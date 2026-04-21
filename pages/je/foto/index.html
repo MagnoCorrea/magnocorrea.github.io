@@ -802,7 +802,7 @@
     <!-- Placeholder clicável para upload -->
     <div class="placeholder-msg" id="placeholder">
       <svg viewBox="0 0 24 24"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
-      <p>Clique para enviar uma imagem</p>
+      <p>Clique para enviar uma ou mais imagens</p>
       <p class="sub">ou arraste e solte aqui</p>
       <p class="hint-small">JPG, PNG, WEBP</p>
     </div>
@@ -859,6 +859,15 @@
     </div>
 
     <div class="section">
+      <div class="section-title"><span class="icon">🧩</span> Layout de Imagens</div>
+      <label class="ctrl">
+        <div class="label-row"><span>Layout padrão</span></div>
+        <select class="font-select" id="layoutPreset"></select>
+      </label>
+      <span class="blur-hint" id="layoutHint">Envie 2 ou mais imagens para escolher um layout padrão.</span>
+    </div>
+
+    <div class="section">
       <div class="section-title"><span class="icon">⚙️</span> Ajustes da Imagem</div>
       <label class="ctrl">
         <div class="label-row"><span>Zoom</span><span class="val" id="zoomVal">1.00x</span></div>
@@ -890,7 +899,7 @@
 <button class="fab-right" id="fabRight" title="Menu ajustes">⚙</button>
 
 <!-- Hidden file input -->
-<input type="file" id="fileInput" accept="image/*" hidden>
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
 
 <script>
 (() => {
@@ -938,6 +947,8 @@
   const bgModeBlur = document.getElementById('bgModeBlur');
   const bgZoomRange = document.getElementById('bgZoomRange');
   const bgZoomVal = document.getElementById('bgZoomVal');
+  const layoutPreset = document.getElementById('layoutPreset');
+  const layoutHint = document.getElementById('layoutHint');
   const wmSpacingRange = document.getElementById('wmSpacingRange');
   const wmSpacingVal = document.getElementById('wmSpacingVal');
   const wmRotRange = document.getElementById('wmRotRange');
@@ -958,9 +969,13 @@
 
   // State
   let img = null;
+  let images = [];
   let outW = 1080, outH = 1350;
   let circular = false;
   let zoom = 1, rotation = 0, dx = 0, dy = 0;
+  const baseMargin = 25;
+  let availableLayouts = [];
+  let selectedLayout = 'auto';
   let wmPosition = 'bottom-right';
   // FIX: default exportFormat = jpeg
   let exportFormat = 'jpeg';
@@ -977,6 +992,8 @@
     startDist: 0, startZoom: 0,
     startAngle: 0, startRotation: 0,
   };
+
+  refreshLayoutOptions();
 
   // FIX: these functions receive {x, y} objects from activeTouchIds map
   function getTouchDistance(t1, t2) {
@@ -1082,32 +1099,54 @@
   placeholder.addEventListener('drop', e => {
     e.preventDefault();
     placeholder.style.borderColor = '';
-    if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files.length) loadFiles(Array.from(e.dataTransfer.files));
   });
 
-  fileInput.addEventListener('change', () => { if (fileInput.files.length) loadFile(fileInput.files[0]); });
+  fileInput.addEventListener('change', () => { if (fileInput.files.length) loadFiles(Array.from(fileInput.files)); });
 
-  function loadFile(file) {
-    if (!file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const image = new Image();
-      image.onload = () => {
-        img = image;
-        placeholder.style.display = 'none';
-        canvasWrapper.classList.add('active');
-        removeImgBtn.classList.add('active');
-        // FIX: usar classe 'visible' em vez de style.display
-        actionBar.classList.add('visible');
-        setActionsEnabled(true);
-        resetAdjustments();
-        fitImage();
-        render();
-        if (isMobile()) closeSidebars();
+  function readImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!file.type.startsWith('image/')) {
+        reject(new Error('Arquivo não é imagem.'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = e => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error('Falha ao carregar imagem.'));
+        image.src = e.target.result;
       };
-      image.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+      reader.onerror = () => reject(new Error('Falha na leitura do arquivo.'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function loadFiles(files) {
+    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+    if (!imageFiles.length) return;
+
+    const loaded = [];
+    for (const file of imageFiles) {
+      try {
+        loaded.push(await readImage(file));
+      } catch (_) { /* ignora arquivos inválidos */ }
+    }
+    if (!loaded.length) return;
+
+    images = loaded;
+    img = images[0];
+    selectedLayout = 'auto';
+    refreshLayoutOptions();
+    placeholder.style.display = 'none';
+    canvasWrapper.classList.add('active');
+    removeImgBtn.classList.add('active');
+    actionBar.classList.add('visible');
+    setActionsEnabled(true);
+    resetAdjustments();
+    fitImage();
+    render();
+    if (isMobile()) closeSidebars();
   }
 
   function setActionsEnabled(enabled) {
@@ -1117,18 +1156,106 @@
     shareBtnIcon.disabled = !enabled;
   }
 
+  function createGridLayout(id, label, rows, cols, count) {
+    return { id, label, rows, cols, count };
+  }
+
+  function getLayoutsForImages() {
+    const count = images.length;
+    if (count <= 1) return [createGridLayout('single', 'Imagem única', 1, 1, 1)];
+
+    const allLandscape = images.every(im => im.width >= im.height);
+    if (count === 2) {
+      return [
+        createGridLayout('auto', allLandscape ? 'Automático (1 coluna, 2 linhas)' : 'Automático', allLandscape ? 2 : 1, allLandscape ? 1 : 2, 2),
+        createGridLayout('stack', 'Empilhado (1 coluna, 2 linhas)', 2, 1, 2),
+        createGridLayout('side', 'Lado a lado (2 colunas)', 1, 2, 2),
+      ];
+    }
+    if (count === 3) {
+      return [
+        createGridLayout('auto', 'Automático (2 colunas)', 2, 2, 3),
+        createGridLayout('three-cols', '3 colunas', 1, 3, 3),
+        createGridLayout('three-rows', '3 linhas', 3, 1, 3),
+      ];
+    }
+    if (count === 4) {
+      return [
+        createGridLayout('auto', 'Automático (2 × 2)', 2, 2, 4),
+        createGridLayout('four-cols', '4 colunas', 1, 4, 4),
+        createGridLayout('four-rows', '4 linhas', 4, 1, 4),
+      ];
+    }
+
+    const cols = Math.ceil(Math.sqrt(count));
+    const rows = Math.ceil(count / cols);
+    return [
+      createGridLayout('auto', `Automático (${rows} × ${cols})`, rows, cols, count),
+      createGridLayout('rows', `${count} linhas`, count, 1, count),
+      createGridLayout('cols', `${count} colunas`, 1, count, count),
+    ];
+  }
+
+  function refreshLayoutOptions() {
+    availableLayouts = getLayoutsForImages();
+    layoutPreset.innerHTML = '';
+    availableLayouts.forEach(layout => {
+      const option = document.createElement('option');
+      option.value = layout.id;
+      option.textContent = layout.label;
+      layoutPreset.appendChild(option);
+    });
+    layoutPreset.value = selectedLayout;
+    layoutHint.textContent = images.length > 1
+      ? `Usando margem mínima de ${baseMargin}px entre as imagens e nas bordas.`
+      : `Com 1 imagem, os controles de zoom e rotação continuam ativos.`;
+  }
+
+  function resolveActiveLayout() {
+    return availableLayouts.find(layout => layout.id === layoutPreset.value) || availableLayouts[0];
+  }
+
+  function buildFrames(layout, targetW, targetH) {
+    const frames = [];
+    const rows = layout.rows;
+    const cols = layout.cols;
+    const usableW = targetW - baseMargin * 2 - (cols - 1) * baseMargin;
+    const usableH = targetH - baseMargin * 2 - (rows - 1) * baseMargin;
+    const cellW = usableW / cols;
+    const cellH = usableH / rows;
+
+    for (let i = 0; i < layout.count; i++) {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      frames.push({
+        x: baseMargin + col * (cellW + baseMargin),
+        y: baseMargin + row * (cellH + baseMargin),
+        w: cellW,
+        h: cellH,
+      });
+    }
+    return frames;
+  }
+
   function handleRemoveImage() {
     img = null;
+    images = [];
     placeholder.style.display = '';
     canvasWrapper.classList.remove('active');
     removeImgBtn.classList.remove('active');
     actionBar.classList.remove('visible');
     setActionsEnabled(false);
     imageInfo.classList.remove('active');
+    selectedLayout = 'auto';
+    refreshLayoutOptions();
     fileInput.value = '';
   }
 
   removeImgBtn.addEventListener('click', handleRemoveImage);
+  layoutPreset.addEventListener('change', () => {
+    selectedLayout = layoutPreset.value;
+    render();
+  });
 
   // ===== FORMAT =====
   formatGrid.addEventListener('click', e => {
@@ -1162,12 +1289,25 @@
 
   function fitImage() {
     if (!img) return;
+    if (images.length > 1) {
+      dx = 0; dy = 0; rotation = 0; zoom = 1;
+      zoomRange.value = 1;
+      rotRange.value = 0;
+      dxRange.value = 0;
+      dyRange.value = 0;
+      zoomVal.textContent = '1.00x';
+      rotVal.textContent = '0°';
+      dxVal.textContent = '0';
+      dyVal.textContent = '0';
+      render();
+      return;
+    }
     if (circular) {
       // Circular: cover to fill the circle
       zoom = Math.max(outW / img.width, outH / img.height);
     } else {
-      // Fit entirely inside with 10px margin on the smallest dimension
-      const margin = 25;
+      // Fit entirely inside respecting minimum system margin
+      const margin = baseMargin;
       zoom = Math.min((outW - margin * 2) / img.width, (outH - margin * 2) / img.height);
     }
     dx = 0; dy = 0; rotation = 0;
@@ -1417,14 +1557,7 @@
       octx.clip();
     }
 
-    if (img) {
-      octx.save();
-      octx.translate(outW / 2 + dx, outH / 2 + dy);
-      octx.rotate(rotation * Math.PI / 180);
-      octx.scale(zoom, zoom);
-      octx.drawImage(img, -img.width / 2, -img.height / 2);
-      octx.restore();
-    }
+    drawImagesOnContext(octx, outW, outH);
 
     if (circular) octx.restore();
 
@@ -1562,6 +1695,33 @@
     targetCtx.fillRect(0, 0, targetW, targetH);
   }
 
+  function drawImagesOnContext(targetCtx, targetW, targetH) {
+    if (!images.length) return;
+
+    if (images.length === 1) {
+      targetCtx.save();
+      targetCtx.translate(targetW / 2 + dx, targetH / 2 + dy);
+      targetCtx.rotate(rotation * Math.PI / 180);
+      targetCtx.scale(zoom, zoom);
+      targetCtx.drawImage(images[0], -images[0].width / 2, -images[0].height / 2);
+      targetCtx.restore();
+      return;
+    }
+
+    const layout = resolveActiveLayout();
+    const frames = buildFrames(layout, targetW, targetH);
+    frames.forEach((frame, index) => {
+      const image = images[index];
+      if (!image) return;
+      const scale = Math.min(frame.w / image.width, frame.h / image.height);
+      const drawW = image.width * scale;
+      const drawH = image.height * scale;
+      const drawX = frame.x + (frame.w - drawW) / 2;
+      const drawY = frame.y + (frame.h - drawH) / 2;
+      targetCtx.drawImage(image, drawX, drawY, drawW, drawH);
+    });
+  }
+
   // ===== RENDER =====
   function render() {
     if (!img) return;
@@ -1584,12 +1744,7 @@
       ctx.clip();
     }
 
-    ctx.save();
-    ctx.translate(outW / 2 + dx, outH / 2 + dy);
-    ctx.rotate(rotation * Math.PI / 180);
-    ctx.scale(zoom, zoom);
-    ctx.drawImage(img, -img.width / 2, -img.height / 2);
-    ctx.restore();
+    drawImagesOnContext(ctx, outW, outH);
 
     if (circular) ctx.restore();
 
@@ -1647,7 +1802,8 @@
     }
 
     imageInfo.classList.add('active');
-    imageInfo.textContent = `${outW} × ${outH} px | Zoom: ${zoom.toFixed(2)}x | Rotação: ${rotation}°`;
+    const layoutLabel = images.length > 1 ? ` | Layout: ${resolveActiveLayout().label}` : '';
+    imageInfo.textContent = `${outW} × ${outH} px | Imagens: ${images.length}${layoutLabel} | Zoom: ${zoom.toFixed(2)}x | Rotação: ${rotation}°`;
   }
 
   function hexToRgba(hex, alpha) {
