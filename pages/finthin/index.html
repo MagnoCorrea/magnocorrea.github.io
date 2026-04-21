@@ -870,6 +870,167 @@
     padding: 8px 16px !important;
     cursor: pointer !important;
   }
+
+  /* ===== NOTA FISCAL PREVIEW ===== */
+  .nf-preview {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-top: 10px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .nf-preview.visible { display: block; }
+  .nf-preview-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .nf-preview-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nf-preview-subtitle {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .nf-badge {
+    font-size: 0.65rem;
+    background: rgba(0,206,201,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(0,206,201,0.3);
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .nf-preview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nf-preview-row:last-child { border-bottom: none; }
+  .nf-preview-row .lbl { color: var(--text-muted); }
+  .nf-preview-row .val { font-weight: 600; color: var(--text); }
+  .nf-preview-row .val.green { color: var(--success); }
+  .nf-preview-row .val.amber { color: var(--warning); }
+  .nf-apply-btn {
+    margin-top: 12px;
+    width: 100%;
+  }
+  .nf-parsing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 10px 0;
+  }
+  .nf-spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== NOTAS FISCAIS PAGE ===== */
+  .nf-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .nf-card:hover { border-color: var(--accent); background: var(--bg-card-hover); }
+  .nf-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .nf-card-store {
+    font-weight: 700;
+    font-size: 0.88rem;
+    line-height: 1.3;
+  }
+  .nf-card-total {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--danger);
+    white-space: nowrap;
+  }
+  .nf-card-meta {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .nf-card-meta span { display: flex; align-items: center; gap: 3px; }
+
+  /* NF Detail Modal */
+  .nf-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    margin-top: 10px;
+  }
+  .nf-items-table th {
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nf-items-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  .nf-items-table tr:last-child td { border-bottom: none; }
+  .nf-items-table .right { text-align: right; }
+  .nf-totals-block {
+    background: var(--bg-input);
+    border-radius: var(--radius-xs);
+    padding: 12px 14px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .nf-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+  }
+  .nf-total-row.main {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent);
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    margin-top: 2px;
+  }
 </style>
 </head>
 <body>
@@ -942,6 +1103,52 @@
 <div class="page" id="page-lancamento">
   <div class="section-title">📝 Novo Lançamento</div>
 
+  <!-- 1. QR / Nota Fiscal (primeiro) -->
+  <div class="card">
+    <div class="card-title">🧾 Nota Fiscal</div>
+    <div class="btn-row" style="margin-bottom:10px">
+      <button class="btn btn-accent btn-sm" onclick="startScanner()">📷 Escanear QR</button>
+      <button class="btn btn-outline btn-sm" onclick="manualNF()">🔗 Inserir URL</button>
+    </div>
+    <!-- scanner overlay triggered above -->
+    <input type="text" class="form-control" id="nfUrl" placeholder="Cole a URL da nota fiscal" style="display:none">
+    <div class="nf-url-display" id="nfUrlDisplay"></div>
+
+    <!-- NF Preview (shown after parsing) -->
+    <div class="nf-preview" id="nfPreview">
+      <div class="nf-preview-header">
+        <div>
+          <div class="nf-preview-title">🏪 <span id="nfPreviewStore">—</span></div>
+          <div class="nf-preview-subtitle" id="nfPreviewDate"></div>
+        </div>
+        <span class="nf-badge" id="nfPreviewBadge">NF-e</span>
+      </div>
+      <div class="nf-preview-row">
+        <span class="lbl">CNPJ</span><span class="val" id="nfPreviewCnpj">—</span>
+      </div>
+      <div class="nf-preview-row">
+        <span class="lbl">Nº Nota</span><span class="val" id="nfPreviewNum">—</span>
+      </div>
+      <div class="nf-preview-row">
+        <span class="lbl">Itens</span><span class="val" id="nfPreviewQtd">—</span>
+      </div>
+      <div class="nf-preview-row">
+        <span class="lbl">Total</span><span class="val green" id="nfPreviewTotal">—</span>
+      </div>
+      <div class="nf-preview-row">
+        <span class="lbl">A pagar</span><span class="val amber" id="nfPreviewPagar">—</span>
+      </div>
+      <button class="btn btn-primary btn-sm nf-apply-btn" onclick="applyNFToForm()">⬇️ Preencher lançamento com esta NF</button>
+    </div>
+
+    <!-- Loading state -->
+    <div class="nf-parsing" id="nfParsing" style="display:none">
+      <div class="nf-spinner"></div>
+      <span>Consultando nota fiscal...</span>
+    </div>
+  </div>
+
+  <!-- 2. Dados do lançamento -->
   <div class="card">
     <div class="form-group">
       <label>Descrição</label>
@@ -974,21 +1181,6 @@
       <div class="location-info" id="locationInfo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <span id="locationText">Obtendo localização...</span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>QR Code da Nota Fiscal</label>
-      <div class="btn-row" style="margin-bottom:10px">
-        <button class="btn btn-accent btn-sm" onclick="startScanner()">📷 Escanear QR</button>
-        <button class="btn btn-outline btn-sm" onclick="manualNF()">🔗 Inserir URL</button>
-      </div>
-      <!-- scanner is now shown as full-screen overlay -->
-      <input type="text" class="form-control" id="nfUrl" placeholder="Cole a URL da nota fiscal" style="display:none">
-      <div class="nf-url-display" id="nfUrlDisplay"></div>
-      <div class="detected-info" id="detectedInfo">
-        <div class="label">Nota Fiscal detectada ✓</div>
-        <div id="detectedData"></div>
       </div>
     </div>
 
@@ -1053,6 +1245,47 @@
   </div>
 </div>
 
+<!-- NOTAS FISCAIS -->
+<div class="page" id="page-notas">
+  <div class="section-title">🧾 Notas Fiscais</div>
+
+  <div class="summary-grid" style="margin-bottom:16px">
+    <div class="summary-card total">
+      <div class="label">Total Notas</div>
+      <div class="value" id="nfTotalCount">0</div>
+      <div class="sub">Registradas</div>
+    </div>
+    <div class="summary-card month">
+      <div class="label">Este Mês</div>
+      <div class="value" id="nfMonthCount">0</div>
+      <div class="sub" id="nfMesAtual"></div>
+    </div>
+    <div class="summary-card goals">
+      <div class="label">Valor Total</div>
+      <div class="value" id="nfTotalValue" style="font-size:0.95rem">R$ 0</div>
+      <div class="sub">Todas as notas</div>
+    </div>
+    <div class="summary-card count">
+      <div class="label">Itens</div>
+      <div class="value" id="nfTotalItems">0</div>
+      <div class="sub">Produtos/serviços</div>
+    </div>
+  </div>
+
+  <div id="notasList"></div>
+</div>
+
+<!-- NF Detail Modal -->
+<div class="modal-overlay" id="nfDetailModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <h3>🧾 Detalhes da Nota Fiscal</h3>
+      <button class="modal-close" onclick="closeNFModal()">&times;</button>
+    </div>
+    <div id="nfDetailContent"></div>
+  </div>
+</div>
+
 <!-- CONFIGURAÇÕES -->
 <div class="page" id="page-config">
   <div class="section-title">⚙️ Categorias</div>
@@ -1093,6 +1326,26 @@
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">🌐 Proxy para Nota Fiscal</div>
+    <div class="form-group">
+      <label>URL do Proxy <span style="font-size:0.7rem;color:var(--text-dim)">(opcional)</span></label>
+      <input type="text" class="form-control" id="proxyUrl"
+             placeholder="Ex: https://meu-proxy.com/?url="
+             oninput="saveProxyConfig()">
+    </div>
+    <div style="font-size:0.75rem;color:var(--text-dim);margin-top:-8px;margin-bottom:12px">
+      Quando configurado, as consultas de NF-e serão feitas via
+      <code style="background:var(--bg-input);padding:1px 5px;border-radius:4px;font-size:0.72rem">proxy + URL</code>.
+      Útil para contornar bloqueios de CORS. Deixe em branco para acessar diretamente.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline btn-sm" onclick="testProxy()">🔍 Testar Proxy</button>
+      <button class="btn btn-danger btn-sm" onclick="clearProxy()">✕ Limpar</button>
+    </div>
+    <div id="proxyTestResult" style="display:none;margin-top:10px;font-size:0.8rem;padding:8px 12px;border-radius:var(--radius-xs);"></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">🗑️ Gerenciar Dados</div>
     <div class="btn-row">
       <button class="btn btn-outline btn-sm" onclick="exportData()">📤 Exportar</button>
@@ -1124,6 +1377,10 @@
   <button class="nav-item" onclick="showPage('metas', this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
     Metas
+  </button>
+  <button class="nav-item" onclick="showPage('notas', this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+    Notas
   </button>
   <button class="nav-item" onclick="showPage('config', this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -1221,6 +1478,7 @@ const DEFAULT_CATEGORIES = [
 let categories = JSON.parse(localStorage.getItem('gc_categories')) || [...DEFAULT_CATEGORIES];
 let expenses = JSON.parse(localStorage.getItem('gc_expenses')) || [];
 let goals = JSON.parse(localStorage.getItem('gc_goals')) || {};
+let notasFiscais = JSON.parse(localStorage.getItem('gc_notas')) || [];
 let currentLocation = null;
 let selectedColor = COLORS[0];
 let scannerInstance = null;
@@ -1237,6 +1495,7 @@ function init() {
   getLocation();
   setupValueInputs();
   loadCameraPreference();
+  loadProxyConfig();
   enumerateCameras();
 }
 
@@ -1274,7 +1533,8 @@ function showPage(pageId, navEl) {
   if (pageId === 'dashboard') renderDashboard();
   if (pageId === 'gastos') renderGastosPage();
   if (pageId === 'metas') renderGoalsPage();
-  if (pageId === 'config') { renderCategoriesList(); populateCameraSelects(); }
+  if (pageId === 'notas') renderNotasPage();
+  if (pageId === 'config') { renderCategoriesList(); populateCameraSelects(); loadProxyConfig(); }
 
   // Stop scanner if leaving lancamento
   if (pageId !== 'lancamento') {
@@ -1457,35 +1717,11 @@ function closeScanner() {
 function onQRDecoded(text) {
   stopScanner();
   document.getElementById('nfUrl').value = text;
-  document.getElementById('nfUrlDisplay').textContent = text;
-  document.getElementById('nfUrlDisplay').classList.add('visible');
-
-  // Try to extract info from URL
-  try {
-    const url = new URL(text);
-    const params = url.searchParams;
-    let info = `URL: ${url.hostname}`;
-
-    if (params.has('chNFe')) info += `<br>Chave: ${params.get('chNFe')}`;
-    if (params.has('vNF')) info += `<br>Valor: R$ ${params.get('vNF')}`;
-    if (params.has('cNF')) info += `<br>Código: ${params.get('cNF')}`;
-
-    document.getElementById('detectedData').innerHTML = info;
-    document.getElementById('detectedInfo').classList.add('visible');
-
-    // Auto-fill value if found
-    if (params.has('vNF')) {
-      const v = parseFloat(params.get('vNF'));
-      if (!isNaN(v)) {
-        document.getElementById('expValue').value = v.toFixed(2).replace('.', ',');
-      }
-    }
-  } catch(e) {
-    document.getElementById('detectedData').innerHTML = `QR Code: ${text.substring(0, 60)}...`;
-    document.getElementById('detectedInfo').classList.add('visible');
-  }
-
-  showToast('QR Code lido com sucesso!', 'success');
+  const display = document.getElementById('nfUrlDisplay');
+  display.textContent = '🔗 ' + (text.length > 60 ? text.substring(0,60) + '…' : text);
+  display.classList.add('visible');
+  showToast('QR Code lido! Consultando nota...', 'success');
+  parseNF(text);
 }
 
 function manualNF() {
@@ -1494,7 +1730,430 @@ function manualNF() {
   if (input.style.display === 'block') {
     closeScanner();
     input.focus();
+    // Add enter-key listener once
+    input.onkeydown = function(e) {
+      if (e.key === 'Enter' && input.value.trim()) {
+        document.getElementById('nfUrlDisplay').textContent = '🔗 ' + input.value.trim();
+        document.getElementById('nfUrlDisplay').classList.add('visible');
+        parseNF(input.value.trim());
+      }
+    };
+    // Also add a confirm button after the input
+    let btn = document.getElementById('nfUrlConfirmBtn');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'nfUrlConfirmBtn';
+      btn.className = 'btn btn-accent btn-sm';
+      btn.style.cssText = 'margin-top:8px';
+      btn.textContent = '🔍 Consultar Nota';
+      btn.onclick = () => {
+        const url = input.value.trim();
+        if (url) parseNF(url);
+      };
+      input.parentNode.insertBefore(btn, input.nextSibling);
+    }
   }
+}
+
+// ══════════════════════════════════════════════════════════
+// ==================== NOTA FISCAL ====================
+// ══════════════════════════════════════════════════════════
+
+// Currently active parsed NF data (set by parseNF, used by applyNFToForm + saveExpense)
+let currentNFData = null;
+
+/**
+ * MOCK — parse a NF from its URL.
+ * Future implementation: real HTTP fetch to a NF parser service.
+ * Returns a nota_exemplo-compatible object.
+ */
+async function parseNF(url) {
+  document.getElementById('nfParsing').style.display = 'flex';
+  document.getElementById('nfPreview').classList.remove('visible');
+  currentNFData = null;
+
+  try {
+    const fetchUrl = nfProxyUrl
+      ? nfProxyUrl + encodeURIComponent(url)
+      : url;
+
+    const response = await fetch(fetchUrl, { signal: AbortSignal.timeout(15000)});
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const html = await response.text();
+
+    const data = parseDanfeNfce(html);
+
+    // Enrich with meta fields
+    data._sourceUrl = url;
+    data._importedAt = new Date().toISOString();
+
+    document.getElementById('nfParsing').style.display = 'none';
+    currentNFData = data;
+    renderNFPreview(data);
+    showToast('Nota fiscal lida com sucesso!', 'success');
+
+  } catch (err) {
+    document.getElementById('nfParsing').style.display = 'none';
+
+    // Detailed error feedback
+    let msg = 'Erro ao consultar nota fiscal';
+    if (err.name === 'TimeoutError' || err.name === 'AbortError') {
+      msg = 'Tempo esgotado ao acessar a nota. Configure um proxy se necessário.';
+    } else if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+      msg = nfProxyUrl
+        ? 'Proxy inacessível. Verifique a URL do proxy em Configurações.'
+        : 'Erro de CORS ou rede. Configure um proxy em Configurações → Proxy.';
+    } else {
+      msg = 'Erro: ' + err.message;
+    }
+    showToast(msg, 'error');
+    console.error('[parseNF]', err);
+  }
+}
+
+/**
+     * Parser robusto do DANFE NFC-e v6
+     * - Emitente: DOM .txtCenter
+     * - Itens: DOM #tabResult + .txtTit3 .valor
+     * - Nota/Consumidor: DOM traversal pós-<strong>
+     * - Tributos: DOM .totalNumb.txtObs
+     */
+    function parseDanfeNfce(htmlString) {
+      const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+      
+      // Helpers
+      const $ = (sel) => doc.querySelector(sel);
+      const $$ = (sel) => Array.from(doc.querySelectorAll(sel));
+      const toBRFloat = (str) => str ? parseFloat(str.replace(/\./g, '').replace(',', '.')) || 0 : 0;
+      const clean = (str, prefixRegex) => str ? str.replace(prefixRegex, '').trim() : '';
+
+      // 1. EMITENTE (DOM .txtCenter)
+      let emitente = { nome: null, cnpj: null, endereco: null };
+      const txtCenter = $('.txtCenter');
+      if (txtCenter) {
+        emitente.nome = txtCenter.querySelector('.txtTopo')?.textContent?.trim() || null;
+        const textDivs = txtCenter.querySelectorAll('.text');
+        if (textDivs[0]) emitente.cnpj = clean(textDivs[0].textContent, /CNPJ:\s*/i) || null;
+        if (textDivs[1]) emitente.endereco = textDivs[1].textContent.replace(/\s+/g, ' ').replace(/\s*,\s*/g, ',').trim() || null;
+      }
+
+      // 2. ITENS (DOM #tabResult)
+      const items = [];
+      $$('table#tabResult tr').forEach(row => {
+        if (!row.querySelector('.txtTit2, .txtTit')) return;
+        const nome = row.querySelector('.txtTit2, .txtTit')?.textContent?.trim();
+        const codigo = clean(row.querySelector('.RCod')?.textContent, /Código:\s*/i);
+        const qtdStr = clean(row.querySelector('.Rqtd')?.textContent, /Qtde\.?:\s*/i);
+        const unStr = clean(row.querySelector('.RUN')?.textContent, /UN:\s*/i);
+        const vlUnitStr = clean(row.querySelector('.RvlUnit')?.textContent, /Vl\.\s*Unit\.?:\s*/i);
+        const vlTotalStr = row.querySelector('.txtTit3 .valor')?.textContent?.trim();
+
+        if (nome) {
+          items.push({
+            nome, codigo,
+            quantidade: toBRFloat(qtdStr),
+            unidade: unStr || 'UN',
+            valorUnitario: toBRFloat(vlUnitStr),
+            valorTotal: toBRFloat(vlTotalStr)
+          });
+        }
+      });
+
+      // 3. DADOS DA NOTA E CONSUMIDOR (Lógica pós-<strong>)
+      const nota = { tipo: null, numero: null, serie: null, emissao: null, protocolo: null, ambiente: null, chaveAcesso: null };
+      const consumer = { cpf: null, nome: null };
+
+      // Varre todos os <li> que contenham <strong>
+      $$('li').forEach(li => {
+        const strongs = li.querySelectorAll('strong');
+        strongs.forEach(s => {
+          const label = s.textContent.replace(':', '').trim().toUpperCase();
+          let val = '';
+          
+          // Encontra o próximo nó de texto válido após o <strong>
+          let next = s.nextSibling;
+          while (next) {
+            if (next.nodeType === Node.TEXT_NODE) {
+              val = next.textContent.trim();
+              if (val) break;
+            }
+            next = next.nextSibling;
+          }
+          
+          // Limpa tags residuais e normaliza espaços
+          val = val.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+
+          // Mapeamento explícito
+          if (label.includes('EMISSÃO NORMAL')) nota.tipo = 'NORMAL';
+          else if (label === 'NÚMERO') nota.numero = val;
+          else if (label === 'SÉRIE') nota.serie = val;
+          else if (label === 'EMISSÃO') nota.emissao = val.split('-')[0].trim();
+          else if (label.includes('PROTOCOLO')) nota.protocolo = val.match(/^\d+/)?.[0] || val;
+          else if (label.includes('AMBIENTE') || label.includes('XML')) nota.ambiente = s.textContent.replace(/\s+/g, ' ').trim();
+          else if (label === 'CPF' && val) consumer.cpf = val;
+          else if (label === 'NOME' && val) consumer.nome = val;
+        });
+      });
+
+      // Fallback para Chave de Acesso (pode estar em estrutura variável)
+      nota.chaveAcesso = $('.txtChave, .chaveAcesso')?.textContent?.replace(/\s/g, '') || 
+                         doc.body.innerText.match(/Chave\s*de\s*acesso:\s*([\d\s]+)/)?.[1].replace(/\s/g, '') || null;
+
+      // 4. TRIBUTOS (Classe específica)
+      const tributosEl = $('.totalNumb.txtObs');
+      const tributosVal = tributosEl ? toBRFloat(tributosEl.textContent.replace(/\s+/g, '').replace('R$', '')) : 0;
+
+      // 5. CAMPOS RESTANTES (Regex seguro para totais e pagamento)
+      const bodyText = doc.body.innerText.replace(/\s+/g, ' ').trim();
+      const matchVal = (regex) => bodyText.match(regex)?.[1].trim() || null;
+      const valorTotal = toBRFloat(matchVal(/Valor\s*total\s*R\$:\s*([\d,\.]+)/));
+      const descontos = toBRFloat(matchVal(/Descontos\s*R\$:\s*([\d,\.]+)/));
+      const valorPagar = toBRFloat(matchVal(/Valor\s*a\s*pagar\s*R\$:\s*([\d,\.]+)/));
+      const formaPagamento = matchVal(/Forma\s*de\s*pagamento:\s*([\w\s]+?)Valor\s*pago\s*R\$/);
+      const valorPago = toBRFloat(matchVal(/Valor\s*pago\s*R\$:\s*([\d,\.]+)/));
+      const pdv = matchVal(/PDV\s*:\s*(\d+)/);
+      const transacao = matchVal(/TRANSACAO\s*:\s*(\d+)/);
+
+      return {
+        emitente,
+        nota,
+        consumidor: consumer,
+        totais: { quantidadeItens: items.length, valorTotal, descontos, valorAPagar: valorPagar, tributosTotais: tributosVal },
+        pagamento: { forma: formaPagamento?.trim(), valorPago },
+        loja: { pdv: pdv ? parseInt(pdv) : null, transacao: transacao ? parseInt(transacao) : null },
+        itens: items
+      };
+    }
+
+
+// ==================== PROXY CONFIG ====================
+let nfProxyUrl = '';
+
+function loadProxyConfig() {
+  nfProxyUrl = localStorage.getItem('gc_proxy_url') || '';
+  const el = document.getElementById('proxyUrl');
+  if (el) el.value = nfProxyUrl;
+}
+
+function saveProxyConfig() {
+  nfProxyUrl = (document.getElementById('proxyUrl').value || '').trim();
+  localStorage.setItem('gc_proxy_url', nfProxyUrl);
+}
+
+function clearProxy() {
+  nfProxyUrl = '';
+  localStorage.removeItem('gc_proxy_url');
+  const el = document.getElementById('proxyUrl');
+  if (el) el.value = '';
+  showProxyResult('Proxy limpo.', false);
+  showToast('Proxy removido', 'info');
+}
+
+function showProxyResult(msg, isError) {
+  const el = document.getElementById('proxyTestResult');
+  if (!el) return;
+  el.style.display = 'block';
+  el.style.background = isError ? 'rgba(255,107,107,0.12)' : 'rgba(0,184,148,0.12)';
+  el.style.color = isError ? 'var(--danger)' : 'var(--success)';
+  el.style.border = isError ? '1px solid rgba(255,107,107,0.3)' : '1px solid rgba(0,184,148,0.3)';
+  el.textContent = msg;
+}
+
+async function testProxy() {
+  const proxyVal = (document.getElementById('proxyUrl').value || '').trim();
+  if (!proxyVal) {
+    showProxyResult('⚠️ Informe a URL do proxy antes de testar.', true);
+    return;
+  }
+  showProxyResult('⏳ Testando proxy...', false);
+  const testUrl = 'https://www.google.com';
+  try {
+    const resp = await fetch(proxyVal + encodeURIComponent(testUrl), { signal: AbortSignal.timeout(8000) });
+    if (resp.ok) {
+      showProxyResult('✅ Proxy respondeu com sucesso (HTTP ' + resp.status + '). Pronto para usar!', false);
+      nfProxyUrl = proxyVal;
+      localStorage.setItem('gc_proxy_url', nfProxyUrl);
+    } else {
+      showProxyResult('⚠️ Proxy retornou HTTP ' + resp.status + '. Verifique a configuração.', true);
+    }
+  } catch (e) {
+    showProxyResult('❌ Erro ao conectar ao proxy: ' + e.message, true);
+  }
+}
+
+function renderNFPreview(nota) {
+  document.getElementById('nfPreviewStore').textContent = nota.emitente.nome;
+  document.getElementById('nfPreviewDate').textContent = nota.nota.emissao || '—';
+  document.getElementById('nfPreviewBadge').textContent = 'NF-e ' + nota.nota.numero;
+  document.getElementById('nfPreviewCnpj').textContent = nota.emitente.cnpj;
+  document.getElementById('nfPreviewNum').textContent = nota.nota.numero + ' · Série ' + nota.nota.serie;
+  document.getElementById('nfPreviewQtd').textContent = nota.totais.quantidadeItens + ' item(s)';
+  document.getElementById('nfPreviewTotal').textContent = formatCurrency(nota.totais.valorTotal);
+  document.getElementById('nfPreviewPagar').textContent = formatCurrency(nota.totais.valorAPagar);
+  document.getElementById('nfPreview').classList.add('visible');
+}
+
+function applyNFToForm() {
+  if (!currentNFData) return;
+  const n = currentNFData;
+
+  // Description: store name
+  document.getElementById('expDesc').value = n.emitente.nome;
+
+  // Value: valorAPagar (after discounts)
+  document.getElementById('expValue').value = n.totais.valorAPagar.toFixed(2).replace('.', ',');
+
+  // Category: auto-select "Alimentação" if exists (supermarket context), else first
+  const food = categories.find(c => c.id === 'food' || c.name.toLowerCase().includes('aliment'));
+  const shopping = categories.find(c => c.id === 'shopping');
+  const target = food || shopping || categories[0];
+  if (target) document.getElementById('expCategory').value = target.id;
+
+  // Date/time from nota.emissao "DD/MM/YYYY HH:MM:SS"
+  try {
+    const parts = n.nota.emissao.split(' ');
+    const [d, mo, yr] = parts[0].split('/');
+    document.getElementById('expDate').value = `${yr}-${mo}-${d}`;
+    if (parts[1]) document.getElementById('expTime').value = parts[1].substring(0, 5);
+  } catch(e) {}
+
+  // Notes: store address snippet
+  const addr = n.emitente.endereco || '';
+  document.getElementById('expNotes').value = addr.split(',').slice(0,2).join(', ');
+
+  showToast('Lançamento preenchido com dados da NF!', 'success');
+
+  // Scroll down to form card
+  document.getElementById('expDesc').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetNFState() {
+  currentNFData = null;
+  document.getElementById('nfPreview').classList.remove('visible');
+  document.getElementById('nfParsing').style.display = 'none';
+  document.getElementById('nfUrlDisplay').classList.remove('visible');
+  document.getElementById('nfUrlDisplay').textContent = '';
+  const urlInput = document.getElementById('nfUrl');
+  urlInput.value = '';
+  urlInput.style.display = 'none';
+  const btn = document.getElementById('nfUrlConfirmBtn');
+  if (btn) btn.remove();
+}
+
+function saveNotaFiscal(nota, expenseId) {
+  nota._expenseId = expenseId || null;
+  nota._savedAt = new Date().toISOString();
+  notasFiscais.push(nota);
+  localStorage.setItem('gc_notas', JSON.stringify(notasFiscais));
+}
+
+// ==================== NOTAS FISCAIS PAGE ====================
+function renderNotasPage() {
+  const container = document.getElementById('notasList');
+  if (!container) return;
+
+  const now = new Date();
+  const thisMonth = notasFiscais.filter(n => {
+    try {
+      const parts = n.nota.emissao.split(' ')[0].split('/');
+      return parseInt(parts[2]) === now.getFullYear() && parseInt(parts[1]) - 1 === now.getMonth();
+    } catch(e) { return false; }
+  });
+
+  const totalValue = notasFiscais.reduce((s, n) => s + (n.totais?.valorAPagar || 0), 0);
+  const totalItems = notasFiscais.reduce((s, n) => s + (n.totais?.quantidadeItens || 0), 0);
+
+  const el = id => document.getElementById(id);
+  if (el('nfTotalCount')) el('nfTotalCount').textContent = notasFiscais.length;
+  if (el('nfMonthCount')) el('nfMonthCount').textContent = thisMonth.length;
+  if (el('nfMesAtual')) el('nfMesAtual').textContent = now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  if (el('nfTotalValue')) el('nfTotalValue').textContent = totalValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  if (el('nfTotalItems')) el('nfTotalItems').textContent = totalItems;
+
+  if (notasFiscais.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">🧾</div><div class="text">Nenhuma nota fiscal registrada</div></div>';
+    return;
+  }
+
+  const sorted = [...notasFiscais].sort((a, b) => new Date(b._savedAt) - new Date(a._savedAt));
+  container.innerHTML = sorted.map((n, idx) => {
+    const realIdx = notasFiscais.indexOf(n);
+    return `
+    <div class="nf-card" onclick="openNFDetail(${realIdx})">
+      <div class="nf-card-header">
+        <div class="nf-card-store">${n.emitente?.nome || 'Emitente desconhecido'}</div>
+        <div class="nf-card-total">${formatCurrency(n.totais?.valorAPagar || 0)}</div>
+      </div>
+      <div class="nf-card-meta">
+        <span>🗓️ ${n.nota?.emissao || '—'}</span>
+        <span>📦 ${n.totais?.quantidadeItens || 0} itens</span>
+        <span>🔢 Nº ${n.nota?.numero || '—'}</span>
+        ${n._expenseId ? '<span style="color:var(--success)">✅ Vinculada</span>' : ''}
+      </div>
+    </div>
+    `;
+  }).join('');
+}
+
+function openNFDetail(idx) {
+  const nota = notasFiscais[idx];
+  if (!nota) return;
+
+  const content = document.getElementById('nfDetailContent');
+  const itensHTML = (nota.itens || []).map(item => `
+    <tr>
+      <td>${item.nome}</td>
+      <td class="right">${item.quantidade} ${item.unidade}</td>
+      <td class="right">${formatCurrency(item.valorUnitario)}</td>
+      <td class="right">${formatCurrency(item.valorTotal)}</td>
+    </tr>
+  `).join('');
+
+  content.innerHTML = `
+    <div style="margin-bottom:12px">
+      <div style="font-weight:700; font-size:1rem">${nota.emitente?.nome || '—'}</div>
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px">${nota.emitente?.endereco || ''}</div>
+      <div style="font-size:0.75rem; color:var(--text-dim); margin-top:4px">
+        CNPJ: ${nota.emitente?.cnpj || '—'} · Nº ${nota.nota?.numero || '—'} · Série ${nota.nota?.serie || '—'}
+      </div>
+      <div style="font-size:0.75rem; color:var(--text-dim)">Emissão: ${nota.nota?.emissao || '—'}</div>
+    </div>
+    <table class="nf-items-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th class="right">Qtd</th>
+          <th class="right">Unit.</th>
+          <th class="right">Total</th>
+        </tr>
+      </thead>
+      <tbody>${itensHTML}</tbody>
+    </table>
+    <div class="nf-totals-block">
+      ${nota.totais?.descontos > 0 ? `<div class="nf-total-row"><span>Descontos</span><span style="color:var(--success)">- ${formatCurrency(nota.totais.descontos)}</span></div>` : ''}
+      <div class="nf-total-row"><span>Valor total</span><span>${formatCurrency(nota.totais?.valorTotal || 0)}</span></div>
+      <div class="nf-total-row main"><span>💳 A pagar</span><span>${formatCurrency(nota.totais?.valorAPagar || 0)}</span></div>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:16px">
+      <button class="btn btn-danger btn-sm" style="flex:1" onclick="deleteNota(${idx})">🗑️ Excluir</button>
+      ${nota._expenseId ? '' : `<button class="btn btn-primary btn-sm" style="flex:1" onclick="closeNFModal()">Fechar</button>`}
+    </div>
+  `;
+
+  document.getElementById('nfDetailModal').classList.add('active');
+}
+
+function closeNFModal() {
+  document.getElementById('nfDetailModal').classList.remove('active');
+}
+
+function deleteNota(idx) {
+  if (!confirm('Excluir esta nota fiscal?')) return;
+  notasFiscais.splice(idx, 1);
+  localStorage.setItem('gc_notas', JSON.stringify(notasFiscais));
+  closeNFModal();
+  renderNotasPage();
+  showToast('Nota fiscal excluída', 'info');
 }
 
 // ==================== CATEGORIES ====================
@@ -1613,13 +2272,20 @@ function saveExpense() {
   expenses.push(expense);
   saveExpenses();
 
-  // Reset form
+  // Save linked NF if present
+  if (currentNFData) {
+    saveNotaFiscal(currentNFData, expense.id);
+    expense.nfUrl = currentNFData._sourceUrl || null;
+    // Update the stored expense with the nfUrl
+    expenses[expenses.length - 1] = expense;
+    saveExpenses();
+  }
+
+  // Reset form + NF state
   document.getElementById('expDesc').value = '';
   document.getElementById('expValue').value = '';
   document.getElementById('expNotes').value = '';
-  document.getElementById('nfUrl').value = '';
-  document.getElementById('nfUrlDisplay').classList.remove('visible');
-  document.getElementById('detectedInfo').classList.remove('visible');
+  resetNFState();
   setDefaultDateTime();
 
   showToast(`Lançamento de ${formatCurrency(value)} salvo!`, 'success');
@@ -1738,6 +2404,7 @@ function renderAll() {
   renderGastosPage();
   renderGoalsPage();
   renderCategoriesList();
+  renderNotasPage();
 }
 
 function renderDashboard() {
@@ -2113,9 +2780,10 @@ function renderGoalsPage() {
 function exportData() {
   const settings = {
     theme: document.documentElement.classList.contains('light') ? 'light' : 'dark',
-    cameraId: selectedCameraId || null
+    cameraId: selectedCameraId || null,
+    proxyUrl: nfProxyUrl || null
   };
-  const data = { categories, expenses, goals, settings, exportDate: new Date().toISOString() };
+  const data = { categories, expenses, goals, notasFiscais, settings, exportDate: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2137,6 +2805,7 @@ function importData(event) {
       if (data.categories) { categories = data.categories; saveCategories(); }
       if (data.expenses) { expenses = data.expenses; saveExpenses(); }
       if (data.goals) { goals = data.goals; localStorage.setItem('gc_goals', JSON.stringify(goals)); }
+      if (data.notasFiscais) { notasFiscais = data.notasFiscais; localStorage.setItem('gc_notas', JSON.stringify(notasFiscais)); }
       if (data.settings) {
         // Restore theme
         if (data.settings.theme) {
@@ -2151,6 +2820,12 @@ function importData(event) {
           selectedCameraId = data.settings.cameraId;
           localStorage.setItem('gc_camera_id', selectedCameraId);
           populateCameraSelects();
+        }
+        if (data.settings.proxyUrl != null) {
+          nfProxyUrl = data.settings.proxyUrl;
+          localStorage.setItem('gc_proxy_url', nfProxyUrl);
+          const el = document.getElementById('proxyUrl');
+          if (el) el.value = nfProxyUrl;
         }
       }
       renderAll();
@@ -2170,9 +2845,11 @@ function clearAllData() {
   categories = [...DEFAULT_CATEGORIES];
   expenses = [];
   goals = {};
+  notasFiscais = [];
   saveCategories();
   saveExpenses();
   localStorage.setItem('gc_goals', JSON.stringify(goals));
+  localStorage.setItem('gc_notas', JSON.stringify(notasFiscais));
   renderAll();
   showToast('Todos os dados foram apagados', 'info');
 }
@@ -2214,8 +2891,12 @@ function applyStoredTheme() {
 // ==================== START ====================
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    const overlay = document.getElementById('scannerOverlay');
-    if (overlay && overlay.classList.contains('active')) closeScanner();
+    const scanOvl = document.getElementById('scannerOverlay');
+    if (scanOvl && scanOvl.classList.contains('active')) { closeScanner(); return; }
+    const nfOvl = document.getElementById('nfDetailModal');
+    if (nfOvl && nfOvl.classList.contains('active')) { closeNFModal(); return; }
+    const editOvl = document.getElementById('editModal');
+    if (editOvl && editOvl.classList.contains('active')) { closeModal(); return; }
   }
 });
 
