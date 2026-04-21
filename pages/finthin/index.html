@@ -812,6 +812,64 @@
   :root.light ::-webkit-scrollbar-track { background: #F0F2F8; }
   :root.light .toast-container { }
   :root.light .filter-chip.active { box-shadow: 0 2px 8px rgba(108,92,231,0.3); }
+
+  /* ===== QR SCANNER OVERLAY ===== */
+  .scanner-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .scanner-overlay.active { display: flex; }
+
+  .scanner-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    width: min(92vw, 420px);
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    animation: slideUp 0.3s ease;
+  }
+  .scanner-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .scanner-modal-header h3 {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .scanner-modal-body {
+    padding: 12px;
+  }
+  .scanner-cam-select {
+    margin-bottom: 10px;
+  }
+  #qr-reader { width: 100% !important; border-radius: var(--radius-sm); overflow: hidden; }
+  #qr-reader video { border-radius: var(--radius-sm) !important; }
+  /* Hide the default html5-qrcode UI chrome we don't need */
+  #qr-reader__dashboard_section_swaplink { display: none !important; }
+  #qr-reader__status_span { font-size: 0.75rem !important; color: var(--text-muted) !important; }
+  #qr-reader__camera_permission_button { 
+    background: var(--primary) !important; 
+    color: white !important;
+    border: none !important;
+    border-radius: var(--radius-xs) !important;
+    padding: 8px 16px !important;
+    cursor: pointer !important;
+  }
 </style>
 </head>
 <body>
@@ -925,9 +983,7 @@
         <button class="btn btn-accent btn-sm" onclick="startScanner()">📷 Escanear QR</button>
         <button class="btn btn-outline btn-sm" onclick="manualNF()">🔗 Inserir URL</button>
       </div>
-      <div class="scanner-container" id="scannerContainer" style="display:none">
-        <div id="qr-reader"></div>
-      </div>
+      <!-- scanner is now shown as full-screen overlay -->
       <input type="text" class="form-control" id="nfUrl" placeholder="Cole a URL da nota fiscal" style="display:none">
       <div class="nf-url-display" id="nfUrlDisplay"></div>
       <div class="detected-info" id="detectedInfo">
@@ -1024,6 +1080,19 @@
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">📷 Configurações de Câmera</div>
+    <div class="form-group">
+      <label>Câmera padrão para QR Code</label>
+      <select class="form-control" id="defaultCamSelect" onchange="saveDefaultCamera()">
+        <option value="">Carregando câmeras...</option>
+      </select>
+    </div>
+    <div style="font-size:0.75rem; color:var(--text-dim); margin-top:-8px">
+      A câmera selecionada será usada automaticamente ao escanear QR Codes.
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">🗑️ Gerenciar Dados</div>
     <div class="btn-row">
       <button class="btn btn-outline btn-sm" onclick="exportData()">📤 Exportar</button>
@@ -1107,6 +1176,24 @@
   </div>
 </div>
 
+
+<!-- QR Scanner Overlay -->
+<div class="scanner-overlay" id="scannerOverlay">
+  <div class="scanner-modal">
+    <div class="scanner-modal-header">
+      <h3>📷 Escanear QR Code</h3>
+      <button class="modal-close" onclick="stopScanner()" title="Fechar">&#x2715;</button>
+    </div>
+    <div class="scanner-modal-body">
+      <div class="scanner-cam-select form-group" id="camSelectGroup" style="display:none">
+        <label>Câmera</label>
+        <select class="form-control" id="camSelect" onchange="onCamSelectChange()"></select>
+      </div>
+      <div id="qr-reader"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
 
@@ -1138,6 +1225,8 @@ let currentLocation = null;
 let selectedColor = COLORS[0];
 let scannerInstance = null;
 let currentFilter = 'all';
+let selectedCameraId = null;   // null = use facingMode:environment as fallback
+let availableCameras = [];
 
 // ==================== INIT ====================
 function init() {
@@ -1147,6 +1236,8 @@ function init() {
   renderAll();
   getLocation();
   setupValueInputs();
+  loadCameraPreference();
+  enumerateCameras();
 }
 
 function updateHeaderDate() {
@@ -1183,11 +1274,11 @@ function showPage(pageId, navEl) {
   if (pageId === 'dashboard') renderDashboard();
   if (pageId === 'gastos') renderGastosPage();
   if (pageId === 'metas') renderGoalsPage();
-  if (pageId === 'config') renderCategoriesList();
+  if (pageId === 'config') { renderCategoriesList(); populateCameraSelects(); }
 
   // Stop scanner if leaving lancamento
-  if (pageId !== 'lancamento' && scannerInstance) {
-    stopScanner();
+  if (pageId !== 'lancamento') {
+    closeScanner();
   }
 }
 
@@ -1221,16 +1312,100 @@ function getLocation() {
 }
 
 // ==================== QR CODE SCANNER ====================
-function startScanner() {
-  const container = document.getElementById('scannerContainer');
-  container.style.display = 'block';
-  document.getElementById('nfUrl').style.display = 'none';
+function loadCameraPreference() {
+  const saved = localStorage.getItem('gc_camera_id');
+  if (saved) selectedCameraId = saved;
+}
+
+function saveDefaultCamera() {
+  const sel = document.getElementById('defaultCamSelect');
+  if (!sel) return;
+  selectedCameraId = sel.value || null;
+  if (selectedCameraId) {
+    localStorage.setItem('gc_camera_id', selectedCameraId);
+  } else {
+    localStorage.removeItem('gc_camera_id');
+  }
+  showToast('Câmera padrão salva!', 'success');
+}
+
+function onCamSelectChange() {
+  // User picked a different camera mid-session → restart with new camera
+  const sel = document.getElementById('camSelect');
+  if (!sel) return;
+  selectedCameraId = sel.value || null;
+  if (selectedCameraId) localStorage.setItem('gc_camera_id', selectedCameraId);
+  else localStorage.removeItem('gc_camera_id');
+  // also sync config page select
+  const defSel = document.getElementById('defaultCamSelect');
+  if (defSel) defSel.value = selectedCameraId || '';
 
   if (scannerInstance) {
     scannerInstance.stop().then(() => {
       scannerInstance.clear();
+      scannerInstance = null;
       initScanner();
+    }).catch(() => { initScanner(); });
+  }
+}
+
+function enumerateCameras() {
+  Html5Qrcode.getCameras().then(cameras => {
+    availableCameras = cameras || [];
+    populateCameraSelects();
+  }).catch(() => {
+    // Permission not yet granted – we'll enumerate again when scanner opens
+    availableCameras = [];
+  });
+}
+
+function populateCameraSelects() {
+  ['camSelect', 'defaultCamSelect'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    if (availableCameras.length === 0) {
+      sel.innerHTML = '<option value="">Nenhuma câmera encontrada</option>';
+      return;
+    }
+    sel.innerHTML = availableCameras.map(cam =>
+      `<option value="${cam.id}" ${cam.id === selectedCameraId ? 'selected' : ''}>${cam.label || cam.id}</option>`
+    ).join('');
+    // If nothing matches the stored id, show the first option without forcing selection
+    if (selectedCameraId && !availableCameras.find(c => c.id === selectedCameraId)) {
+      sel.value = '';
+    }
+  });
+  // Show camera selector in overlay only when >1 camera available
+  const grp = document.getElementById('camSelectGroup');
+  if (grp) grp.style.display = availableCameras.length > 1 ? 'block' : 'none';
+}
+
+function startScanner() {
+  document.getElementById('nfUrl').style.display = 'none';
+  document.getElementById('scannerOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // If cameras already enumerated use them; else enumerate first
+  if (availableCameras.length > 0) {
+    populateCameraSelects();
+    _doInitScanner();
+  } else {
+    Html5Qrcode.getCameras().then(cameras => {
+      availableCameras = cameras || [];
+      populateCameraSelects();
+      _doInitScanner();
+    }).catch(err => {
+      showToast('Sem permissão para câmera: ' + err, 'error');
+      closeScanner();
     });
+  }
+}
+
+function _doInitScanner() {
+  if (scannerInstance) {
+    try {
+      scannerInstance.stop().then(() => { scannerInstance.clear(); scannerInstance = null; initScanner(); }).catch(() => { scannerInstance = null; initScanner(); });
+    } catch(e) { scannerInstance = null; initScanner(); }
   } else {
     initScanner();
   }
@@ -1238,25 +1413,44 @@ function startScanner() {
 
 function initScanner() {
   scannerInstance = new Html5Qrcode("qr-reader");
+  const constraint = selectedCameraId
+    ? { deviceId: { exact: selectedCameraId } }
+    : { facingMode: "environment" };
+
   scannerInstance.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
-    decodedText => {
-      onQRDecoded(decodedText);
-    },
-    error => {}
+    constraint,
+    { fps: 10, qrbox: { width: 240, height: 240 } },
+    decodedText => { onQRDecoded(decodedText); },
+    () => {}
   ).catch(err => {
-    showToast('Erro ao acessar câmera: ' + err, 'error');
+    // Fallback: try environment facing if specific device failed
+    if (selectedCameraId) {
+      showToast('Câmera selecionada indisponível, usando padrão…', 'info');
+      scannerInstance.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 240, height: 240 } },
+        decodedText => { onQRDecoded(decodedText); },
+        () => {}
+      ).catch(e2 => { showToast('Erro ao acessar câmera: ' + e2, 'error'); closeScanner(); });
+    } else {
+      showToast('Erro ao acessar câmera: ' + err, 'error');
+      closeScanner();
+    }
   });
 }
 
 function stopScanner() {
+  closeScanner();
+}
+
+function closeScanner() {
+  document.getElementById('scannerOverlay').classList.remove('active');
+  document.body.style.overflow = '';
   if (scannerInstance) {
     scannerInstance.stop().then(() => {
       scannerInstance.clear();
       scannerInstance = null;
-      document.getElementById('scannerContainer').style.display = 'none';
-    }).catch(() => {});
+    }).catch(() => { scannerInstance = null; });
   }
 }
 
@@ -1298,7 +1492,7 @@ function manualNF() {
   const input = document.getElementById('nfUrl');
   input.style.display = input.style.display === 'none' ? 'block' : 'none';
   if (input.style.display === 'block') {
-    if (scannerInstance) stopScanner();
+    closeScanner();
     input.focus();
   }
 }
@@ -1917,7 +2111,11 @@ function renderGoalsPage() {
 
 // ==================== EXPORT / IMPORT ====================
 function exportData() {
-  const data = { categories, expenses, goals, exportDate: new Date().toISOString() };
+  const settings = {
+    theme: document.documentElement.classList.contains('light') ? 'light' : 'dark',
+    cameraId: selectedCameraId || null
+  };
+  const data = { categories, expenses, goals, settings, exportDate: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1939,6 +2137,22 @@ function importData(event) {
       if (data.categories) { categories = data.categories; saveCategories(); }
       if (data.expenses) { expenses = data.expenses; saveExpenses(); }
       if (data.goals) { goals = data.goals; localStorage.setItem('gc_goals', JSON.stringify(goals)); }
+      if (data.settings) {
+        // Restore theme
+        if (data.settings.theme) {
+          const isLight = data.settings.theme === 'light';
+          document.documentElement.classList.toggle('light', isLight);
+          localStorage.setItem('gc_theme', data.settings.theme);
+          document.getElementById('themeIcon').textContent = isLight ? '🌙' : '☀️';
+          document.getElementById('themeLabel').textContent = isLight ? 'Dark' : 'Light';
+        }
+        // Restore camera
+        if (data.settings.cameraId) {
+          selectedCameraId = data.settings.cameraId;
+          localStorage.setItem('gc_camera_id', selectedCameraId);
+          populateCameraSelects();
+        }
+      }
       renderAll();
       showToast('Dados importados com sucesso!', 'success');
     } catch(err) {
@@ -1998,6 +2212,13 @@ function applyStoredTheme() {
 }
 
 // ==================== START ====================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('scannerOverlay');
+    if (overlay && overlay.classList.contains('active')) closeScanner();
+  }
+});
+
 init();
 applyStoredTheme();
 </script>
