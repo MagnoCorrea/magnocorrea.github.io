@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f172a">
+    <title>Login Seguro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* ── Background animated gradient ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            animation: bgShift 15s ease-in-out infinite alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes bgShift {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, 3%) rotate(3deg); }
+        }
+
+        /* ── Header ── */
+        .header {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding: 40px 24px 20px;
+            text-align: center;
+        }
+
+        .logo-container {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(56, 189, 248, 0.25);
+        }
+
+        .logo-container svg {
+            width: 36px;
+            height: 36px;
+            fill: white;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* ── Main Content ── */
+        .main {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px 100px;
+            flex: 1;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 20px;
+            padding: 28px 24px;
+            margin-bottom: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card.hidden {
+            display: none;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-title .icon.blue   { background: rgba(56, 189, 248, 0.15); }
+        .card-title .icon.purple { background: rgba(139, 92, 246, 0.15); }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        /* ── Biometric Button ── */
+        .biometric-btn {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            background: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .biometric-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(139, 92, 246, 0.15));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .biometric-btn:active::before {
+            opacity: 1;
+        }
+
+        .biometric-btn:active {
+            transform: scale(0.97);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        .biometric-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            position: relative;
+            z-index: 1;
+        }
+
+        .biometric-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .biometric-btn.loading svg {
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0.4; }
+        }
+
+        /* ── Fingerprint Animation ── */
+        .fingerprint-anim {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .fingerprint-anim.active {
+            display: flex;
+        }
+
+        .fingerprint-anim .fp-icon {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .fingerprint-anim .fp-icon svg {
+            width: 80px;
+            height: 80px;
+            fill: #38bdf8;
+            animation: fpScan 2s ease-in-out infinite;
+        }
+
+        @keyframes fpScan {
+            0%, 100% { opacity: 0.4; transform: scale(0.95); }
+            50%      { opacity: 1;   transform: scale(1.05); }
+        }
+
+        .fingerprint-anim .fp-rings {
+            position: absolute;
+            inset: -10px;
+            border: 2px solid rgba(56, 189, 248, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-out infinite;
+        }
+
+        .fingerprint-anim .fp-rings:nth-child(2) { animation-delay: 0.5s; }
+        .fingerprint-anim .fp-rings:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes ringPulse {
+            0%   { transform: scale(0.8); opacity: 0.6; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .fingerprint-anim p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* ── Form Fields ── */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid rgba(148, 163, 184, 0.15);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            color: #e2e8f0;
+            font-size: 16px;
+            letter-spacing: 1.5px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-input:focus {
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #475569;
+            letter-spacing: 2px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* ── Password Dots ── */
+        .password-dots {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin: 20px 0 8px;
+        }
+
+        .password-dots .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .password-dots .dot.filled {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+            animation: dotPop 0.2s ease;
+        }
+
+        @keyframes dotPop {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* ── Virtual Keyboard ── */
+        .keyboard {
+            margin-top: 16px;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .key {
+            width: 72px;
+            height: 56px;
+            border: none;
+            border-radius: 14px;
+            background: rgba(51, 65, 85, 0.6);
+            color: #e2e8f0;
+            font-size: 22px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .key::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .key:active::after {
+            opacity: 1;
+        }
+
+        .key:active {
+            transform: scale(0.93);
+            background: rgba(71, 85, 105, 0.8);
+        }
+
+        .key.fn {
+            background: transparent;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .key.fn svg {
+            width: 22px;
+            height: 22px;
+            fill: #64748b;
+        }
+
+        .key.fn:active {
+            color: #94a3b8;
+        }
+
+        .key.fn:active svg {
+            fill: #94a3b8;
+        }
+
+        .key.enter {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .key.enter:active {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        }
+
+        .key.enter svg {
+            fill: white;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(148, 163, 184, 0.1);
+        }
+
+        .divider span {
+            font-size: 12px;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        /* ── Submit Button ── */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .submit-btn:active:not(:disabled)::before {
+            opacity: 1;
+        }
+
+        /* ── Toast / Status ── */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 100;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+        }
+
+        .toast.error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
+
+        .toast.info {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+        }
+
+        /* ── Error shake ── */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%      { transform: translateX(-8px); }
+            40%      { transform: translateX(8px); }
+            60%      { transform: translateX(-4px); }
+            80%      { transform: translateX(4px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        /* ── Fade in ── */
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Not supported banner ── */
+        .not-supported {
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .not-supported.show {
+            display: flex;
+        }
+
+        .not-supported svg {
+            width: 20px;
+            height: 20px;
+            fill: #fbbf24;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .not-supported p {
+            font-size: 13px;
+            color: #fbbf24;
+            line-height: 1.4;
+        }
+
+        /* ── Status indicator ── */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .status-dot.offline {
+            background: #f59e0b;
+        }
+
+        /* ── Spinner ── */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Responsive tweaks ── */
+        @media (max-height: 700px) {
+            .header { padding: 24px 24px 12px; }
+            .logo-container { width: 56px; height: 56px; border-radius: 16px; }
+            .logo-container svg { width: 28px; height: 28px; }
+            .header h1 { font-size: 18px; }
+            .card { padding: 20px 18px; }
+            .key { height: 48px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-container">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12v5.7c0 4.83-3.23 9.36-7 10.58-3.77-1.22-7-5.75-7-10.58V6.3l7-3.12zM11 7v2h2V7h-2zm0 4v6h2v-6h-2z"/></svg>
+        </div>
+        <h1>Acesso Seguro</h1>
+        <p>Identifique-se para continuar</p>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Not supported banner -->
+        <div class="not-supported" id="notSupported">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <p>Biometria não disponível neste navegador. Use CPF e senha abaixo.</p>
+        </div>
+
+        <!-- ── BIOMETRIC CARD ── -->
+        <div class="card fade-in" id="bioCard">
+            <div class="card-title">
+                <div class="icon blue">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#38bdf8"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28zM3.5 9.72a.499.499 0 0 1-.41-.79c.99-1.4 2.25-2.5 3.75-3.27C8.66 4.7 10.58 4.2 12.5 4.2c1.92 0 3.84.5 5.66 1.46 1.5.77 2.76 1.87 3.75 3.27.16.22.1.53-.12.69-.22.16-.53.1-.69-.12-.9-1.26-2.04-2.25-3.39-2.95-1.66-.87-3.4-1.32-5.15-1.32-1.75 0-3.49.45-5.15 1.32-1.35.7-2.49 1.69-3.39 2.95-.1.13-.25.2-.41.2zm6.25 12.07c-.13 0-.26-.05-.35-.15-.87-.87-1.34-1.43-2.04-2.59-.69-1.14-1.13-2.4-1.29-3.72-.17-1.38-.05-2.76.35-4.1.4-1.33 1.08-2.54 2.01-3.59.18-.21.5-.23.71-.05.21.18.23.5.05.71-.81.93-1.4 1.99-1.75 3.17-.36 1.19-.47 2.42-.31 3.64.15 1.17.54 2.28 1.15 3.28.66 1.09 1.09 1.6 1.88 2.39.2.2.2.51 0 .71-.08.1-.2.15-.33.15zm7.14-1.24c-.7-1.16-1.17-1.72-2.04-2.59-.19-.19-.19-.51 0-.71.19-.19.51-.19.71 0 .87.87 1.34 1.43 2.04 2.59.69 1.14 1.13 2.4 1.29 3.72.17 1.38.05 2.76-.35 4.1-.4 1.33-1.08 2.54-2.01 3.59-.1.12-.24.18-.38.18-.12 0-.24-.04-.33-.13-.21-.18-.23-.5-.05-.71.81-.93 1.4-1.99 1.75-3.17.36-1.19.47-2.42.31-3.64-.15-1.17-.54-2.28-1.15-3.28zM12.5 18.5c-1.43 0-2.73-.37-3.86-1.09-.24-.15-.31-.46-.16-.7.15-.24.46-.31.7-.16.97.61 2.08.92 3.32.92s2.35-.31 3.32-.92c.24-.15.55-.08.7.16.15.24.08.55-.16.7-1.13.72-2.43 1.09-3.86 1.09z"/></svg>
+                </div>
+                Autenticação Biométrica
+            </div>
+            <p class="card-subtitle">Use sua digital ou reconhecimento facial para acessar rapidamente</p>
+
+            <!-- Biometric Button -->
+            <button class="biometric-btn" id="bioBtn" onclick="authenticateBiometric()">
+                <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28zM9.75 21.5c-.08 0-.17-.02-.24-.06C7.67 20.55 6 20.1 4.26 19.2 2.54 18.32 1.13 17.08.12 15.52-.1 15.19-.08 14.76.2 14.46c.37-.4.84-.87 1.24-1.34.14-.17.35-.25.57-.23.21.02.4.15.52.33.32.47.76.94 1.2 1.4.15.16.36.25.58.26.22.01.43-.07.58-.23.15-.16.23-.38.22-.6-.01-.22-.11-.42-.27-.57-.35-.37-.73-.78-1.07-1.17-.16-.19-.4-.29-.64-.27-.24.02-.46.15-.59.35-.38.58-.9 1.2-1.44 1.78-.18.19-.24.46-.17.71.07.25.27.45.52.53 1.68.56 3.38.94 5.12 1.14.23.03.46-.05.63-.22.17-.17.26-.4.25-.64-.01-.23-.13-.45-.32-.6-.45-.36-.92-.76-1.32-1.2-.16-.18-.25-.42-.24-.66.01-.24.13-.47.32-.62.19-.15.44-.23.69-.21.24.02.47.14.62.33.33.41.72.78 1.13 1.1.18.14.4.21.63.19.22-.02.42-.14.56-.32.14-.18.21-.41.19-.64-.02-.23-.14-.44-.33-.58-.48-.36-.9-.77-1.25-1.22-.16-.2-.22-.48-.16-.73.06-.25.25-.45.5-.54.24-.09.52-.05.73.09.3.2.63.38.98.53.16.07.34.06.5-.02.15-.08.27-.22.33-.38.06-.16.05-.34-.02-.5-.14-.31-.34-.6-.57-.86-.18-.2-.44-.32-.71-.33-.27-.01-.53.09-.73.28-.16.15-.24.36-.22.58.02.21.14.41.32.54.28.2.6.36.94.48.17.06.36.04.52-.06.16-.1.28-.26.33-.44.05-.18.02-.37-.08-.53-.2-.31-.46-.58-.75-.82-.18-.14-.42-.2-.64-.17-.23.03-.43.17-.55.37-.12.2-.14.45-.05.66.09.21.28.37.5.43.33.09.68.13 1.03.12.25-.01.48-.14.62-.34.14-.2.2-.45.15-.69-.05-.24-.22-.44-.45-.54-.37-.16-.78-.24-1.2-.24-.42 0-.83.08-1.2.24-.23.1-.4.3-.45.54-.05.24.01.49.15.69.14.2.37.33.62.34.35.01.7-.03 1.03-.12.22-.06.41-.22.5-.43.09-.21.07-.46-.05-.66-.12-.2-.32-.34-.55-.37-.22-.03-.46.03-.64.17-.29.24-.55.51-.75.82-.1.16-.13.35-.08.53.05.18.17.34.33.44.16.1.35.12.52.06.35-.15.68-.33.98-.53.21-.14.49-.18.73-.09.25.09.44.29.5.54.06.25 0 .53-.16.73-.35.45-.77.86-1.25 1.22-.19.14-.31.35-.33.58-.02.23.05.46.19.64.14.18.34.3.56.32.23.02.45-.05.63-.19.41-.32.8-.69 1.13-1.1.15-.19.38-.31.62-.33.25-.02.5.06.69.21.19.15.31.38.32.62.01.24-.08.48-.24.66-.4.44-.87.84-1.32 1.2-.19.15-.31.37-.32.6-.01.24.08.47.25.64.17.17.4.25.63.22 1.74-.2 3.44-.58 5.12-1.14.25-.08.45-.28.52-.53.07-.25.01-.52-.17-.71-.54-.58-1.06-1.2-1.44-1.78-.13-.2-.35-.33-.59-.35-.24-.02-.48.08-.64.27-.34.39-.72.8-1.07 1.17-.16.15-.26.35-.27.57-.01.22.07.44.22.6.15.16.36.24.58.23.22-.01.43-.1.58-.26.44-.46.88-.93 1.2-1.4.12-.18.31-.31.52-.33.22-.02.43.06.57.23.4.47.87.94 1.24 1.34.28.3.3.73.08 1.06-1.01 1.56-2.42 2.8-4.14 3.68-1.74.9-3.41 1.35-5.25 2.24-.07.04-.16.06-.24.06z"/></svg>
+                <span>Tocar para autenticar</span>
+            </button>
+
+            <!-- Fingerprint animation (shown during auth) -->
+            <div class="fingerprint-anim" id="fpAnim">
+                <div class="fp-icon">
+                    <div class="fp-rings"></div>
+                    <div class="fp-rings"></div>
+                    <div class="fp-rings"></div>
+                    <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28zM3.5 9.72a.499.499 0 0 1-.41-.79c.99-1.4 2.25-2.5 3.75-3.27C8.66 4.7 10.58 4.2 12.5 4.2c1.92 0 3.84.5 5.66 1.46 1.5.77 2.76 1.87 3.75 3.27.16.22.1.53-.12.69-.22.16-.53.1-.69-.12-.9-1.26-2.04-2.25-3.39-2.95-1.66-.87-3.4-1.32-5.15-1.32-1.75 0-3.49.45-5.15 1.32-1.35.7-2.49 1.69-3.39 2.95-.1.13-.25.2-.41.2zm6.25 12.07c-.13 0-.26-.05-.35-.15-.87-.87-1.34-1.43-2.04-2.59-.69-1.14-1.13-2.4-1.29-3.72-.17-1.38-.05-2.76.35-4.1.4-1.33 1.08-2.54 2.01-3.59.18-.21.5-.23.71-.05.21.18.23.5.05.71-.81.93-1.4 1.99-1.75 3.17-.36 1.19-.47 2.42-.31 3.64.15 1.17.54 2.28 1.15 3.28.66 1.09 1.09 1.6 1.88 2.39.2.2.2.51 0 .71-.08.1-.2.15-.33.15zm7.14-1.24c-.7-1.16-1.17-1.72-2.04-2.59-.19-.19-.19-.51 0-.71.19-.19.51-.19.71 0 .87.87 1.34 1.43 2.04 2.59.69 1.14 1.13 2.4 1.29 3.72.17 1.38.05 2.76-.35 4.1-.4 1.33-1.08 2.54-2.01 3.59-.1.12-.24.18-.38.18-.12 0-.24-.04-.33-.13-.21-.18-.23-.5-.05-.71.81-.93 1.4-1.99 1.75-3.17.36-1.19.47-2.42.31-3.64-.15-1.17-.54-2.28-1.15-3.28z"/></svg>
+                </div>
+                <p>Autenticando...</p>
+            </div>
+        </div>
+
+        <!-- ── DIVIDER ── -->
+        <div class="divider" id="divider">
+            <span>ou use CPF e senha</span>
+        </div>
+
+        <!-- ── CPF + PASSWORD CARD ── -->
+        <div class="card fade-in" id="cpfCard" style="animation-delay: 0.15s;">
+            <div class="card-title">
+                <div class="icon purple">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#8b5cf6"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                CPF e Senha
+            </div>
+            <p class="card-subtitle">Digite seu CPF e senha numérica de 6 dígitos</p>
+
+            <!-- CPF Input -->
+            <div class="form-group">
+                <label class="form-label">CPF</label>
+                <input type="tel" class="form-input" id="cpfInput" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" autocomplete="off">
+            </div>
+
+            <!-- Password Dots -->
+            <div class="form-group">
+                <label class="form-label">Senha numérica (6 dígitos)</label>
+                <div class="password-dots" id="passwordDots">
+                    <div class="dot" data-index="0"></div>
+                    <div class="dot" data-index="1"></div>
+                    <div class="dot" data-index="2"></div>
+                    <div class="dot" data-index="3"></div>
+                    <div class="dot" data-index="4"></div>
+                    <div class="dot" data-index="5"></div>
+                </div>
+            </div>
+
+            <!-- Virtual Keyboard -->
+            <div class="keyboard" id="keyboard">
+                <div class="keyboard-row">
+                    <button class="key" data-key="1">1</button>
+                    <button class="key" data-key="2">2</button>
+                    <button class="key" data-key="3">3</button>
+                </div>
+                <div class="keyboard-row">
+                    <button class="key" data-key="4">4</button>
+                    <button class="key" data-key="5">5</button>
+                    <button class="key" data-key="6">6</button>
+                </div>
+                <div class="keyboard-row">
+                    <button class="key" data-key="7">7</button>
+                    <button class="key" data-key="8">8</button>
+                    <button class="key" data-key="9">9</button>
+                </div>
+                <div class="keyboard-row">
+                    <button class="key fn" id="clearBtn" onclick="clearPassword()">
+                        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    </button>
+                    <button class="key" data-key="0">0</button>
+                    <button class="key fn enter" id="enterBtn" onclick="submitCPF()">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button class="submit-btn" id="submitBtn" onclick="submitCPF()" disabled>
+                <span id="submitText">Entrar</span>
+                <div class="spinner" id="submitSpinner"></div>
+            </button>
+        </div>
+
+        <!-- Status -->
+        <div class="status-bar">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">Conexão segura estabelecida</span>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════
+        //  STATE
+        // ═══════════════════════════════════════════════
+        let password = '';
+        const MAX_PASSWORD_LENGTH = 6;
+        let bioSupported = false;
+
+        // ═══════════════════════════════════════════════
+        //  INIT
+        // ═══════════════════════════════════════════════
+        document.addEventListener('DOMContentLoaded', () => {
+            checkBiometricSupport();
+            setupCPFMask();
+            setupKeyboard();
+        });
+
+        // ═══════════════════════════════════════════════
+        //  BIOMETRIC SUPPORT CHECK
+        // ═══════════════════════════════════════════════
+        function checkBiometricSupport() {
+            bioSupported = window.PublicKeyCredential !== undefined;
+
+            if (bioSupported) {
+                PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+                    .then(available => {
+                        if (!available) {
+                            bioSupported = false;
+                            document.getElementById('notSupported').classList.add('show');
+                            document.getElementById('bioBtn').disabled = true;
+                            document.getElementById('bioBtn').style.opacity = '0.4';
+                            document.getElementById('bioBtn').querySelector('span').textContent = 'Biometria indisponível';
+                        }
+                    })
+                    .catch(() => {
+                        bioSupported = false;
+                    });
+            } else {
+                document.getElementById('notSupported').classList.add('show');
+                document.getElementById('bioBtn').disabled = true;
+                document.getElementById('bioBtn').style.opacity = '0.4';
+                document.getElementById('bioBtn').querySelector('span').textContent = 'Biometria indisponível';
+            }
+        }
+
+        // ═══════════════════════════════════════════════
+        //  BIOMETRIC AUTHENTICATION (WebAuthn API REAL)
+        // ═══════════════════════════════════════════════
+        async function authenticateBiometric() {
+            if (!bioSupported) {
+                showToast('Biometria não disponível neste dispositivo', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('bioBtn');
+            const fpAnim = document.getElementById('fpAnim');
+
+            btn.classList.add('loading');
+            btn.style.display = 'none';
+            fpAnim.classList.add('active');
+
+            try {
+                // Step 1: Generate a challenge (in production, get from server)
+                const challenge = new Uint8Array(32);
+                crypto.getRandomValues(challenge);
+
+                // Step 2: Check for existing credentials
+                const existingCred = await getExistingCredential();
+
+                if (existingCred) {
+                    // Authentication with existing credential
+                    showToast('Autenticando com biometria...', 'info');
+                    const assertion = await navigator.credentials.get({
+                        publicKey: {
+                            challenge: challenge,
+                            allowCredentials: [{
+                                id: existingCred.id,
+                                type: 'public-key',
+                                transports: ['internal']
+                            }],
+                            timeout: 60000,
+                            userVerification: 'required'
+                        }
+                    });
+
+                    if (assertion) {
+                        showToast('✓ Autenticação biométrica bem-sucedida!', 'success');
+                        simulateLogin();
+                    }
+                } else {
+                    // Registration + Authentication for new user
+                    showToast('Primeiro acesso: registre sua biometria', 'info');
+
+                    const userId = new Uint8Array(16);
+                    crypto.getRandomValues(userId);
+
+                    const username = 'user_' + Date.now();
+
+                    // Create new credential (triggers biometric enrollment)
+                    const credential = await navigator.credentials.create({
+                        publicKey: {
+                            challenge: challenge,
+                            rp: {
+                                name: 'App Seguro',
+                                id: window.location.hostname || 'localhost'
+                            },
+                            user: {
+                                id: userId,
+                                name: username + '@app.com',
+                                displayName: 'Usuário App'
+                            },
+                            pubKeyCredParams: [
+                                { alg: -7, type: 'public-key' },   // ES256
+                                { alg: -257, type: 'public-key' }  // RS256
+                            ],
+                            authenticatorSelection: {
+                                authenticatorAttachment: 'platform',
+                                userVerification: 'required',
+                                residentKey: 'preferred'
+                            },
+                            timeout: 60000
+                        }
+                    });
+
+                    if (credential) {
+                        // Store credential ID for future auth
+                        localStorage.setItem('bioCredId', JSON.stringify({
+                            id: credential.id,
+                            rawId: Array.from(new Uint8Array(credential.rawId))
+                        }));
+                        showToast('✓ Biometria registrada com sucesso!', 'success');
+                        simulateLogin();
+                    }
+                }
+
+            } catch (err) {
+                console.error('Erro WebAuthn:', err);
+
+                if (err.name === 'NotAllowedError') {
+                    showToast('Autenticação cancelada pelo usuário', 'error');
+                } else if (err.name === 'SecurityError') {
+                    showToast('Erro de segurança. Use HTTPS.', 'error');
+                } else {
+                    showToast('Falha na biometria. Use CPF e senha.', 'error');
+                }
+            } finally {
+                btn.classList.remove('loading');
+                btn.style.display = 'flex';
+                fpAnim.classList.remove('active');
+            }
+        }
+
+        async function getExistingCredential() {
+            const stored = localStorage.getItem('bioCredId');
+            if (!stored) return null;
+
+            try {
+                const cred = JSON.parse(stored);
+                return {
+                    id: cred.rawId ? new Uint8Array(cred.rawId) : cred.id,
+                    type: 'public-key'
+                };
+            } catch {
+                return null;
+            }
+        }
+
+        // ═══════════════════════════════════════════════
+        //  CPF MASK
+        // ═══════════════════════════════════════════════
+        function setupCPFMask() {
+            const input = document.getElementById('cpfInput');
+
+            input.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.slice(0, 11);
+
+                if (value.length > 9) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+                } else if (value.length > 6) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+                } else if (value.length > 3) {
+                    value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+                }
+
+                e.target.value = value;
+            });
+
+            input.addEventListener('keydown', (e) => {
+                e.preventDefault(); // Block physical keyboard
+            });
+        }
+
+        // ═══════════════════════════════════════════════
+        //  VIRTUAL KEYBOARD
+        // ═══════════════════════════════════════════════
+        function setupKeyboard() {
+            document.querySelectorAll('.key[data-key]').forEach(key => {
+                key.addEventListener('click', () => {
+                    if (password.length < MAX_PASSWORD_LENGTH) {
+                        password += key.dataset.key;
+                        updateDots();
+                        playKeyFeedback();
+
+                        // Auto-submit when 6 digits
+                        if (password.length === MAX_PASSWORD_LENGTH) {
+                            setTimeout(() => submitCPF(), 300);
+                        }
+                    }
+                });
+            });
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('#passwordDots .dot');
+            dots.forEach((dot, i) => {
+                if (i < password.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
+            updateSubmitButton();
+        }
+
+        function clearPassword() {
+            if (password.length > 0) {
+                password = password.slice(0, -1);
+                updateDots();
+            }
+        }
+
+        function updateSubmitButton() {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = password.length !== MAX_PASSWORD_LENGTH;
+        }
+
+        // Haptic feedback simulation
+        function playKeyFeedback() {
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        }
+
+        // ═══════════════════════════════════════════════
+        //  SUBMIT CPF + PASSWORD
+        // ═══════════════════════════════════════════════
+        async function submitCPF() {
+            const cpf = document.getElementById('cpfInput').value.replace(/\D/g, '');
+
+            if (cpf.length !== 11) {
+                showToast('Digite um CPF válido', 'error');
+                document.getElementById('cpfInput').parentElement.classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('cpfInput').parentElement.classList.remove('shake');
+                }, 500);
+                return;
+            }
+
+            if (password.length !== MAX_PASSWORD_LENGTH) {
+                showToast('Digite a senha completa de 6 dígitos', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            const text = document.getElementById('submitText');
+            const spinner = document.getElementById('submitSpinner');
+
+            btn.disabled = true;
+            text.textContent = 'Verificando...';
+            spinner.style.display = 'inline-block';
+
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // In production, send to your API:
+            // const response = await fetch('/api/login', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ cpf, password })
+            // });
+
+            console.log('Login attempt:', {
+                cpf: cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'),
+                password: '••••••'
+            });
+
+            spinner.style.display = 'none';
+            text.textContent = 'Entrar';
+
+            // Simulate success
+            showToast('✓ Login realizado com sucesso!', 'success');
+            simulateLogin();
+        }
+
+        // ═══════════════════════════════════════════════
+        //  SIMULATE LOGIN
+        // ═══════════════════════════════════════════════
+        function simulateLogin() {
+            document.getElementById('statusDot').classList.add('offline');
+            document.getElementById('statusText').textContent = 'Autenticado — redirecionando...';
+
+            setTimeout(() => {
+                showToast('Redirecionando para o painel...', 'success');
+                // window.location.href = '/dashboard';
+            }, 1500);
+        }
+
+        // ═══════════════════════════════════════════════
+        //  TOAST
+        // ═══════════════════════════════════════════════
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
